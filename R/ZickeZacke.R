@@ -12,5 +12,5 @@
 #'   \item{quantityA}{amount of A; this can also be binary (0,1)}
 #'   \item{quantityB}{amount of B; this can also be binary (0,1)}
 #' }
-#' @source \url{http://www.talbotst.com/}
+#' @source \url{https://talbotsr.com/simsalRbim/}
 "ZickeZacke"

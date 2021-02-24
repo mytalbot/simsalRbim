@@ -27,13 +27,13 @@ incompletely tested items and their relative position.
 packages (in no particular order, excluding R base packages) and may
 have to be installed manually.
 
-“dplyr”\[@dplyrcite\]  
-“ggplot2”\[@ggplot2cite\]  
-“gnm”\[@gnmcite\]  
-“prefmod”\[@prefmodcit\]  
-“reshape2”\[@reshape2cite\]  
-“rlang”\[@rlangcite\]  
-“stringr”\[@stringrcite\]
+dplyr  
+ggplot2  
+gnm  
+prefmod  
+reshape2  
+rlang  
+stringr
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.
@@ -77,4 +77,14 @@ worth      <- bimworth(ydata    = predat,
                        showPlot = TRUE)
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-example-1.png" alt="Worth value plot." width="50%" />
+
+<p class="caption">
+
+Worth value plot.
+
+</p>
+
+</div>

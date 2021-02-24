@@ -15,7 +15,7 @@ A data frame with 32 rows and 5 variables:
 }
 }
 \source{
-\url{http://www.talbotst.com/}
+\url{https://talbotsr.com/simsalRbim/}
 }
 \usage{
 ZickeZacke
