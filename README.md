@@ -7,6 +7,8 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.org/mytalbot/simsalRbim.svg?branch=main)](https://travis-ci.org/r-lib/usethis)
 <!-- badges: end -->
 
 Preference tests are a valuable tool to measure the “wants” of
