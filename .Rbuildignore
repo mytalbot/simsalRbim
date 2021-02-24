@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^testfolder/
 ^vignettes/
+^README\.Rmd$
