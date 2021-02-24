@@ -1,0 +1,221 @@
+---
+title: "simsalRbim Vignette"
+author: "Steven R. Talbot"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: simsalRbim_lib.bib
+csl: biomed-central.csl
+vignette: >
+  %\VignetteIndexEntry{simsalRbim}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(include = TRUE)
+library(simsalRbim)
+```
+
+
+## simsalRbim - A package for preference test simulations
+
+Preference tests are a valuable tool to measure the "wants" of individuals and 
+have been proven to be a valid method to rate different commodities. The number
+of commodities presented at the same time is, however, limited and in classical
+test settings usually, only two options are presented. In our paper, we 
+evaluate the option of combining multiple binary choices to rank preferences 
+among a larger number of commodities. The **simsalRbim** package offers the 
+necessary tools to test selections of commodities and to obtain an estimate of 
+new or incompletely tested items and their relative position. 
+
+
+### Dependencies
+
+**simsalRbim** was developed on R (v4.0.3). It depends on the following
+packages (in no particular order, excluding R base packages) and may have to 
+be installed manually. 
+
+"dplyr"[@dplyrcite]  
+"ggplot2"[@ggplot2cite]  
+"gnm"[@gnmcite]  
+"prefmod"[@prefmodcit]  
+"reshape2"[@reshape2cite]  
+"rlang"[@rlangcite]  
+"stringr"[@stringrcite]  
+
+The following function can be used to install single packages - or just
+the missing ones from CRAN.  
+
+```{r
+install.packages("paste missing package name here")
+
+```
+
+### simsalRbim
+
+The development version of the simsalRbim package can be downloaded from GitHub
+with the following command.
+
+```{r
+# install.packages("devtools")
+devtools::install_github("mytalbot/simsalRbim")
+library(simsalRbim)
+```
+
+A CRAN version may be available soon.
+
+
+## General concept of the simsalRbim package
+
+Data from a preference test may be incomplete, may show ties or new item 
+positions shall be tested without the need of testing ALL possible combinations.
+The simsalRbim package can address all three cases by using informed and 
+uninformed simulations to find the optimal item positions in the data.
+
+Preference test data usually come in two formats: quantities or binary data. The
+bimload function in the package can load both formats, including the preferred
+side in a test as a variable. However, if a preference test is showing
+significant side dependencies, the simulated outcome will be biased. With the
+current package it is not possible to resolve side-dependent tests.
+
+In case of present ties, the binary response variable is randomized (by default, 
+this happens at a 50% Likelihood for an equal commodity selection. However, the
+user may specify other thresholds or quantities). Missing item tests and 
+combinations are filled as ties and then simulated in the two simulation
+functions. In the uninformed simulation, data are continuously randomized and 
+analyzed. At a given number of degrees of freedom this will stabilize the 95%
+confidence intervals on the worth scale. Thus, item positions can be obtained.
+In the informed simulation, the item intransitivity is also calculated. By 
+excluding "intransitive" selections from the results, the item of interest can
+be placed on the worth scale at much higher confidence.
+
+
+## Data
+
+The package includes example data (ZickeZacke) that can be used to explore the
+packages functions and gives an example of how the input data must be formatted.
+Please note, that the item 'HoiHoiHoi' in the data introduces a tie and 
+additional variance. Without it, this would be perfect data. Such data do not 
+need a simulation. In such cases, the package will show the worth plot but will
+also give a warning.
+
+```{r echo=TRUE}
+head(simsalRbim::ZickeZacke)
+```
+
+The input table must have the following columns:
+
+**subjectID** - a unique identifier for each subject in the preference test  
+**optionA** - item A  
+**optionB** - item B  
+**quantityA** - quantitiy of item A (can also be binary 0 or 1)  
+**quantityB** - quantitiy of item B (can also be binary 0 or 1)  
+**side** - preferred side (this column is optional)  
+
+
+
+## Functions
+
+### bim_load
+```
+# bimload - load function allows easy loading of data.
+bimload(filename)
+```
+The function takes a `filename` (*.txt) with quantitative or binary test data in 
+the format shown the Data section above. 
+
+
+### bimpre
+```
+# bimpre - will take care of the data preprocessing.
+bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0, 
+verbose=TRUE)
+```
+
+The function takes the data object (`dat`) from `bimload`, a parameter defining
+the ground truth (`GT`) as well as the item that requires simulation (`simOpt`).
+The `deviation` and `minQuantity` arguments can be used to modify the threshold
+of the tie selection (e.g, 50% + deviation). 
+
+
+### bimworth
+```
+# bimworth is the central function of the package doing the worth calculations.
+bimworth(ydata=NULL,GT=NULL,simOpt=NULL,randOP=FALSE,intrans=FALSE,
+showPlot=FALSE,ylim=c(0, 0.7),verbose=FALSE)
+```
+The `ydata` object takes the output from the preprocessing function (`bimpre`) 
+as well as the ground truth (`GT`) and the simulated item (`simOpt`). With the 
+`randOP` argument the randomization process can be controlled. If randOP=TRUE 
+(present!) ties are randomized each time the function is executed. The `intrans`
+argument controls whether the intransitivity of the items shall be computed. 
+
+### bimUninformed
+```
+# bimUninformed does an uninformed simulation of item positions to find a
+# cutoff.
+bimUninformed(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,seed=TRUE,
+showPlot=TRUE,ylim=c(-0.5, 1.5))
+```
+
+The function has the same first three input parameters as `bimworth`. In 
+addition, the `limitToRun` object controls the number of randomizations in the 
+worth calculations. The seeding can be set constant (`seed`). The output
+indicates an optimal cutoff for the number of required randomizations, e.g., 
+for the separation of items, and, therefore, potential item positioning.  
+
+The function also plots the results with 95% confidence intervals of the 
+adjusted p-values, derived from a post-hoc ANOVA with multiple comparisons 
+(Tukey) test. There will be perfect item separation when the plotted value 
+reaches zero. Any remaining variance indicates potential overlaps in the 95% 
+confidence intervals. A less stringent  (but less confident) threshold can be 
+obtained when the upper level of the 95% confidence intervals falls below 
+(0.05, see green points in the plot). This may be useful when calculation times
+are long. There will be a warning, if the function did not converge to a 
+threshold.
+
+### bimpos
+```
+# bimpos - calculates item positions at a discrete number of randomizations.
+bimpos(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,showPlot=TRUE)
+```
+
+This function is very similar to `bimUninformed` and uses the same input 
+arguments. However, it will not explore randomization space but will rather use
+a distinct cutoff to show the items' relative position. The query item 
+(`simOpt`) is shown in "red" in the plot. All items will be shown on the worth
+scale, together with 95% confidence invervals. Any overlap will indicate
+potential ambiguity in item positioning.
+
+
+### bimsim 
+```
+# bimsim - informed position simulation
+bimsim(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=10,seed=TRUE,fval=0.9,
+showPlot=TRUE,ylim=c(0, 0.7))
+ 
+```
+
+The `bimsim` function performs an informed position simulation of variable
+preference test data. The `limitToRun` argument from the `bimUninformed` output 
+can be used as an estimate for the required number of randomizations. The `fval`
+argument sets the cutoff for showing the intransitivity ratio (Iratio) of the 
+results in the plot. fval=1 means that 100% of the intransitive results are 
+plotted. The IRatio is calculated as the (number of triplets / no. of
+intransitive triplets) * 100. The more stringent (= lower fval) the criterion,
+the more informed the simulation becomes. The output is a frequency distribution
+of `simOpts` preferred position at the given `fval`. The plot shows the worth 
+value of the `simOpt` item as a function of its position. The bubblesize codes 
+for the IRatio.
+
+
+## References
+
+

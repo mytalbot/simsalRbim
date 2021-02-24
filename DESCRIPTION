@@ -1,0 +1,53 @@
+Package: simsalRbim
+Title: Preference Test Simulation Package
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Steven",
+             family = "Talbot",
+             role = c("cre", "aut"),
+             email = "talbot.steven@mh-hannover.de",
+             comment = c(ORCID = "0000-0002-9062-4065")),
+      person(given = "Dana",
+             family = "Pfefferle",
+             role = "aut",
+             email = "DPfefferle@dpz.eu"),
+      person(given = "Ralf",
+             family = "Brockhausen",
+             role = "aut",
+             email = "RBrockhausen@dpz.eu"),
+      person(given = "Lars",
+             family = "Lewejohann",
+             role = "aut",
+             email = "ljohann@phenotyping.de"))
+Maintainer: Steven Talbot <talbot.steven@mh-hannover.de>
+Description: This package was designed for preference test
+    evaluation and simulation. The focus lies on new item positioning at a
+    given number of initial preference tests. Various position tests and
+    simulations are possible that randomize open item combinations and
+    allow the estimation of a new item's position. However, if your
+    preference test shows a side-dependency, we cannot help you. Such data
+    can be simulated but the outcome will be biased.
+License: GPL-3
+Depends: 
+    R (>= 2.10)
+Imports: 
+    dplyr,
+    ggplot2,
+    gnm,
+    prefmod,
+    reshape2,
+    rlang,
+    stats,
+    stringr,
+    utils
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

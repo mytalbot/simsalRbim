@@ -1,0 +1,114 @@
+
+library(simsalRbim)
+
+#  Perfect use case with no randomized items ------------------------------
+dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
+
+simOpt     <- "Zicke"
+GT         <- c("Zacke", "Huehner", "Kacke" )
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = TRUE,
+                       showPlot = TRUE)
+worth
+
+
+
+
+
+
+# Introduction of a new item with restricted measurements -----------------
+# Import from a fresh file w/ Coke items
+# and 1 Tie
+dat        <- ZickeZacke
+
+simOpt     <- "HoiHoiHoi"
+GT         <- c("Zacke", "Huehner", "Kacke",  "Zicke" )
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       randOP   = TRUE,
+                       intrans  = TRUE,
+                       showPlot = TRUE)
+worth
+
+### Now we do an uninformed item positioning, also to obtain a reasonable threshold for the no. of randomizations
+cutoff     <- bimUninformed(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=100, ylim=c(-1,2) )
+cutoff$cutoff
+
+### now the randomized worth calculation is reapeated n-times
+# Note: as long as CIs show an overlap, the positioning is not secure.
+pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=78, showPlot=TRUE )
+pos$simerrors
+
+# now the informed simulation
+frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 0.50, showPlot=TRUE, ylim=c(0,0.7))
+frqnc$frq
+
+
+
+
+
+
+
+
+
+
+# Human data 1 --------------------------------------------------------------
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
+simOpt     <- "Lake"
+GT         <- c("Crow","War","Cat","Doctor", "Fire", "Frustrated")
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       showPlot = TRUE)
+worth
+
+
+
+
+# Human data test------------------------------------------------------------
+# Introduction of the Nackmull
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
+
+dat        <- rbind(dat, data.frame(subjectID = c("16de27e0","16de27e0","1cdf6341","36f1fbb9"),
+                                    optionA   = c("Lake","Doctor","Frustrated","Crow"),
+                                    optionB   = c("Nacktmull","Nacktmull","Nacktmull", "Nacktmull"),
+                                    quantityA = c(220,190,50,120),
+                                    quantityB = c(40,170,22,114),
+                                    sideA     = c("left", "left", "left", "left")))
+
+simOpt     <- "Nacktmull"
+GT         <- c("Lake","Crow","War","Cat","Doctor", "Fire", "Frustrated")
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       showPlot = TRUE)
+worth
+
+cutoff     <- bimUninformed(ydat=predat, GT=GT, simOpt=simOpt, limitToRun=50, ylim=c(-1,2) )
+cutoff$cutoff
+
+pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=14, showPlot=TRUE )
+pos$simerrors
+
+# takes some time!
+frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=14, fval= 1, showPlot=TRUE, ylim=c(0,0.7))
+frqnc$frq
+
+
+
+
