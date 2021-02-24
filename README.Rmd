@@ -71,7 +71,7 @@ library(simsalRbim)
 This example uses the internal data (ZickeZacke) to perform a simple
 randomization on the positioning of the incomplete 'HoiHoiHoi' item. 
 
-```{r example, out.width="50%", fig.cap="Worth value plot."}
+```{r example, out.width="70%"}
 library(simsalRbim)
 
 dat        <- ZickeZacke
@@ -85,7 +85,7 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        randOP   = FALSE,
-                       intrans  = TRUE,
+                       intrans  = FALSE,
                        showPlot = TRUE)
 ```
 

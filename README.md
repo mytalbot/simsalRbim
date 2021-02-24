@@ -75,18 +75,8 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        randOP   = FALSE,
-                       intrans  = TRUE,
+                       intrans  = FALSE,
                        showPlot = TRUE)
 ```
 
-<div class="figure">
-
-<img src="man/figures/README-example-1.png" alt="Worth value plot." width="50%" />
-
-<p class="caption">
-
-Worth value plot.
-
-</p>
-
-</div>
+<img src="man/figures/README-example-1.png" width="70%" />
