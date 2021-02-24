@@ -21,6 +21,8 @@ commodities. The **simsalRbim** package offers the necessary tools to
 test selections of commodities and to obtain an estimate of new or
 incompletely tested items and their relative position.
 
+[simsalRbim Website](https://talbotsr.com/simsalRbim)
+
 ### Dependencies
 
 **simsalRbim** was developed on R (v4.0.3). It depends on the following
