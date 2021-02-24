@@ -1,5 +1,5 @@
 ---
-title: "simsalRbim Vignette"
+title: "simsalRbim"
 author: "Steven R. Talbot"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
