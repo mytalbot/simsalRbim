@@ -111,10 +111,12 @@ bimintrans <- function(dat=NULL, idcolumn="subjectID", I2="optionA", I1="optionB
       }
     }
   }
+
+  icount <- tripletcount -intranscount
   # print(paste(intranscount, "intransitive triplets from ", tripletcount, "total triplets"))
-  return(list(intranscount =intranscount,
-              no_tripl     =tripletcount,
-              Iratio       =intranscount/tripletcount ))#intranscount/tripletcount))
+  return(list(intranscount = icount,
+              no_tripl     = tripletcount,
+              Iratio       = (icount/tripletcount )))#intranscount/tripletcount))
 }
 
 

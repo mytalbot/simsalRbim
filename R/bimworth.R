@@ -33,6 +33,10 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
                      randOP=FALSE, intrans=FALSE, showPlot=FALSE,
                      ylim=c(0,0.7), verbose=FALSE){
 
+  # Decision Ratio (a quality estimatation)
+  Dratio = sum(ydata$result==1)/sum(ydata$result==-1)
+
+
   # create the item list
   optionList <- c(GT, simOpt)
 
@@ -79,11 +83,11 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
   # show plot and adapt the error message
   if(showPlot==TRUE){
-    plot( hworY, ylim=ylim)
+    plot( hworY, ylim=ylim, ylab="worth")
   }else{}
 
   if(intrans==TRUE){
-    return(list(worth=hworY, I=I))
+    return(list(worth=hworY, I=I, Dratio=Dratio))
   }else{
     return(worth=hworY)
   }

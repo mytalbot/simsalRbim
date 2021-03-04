@@ -117,9 +117,7 @@ The input table must have the following columns:
 **optionB** - item B  
 **quantityA** - quantitiy of item A (can also be binary 0 or 1)  
 **quantityB** - quantitiy of item B (can also be binary 0 or 1)  
-**side** - preferred side (this column is optional)  
-
-
+**side** - side of option A (this column is optional)  
 
 ## Functions
 

@@ -4,6 +4,8 @@ library(simsalRbim)
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
 
+# dat <- dat[dat$subjectID=="eins", ]
+
 simOpt     <- "Zicke"
 GT         <- c("Zacke", "Huehner", "Kacke" )
 
@@ -17,7 +19,13 @@ worth      <- bimworth(ydata    = predat,
 worth
 
 
+# Gütewert für nicht simulierte Daten.
+# Worthplot für einzelne Personen und ob die sich einig sind?
+# Auszählen
+# wie viele Leute von insgesamt fanden X besser?
+# jeweils für simulation und nicht simulation machen!
 
+ # check intransfunktion
 
 
 
@@ -27,7 +35,7 @@ worth
 dat        <- ZickeZacke
 
 simOpt     <- "HoiHoiHoi"
-GT         <- c("Zacke", "Huehner", "Kacke",  "Zicke" )
+GT         <- c("Zacke","Huehner", "Kacke",  "Zicke" )
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 
@@ -49,7 +57,7 @@ pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=78, showPlot
 pos$simerrors
 
 # now the informed simulation
-frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 0.50, showPlot=TRUE, ylim=c(0,0.7))
+frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 1, showPlot=TRUE, ylim=c(0,0.7))
 frqnc$frq
 
 
@@ -63,16 +71,52 @@ frqnc$frq
 
 # Human data 1 --------------------------------------------------------------
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
-simOpt     <- "Lake"
-GT         <- c("Crow","War","Cat","Doctor", "Fire", "Frustrated")
+simOpt     <- "Frustrated"
+GT         <- c("Lake","Crow","War","Cat","Doctor", "Fire")
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
+                       intrans  = TRUE,
                        showPlot = TRUE)
 worth
+
+
+
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LowValenceRange.txt")
+simOpt     <- "Sunset"
+GT         <- c("House","Grass","Food","Monkey","Timber","Flowers" )
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = TRUE,
+                       showPlot = TRUE)
+worth
+
+
+
+
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LargeValanceRange.txt")
+simOpt     <- "Lake"
+GT         <- c("Crow","War","Cat","Doctor", "Fire", "Frustrated")
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = TRUE,
+                       randOP   = TRUE,
+                       showPlot = TRUE)
+worth
+
+
+
+
 
 
 
@@ -102,11 +146,11 @@ worth
 cutoff     <- bimUninformed(ydat=predat, GT=GT, simOpt=simOpt, limitToRun=50, ylim=c(-1,2) )
 cutoff$cutoff
 
-pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=14, showPlot=TRUE )
+pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=40, showPlot=TRUE )
 pos$simerrors
 
 # takes some time!
-frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=14, fval= 1, showPlot=TRUE, ylim=c(0,0.7))
+frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=20, fval= 1, showPlot=TRUE, ylim=c(0,0.7))
 frqnc$frq
 
 
