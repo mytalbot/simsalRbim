@@ -75,7 +75,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/mytalbot/simsalRbim/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -111,7 +118,8 @@ prefmod<br>
 reshape2<br>
 rlang<br>
 stringr<br>
-viridis ggrepel</p>
+viridis<br>
+ggrepel</p>
 <p>The following function can be used to install single packages - or just the missing ones from CRAN.</p>
 <pre class="{r"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("paste missing package name here")</a></code></pre>
 </div>
@@ -128,7 +136,7 @@ library(simsalRbim)</a></code></pre>
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This example uses the internal data (ZickeZacke) to perform a simple randomization on the positioning of the incomplete ‘HoiHoiHoi’ item.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">simsalRbim</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mytalbot/simsalRbim">simsalRbim</a></span><span class="op">)</span>
 
 <span class="va">dat</span>        <span class="op">&lt;-</span> <span class="va">ZickeZacke</span>
 
@@ -136,7 +144,7 @@ library(simsalRbim)</a></code></pre>
 <span class="va">GT</span>         <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Zacke"</span>, <span class="st">"Huehner"</span>, <span class="st">"Kacke"</span>,  <span class="st">"Zicke"</span> <span class="op">)</span>
 
 <span class="va">predat</span>     <span class="op">&lt;-</span> <span class="fu"><a href="reference/bimpre.html">bimpre</a></span><span class="op">(</span>dat<span class="op">=</span><span class="va">dat</span>, GT<span class="op">=</span><span class="va">GT</span>, simOpt<span class="op">=</span><span class="va">simOpt</span><span class="op">)</span>
-<span class="co">#&gt; simsalRbim: 1 ties were marked.</span>
+<span class="co">#&gt; simsalRbim: ties were marked.</span>
 
 <span class="va">worth</span>      <span class="op">&lt;-</span> <span class="fu"><a href="reference/bimworth.html">bimworth</a></span><span class="op">(</span>ydata    <span class="op">=</span> <span class="va">predat</span>,
                        GT       <span class="op">=</span> <span class="va">GT</span>,
@@ -150,7 +158,16 @@ library(simsalRbim)</a></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/mytalbot/simsalRbim/">https://​github.com/​mytalbot/​simsalRbim/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/mytalbot/simsalRbim/issues">https://​github.com/​mytalbot/​simsalRbim/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
