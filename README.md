@@ -35,7 +35,8 @@ gnm
 prefmod  
 reshape2  
 rlang  
-stringr
+stringr  
+viridis ggrepel
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.
@@ -78,5 +79,3 @@ worth      <- bimworth(ydata    = predat,
                        intrans  = FALSE,
                        showPlot = TRUE)
 ```
-
-<img src="man/figures/README-example-1.png" width="70%" />

@@ -29,7 +29,7 @@ one. Remove the item from GT if specified here!)}
 \item{intrans}{calculate intransitivity during worth value estimation
 (calculation intense! TRUE/FALSE)}
 
-\item{showPlot}{plot the worth plot (default=FALSE)}
+\item{showPlot}{plot the worth plot (c("FALSE","worth","coef"))}
 
 \item{ylim}{y limits of the worth plot (default c(0,0.7))}
 

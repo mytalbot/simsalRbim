@@ -49,6 +49,8 @@ be installed manually.
 "reshape2"[@reshape2cite]  
 "rlang"[@rlangcite]  
 "stringr"[@stringrcite]  
+"viridis"[@viridiscite]  
+"ggrepel"[@ggrepelcite]   
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.  

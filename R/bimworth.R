@@ -11,7 +11,7 @@
 #' (e.g., data marked as ties)
 #' @param intrans calculate intransitivity during worth value estimation
 #' (calculation intense! TRUE/FALSE)
-#' @param showPlot plot the worth plot (default=FALSE)
+#' @param showPlot plot the worth plot (c("FALSE","worth","coef"))
 #' @param ylim y limits of the worth plot (default c(0,0.7))
 #' @param verbose show model outputs (default= FALSE)
 #'
@@ -74,6 +74,60 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   #NOTE: last entry of optionList is the intercept
 
 
+
+
+
+  # Show the model estimates with 95% CIs in a separate plot
+  if(showPlot=="coef"){
+
+    f <- function(d) {
+      fit <- do.call("gnm", list(formula, data = d, family = poisson ))
+      confint(fit)
+    }
+    CI <- as.data.frame(f(as.data.frame(modelY)))
+    rownames(CI)[1] <- simOpt
+
+
+    #hworY           <- llbt.worth(h1Y, outmat ="est")
+    hworY           <- as.matrix(coef(h1Y))
+    colnames(hworY) <- "estimate"
+    row.names(hworY)[1] <- simOpt
+
+
+
+    new_df          <- cbind(hworY[row.names(CI), ], CI)
+    colnames(new_df)<- c("estimate","lwr","upr")
+    new_df$item     <- rownames(new_df)
+
+
+    new_df$item <- factor(new_df$item,
+                             levels = new_df$item[order(new_df$estimate)])
+
+
+    if(verbose==TRUE){
+      print(new_df)
+    }else{}
+
+
+    p <- ggplot(new_df, aes(x=item, y=estimate)) +
+      geom_point(size=2) +
+      geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1 ) +
+      # ylim(mYlim) +
+      labs(title    = "Item comparisons (no simulation)",
+           subtitle  = "Model coefficients with 95% confidence intervals")   +
+      ylab("Estimate") +
+      xlab("") +
+      labs(colour="Item") +
+      theme_bw()
+    p <- p + coord_flip()
+    print(p)
+
+  }else{ }
+
+
+
+
+
   # print the model summary
   if(verbose==TRUE){
     print(summary(h1Y))
@@ -82,7 +136,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   hworY      <- llbt.worth(h1Y, outmat ="worth")
 
   # show plot and adapt the error message
-  if(showPlot==TRUE){
+  if(showPlot=="worth"){
     plot( hworY, ylim=ylim, ylab="worth")
   }else{}
 

@@ -4,6 +4,7 @@ library(simsalRbim)
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
 
+
 # dat <- dat[dat$subjectID=="eins", ]
 
 simOpt     <- "Zicke"
@@ -15,18 +16,12 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        intrans  = TRUE,
-                       showPlot = TRUE)
+                       verbose  = TRUE,
+                       showPlot = "worth")
 worth
 
-
-# Gütewert für nicht simulierte Daten.
-# Worthplot für einzelne Personen und ob die sich einig sind?
-# Auszählen
-# wie viele Leute von insgesamt fanden X besser?
-# jeweils für simulation und nicht simulation machen!
-
- # check intransfunktion
-
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
 
 
 # Introduction of a new item with restricted measurements -----------------
@@ -35,7 +30,7 @@ worth
 dat        <- ZickeZacke
 
 simOpt     <- "HoiHoiHoi"
-GT         <- c("Zacke","Huehner", "Kacke",  "Zicke" )
+GT         <- c( "Huehner", "Kacke",  "Zicke","Zacke" )
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 
@@ -44,8 +39,11 @@ worth      <- bimworth(ydata    = predat,
                        simOpt   = simOpt,
                        randOP   = TRUE,
                        intrans  = TRUE,
-                       showPlot = TRUE)
+                       showPlot = "worth")
 worth
+
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
 
 ### Now we do an uninformed item positioning, also to obtain a reasonable threshold for the no. of randomizations
 cutoff     <- bimUninformed(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=100, ylim=c(-1,2) )
@@ -61,6 +59,11 @@ frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 
 frqnc$frq
 
 
+# Wie einig sind sich die Probanden OHNE Simulation und wo überlappt es?
+# Dabei die n-Zahl berücksichtigen.
+# Spuckt das GNM model ein Konfidenzinterval aus?
+# Poweranalyse? Wie viele Items braucht man?
+
 
 
 
@@ -71,8 +74,8 @@ frqnc$frq
 
 # Human data 1 --------------------------------------------------------------
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
-simOpt     <- "Frustrated"
-GT         <- c("Lake","Crow","War","Cat","Doctor", "Fire")
+simOpt     <- "Lake"
+GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire")
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 
@@ -80,9 +83,11 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        intrans  = TRUE,
-                       showPlot = TRUE)
+                       showPlot = "est")
 worth
 
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
 
 
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LowValenceRange.txt")
@@ -95,10 +100,11 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        intrans  = TRUE,
-                       showPlot = TRUE)
+                       showPlot = "est")
 worth
 
-
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
 
 
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LargeValanceRange.txt")
@@ -111,10 +117,11 @@ worth      <- bimworth(ydata    = predat,
                        simOpt   = simOpt,
                        intrans  = TRUE,
                        randOP   = TRUE,
-                       showPlot = TRUE)
+                       showPlot = "est")
 worth
 
-
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
 
 
 
@@ -140,8 +147,22 @@ predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
+                       intrans  = TRUE ,
                        showPlot = TRUE)
 worth
+
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
+
+
+
+
+
+
+
+
+
+
 
 cutoff     <- bimUninformed(ydat=predat, GT=GT, simOpt=simOpt, limitToRun=50, ylim=c(-1,2) )
 cutoff$cutoff

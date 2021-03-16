@@ -82,7 +82,7 @@
       <h1 data-toc-skip>simsalRbim</h1>
                         <h4 class="author">Steven R. Talbot</h4>
             
-            <h4 class="date">2021-02-24</h4>
+            <h4 class="date">2021-03-16</h4>
       
       
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -105,7 +105,9 @@
 “prefmod”<span class="citation">[4]</span><br>
 “reshape2”<span class="citation">[5]</span><br>
 “rlang”<span class="citation">[6]</span><br>
-“stringr”<span class="citation">[7]</span></p>
+“stringr”<span class="citation">[7]</span><br>
+“viridis”<span class="citation">[8]</span><br>
+“ggrepel”<span class="citation">[9]</span></p>
 <p>The following function can be used to install single packages - or just the missing ones from CRAN.</p>
 <pre class="{r"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("paste missing package name here")
 </a></code></pre>
@@ -141,7 +143,7 @@ library(simsalRbim)</a></code></pre>
 <span class="co">#&gt; 5      eins Huehner   Kacke        30        20</span>
 <span class="co">#&gt; 6      zwei Huehner   Kacke        50        40</span></code></pre></div>
 <p>The input table must have the following columns:</p>
-<p><strong>subjectID</strong> - a unique identifier for each subject in the preference test<br><strong>optionA</strong> - item A<br><strong>optionB</strong> - item B<br><strong>quantityA</strong> - quantitiy of item A (can also be binary 0 or 1)<br><strong>quantityB</strong> - quantitiy of item B (can also be binary 0 or 1)<br><strong>side</strong> - preferred side (this column is optional)</p>
+<p><strong>subjectID</strong> - a unique identifier for each subject in the preference test<br><strong>optionA</strong> - item A<br><strong>optionB</strong> - item B<br><strong>quantityA</strong> - quantitiy of item A (can also be binary 0 or 1)<br><strong>quantityB</strong> - quantitiy of item B (can also be binary 0 or 1)<br><strong>side</strong> - side of option A (this column is optional)</p>
 </div>
 <div id="functions" class="section level2">
 <h2 class="hasAnchor">
@@ -168,6 +170,13 @@ verbose=TRUE)</a></code></pre>
 bimworth(ydata=NULL,GT=NULL,simOpt=NULL,randOP=FALSE,intrans=FALSE,
 showPlot=FALSE,ylim=c(0, 0.7),verbose=FALSE)</a></code></pre>
 <p>The <code>ydata</code> object takes the output from the preprocessing function (<code>bimpre</code>) as well as the ground truth (<code>GT</code>) and the simulated item (<code>simOpt</code>). With the <code>randOP</code> argument the randomization process can be controlled. If randOP=TRUE (present!) ties are randomized each time the function is executed. The <code>intrans</code> argument controls whether the intransitivity of the items shall be computed.</p>
+</div>
+<div id="bimeval" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bimeval" class="anchor"></a>bimeval</h3>
+<pre><code><a href="../reference/bimeval.html"># bimeval evaluates the consensus error in the worth calculations
+bimeval(ydata=NULL,GT=NULL,simOpt=NULL,worth= NULL,coverage=0.8,showPlot=TRUE )</a></code></pre>
+<p>The first three input objects are the same as in <code>bimworth</code>. Additionally, the function requires the output from <code>bimworth</code> for the evaluation. Be aware that the <code>bimworth</code> output can be a list when <code>intrans=TRUE</code>. The <code>coverage</code> object defines an arbitrary threshold for data coverage warnings. There can be two warnings: number of subjects and number of items warnings. The graphical output can be controlled with the <code>showPlot</code> object.</p>
 </div>
 <div id="bimuninformed" class="section level3">
 <h3 class="hasAnchor">
@@ -220,6 +229,12 @@ showPlot=TRUE,ylim=c(0, 0.7))
 </div>
 <div id="ref-stringrcite">
 <p>7. Wickham H: <em>Stringr: Simple, consistent wrappers for common string operations</em>. 2019.</p>
+</div>
+<div id="ref-viridiscite">
+<p>8. Garnier S: <em>Viridis: Default color maps from ’matplotlib’</em>. 2018.</p>
+</div>
+<div id="ref-ggrepelcite">
+<p>9. Slowikowski K: <em>Ggrepel: Automatically position non-overlapping text labels with ’ggplot2’</em>. 2021.</p>
 </div>
 </div>
 </div>

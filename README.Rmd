@@ -46,6 +46,8 @@ prefmod
 reshape2  
 rlang  
 stringr  
+viridis
+ggrepel
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.  

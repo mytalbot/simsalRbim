@@ -39,7 +39,9 @@ Imports:
     rlang,
     stats,
     stringr,
-    utils
+    utils,
+    viridis,
+    ggrepel
 Suggests: 
     knitr,
     rmarkdown,

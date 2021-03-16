@@ -21,6 +21,7 @@
 #' @param ylim scale y axis of the worth plot (default: c(0,0.7))
 #'
 #' @import ggplot2
+#' @import viridis
 #' @importFrom dplyr filter '%>%'
 #'
 #' @return list with the position frequencies and the plot object
