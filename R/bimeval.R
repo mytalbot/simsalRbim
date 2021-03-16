@@ -1,4 +1,4 @@
-#' Worth Values Evalation Function
+#' Worth Values Evaluation Function
 #'
 #' The \code{bimeval} will evaluate the worth values and will give an estimate
 #' on the error of uncertainty in the unsimulated data.

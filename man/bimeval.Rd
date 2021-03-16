@@ -2,7 +2,7 @@
 % Please edit documentation in R/bimeval.R
 \name{bimeval}
 \alias{bimeval}
-\title{Worth Values Evalation Function}
+\title{Worth Values Evaluation Function}
 \usage{
 bimeval(
   ydata = NULL,
