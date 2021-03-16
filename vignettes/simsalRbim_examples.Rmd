@@ -25,7 +25,7 @@ library(kableExtra)
 ```
 
 ## Preference Tests
-For the purpose of this Vignette, we will use the artificial ZickeZacke data. 
+For this Vignette, we will use the artificial ZickeZacke data. 
 This is a 'perfect' set of preference tests that comes with this package, in
 which every subject was tested with every provided item. However, the data
 contain one item that was not tested with all subjects and also contains two
@@ -33,18 +33,20 @@ ties ('HoiHoiHoi'). Let's see if we can evaluate the item's position. For this
 purpose, we will employ three different strategies which are covered by the 
 following examples.
 
+
 ### Example 1 - The calculation of worth values
-First the data are loaded. In this example the internal data are used. You can
+First, the data are loaded. In this example, internal data are used. You can
 use the `bimload` function to import data from a variety of formats.
 
-Next, an item that shall be tested is required (simOpt) and a Ground Truth (GT)
+Next, an item that shall be tested is required (simOpt), and a Ground Truth (GT)
 of items that it is tested with. These entries depend on the data structure. Any
-items that are not listed here, will not be used in the analyis. This may lead
+items that are not listed here, will not be used in the analysis. This may lead
 to incomplete conclusions. So be careful what you put in here...
 
-These information are then put into the `bimpre` function which does some 
+This information is then used in the `bimpre` function which does some 
 pre-processing. Also, ties are identified. As you can see from the example 
 below, the ties were marked in the 'tie' column.
+
 
 ```{r}
 dat        <- ZickeZacke
@@ -93,14 +95,14 @@ w_errors   <- bimeval(ydata    = predat,
                       showPlot = TRUE)
 ```
 
-The warnings indicate that the number of subjects tested maybe too low. The 
-second warning shows the same for the number of items tested. In order to get
+The warnings indicate that the number of subjects tested may be too low. The 
+second warning shows the same for the number of items tested. To get
 more reliable results, both should be increased.
 
-The bubbleplot shows the consensus error of each item. This means, the smaller
+The bubble plot shows the consensus error of each item. This means, the smaller
 the bubble (or error), the more agreement there is between subjects regarding
-the positioning of the respective item. With this tool we can assume that the 
-position of 'Zicke' at zero % error is secure. There was full agreement of all 
+the positioning of the respective item. With this tool, we can assume that the 
+position of 'Zicke' at zero % error is secure. There was a full agreement of all 
 subjects on the positioning of that item. However, 'HoiHoiHoi' shows 25% 
 disagreement. Take this together with the warnings from above, the positioning
 of this item is relatively insecure. It might be in position 2 or 3...
@@ -109,7 +111,7 @@ of this item is relatively insecure. It might be in position 2 or 3...
 From the example above we know that for the inclusion of ties, the results of 
 the preference test can be randomized. In the GNM it does not matter whether the
 test was binary or continuous. The preprocessing took care of that. However, for
-a certain amount of combinations, this leaves a number of degrees of freedom 
+a certain amount of combinations, this leaves some degrees of freedom 
 that can be modeled in the GNM. This logic is used in the `bimUninformed` 
 function to simulate an **uninformed*'** worth calculation for optimal item
 positioning. 
@@ -118,14 +120,15 @@ This procedure is called 'uninformed' because it uses no *a priori* knowledge
 about the transitivity of items. It is assumed that all choices in the 
 preference test were correct.
 
-For any number of randomization steps, an ANOVA with a MCP correction is used to
+For any number of randomization steps, an ANOVA with an MCP correction is used to
 compare the worth values. As long as they are not significantly different, the 
-items' position can be challenged. At a limited number of degrees of freedom 
-this will eventually lead into a saturation of the mean adjusted p-value. 
+items' position can be challenged. At a limited number of degrees of freedom, 
+this will eventually lead to a saturation of the mean adjusted p-value. 
 Starting at relatively large confidence levels, the errors will become smaller
-and once the p-value hits zero, the cutoff is found. For ambiguous data this can
+and once the p-value hits zero, the cutoff is found. For ambiguous data, this can
 mean a lot of required randomizations. **This is a heuristic!** So, be prepared
 to try this out manually for your data.
+
 
 ```{r}
 # We will run 100 randomizations in this example to find the optimal cutoff
@@ -158,7 +161,6 @@ pos$simerrors %>%
   kable_styling()
 ```
 
-
 The table shows the estimated mean worth values with errors. All values
 are sorted in the correct order. The items' positions are now clear as there are
 no overlapping confidence intervals. 
@@ -166,7 +168,6 @@ no overlapping confidence intervals.
 From the evaluation above our confidence in the positioning of 'HoiHoiHoi' was
 low. Now we can be rather sure that it is in position 2. If in doubt, increase 
 the number of randomizations until the items are separated.
-
 
 ## Example 3 - informed item position simulation
 In the last example, we will perform an **informed** simulation of the data. By 
