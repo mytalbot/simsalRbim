@@ -2,6 +2,7 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  simsalRbim_examples: simsalRbim_examples.html
   simsalRbim_vignette: simsalRbim_vignette.html
-last_built: 2021-03-16T10:07Z
+last_built: 2021-03-16T13:18Z
 

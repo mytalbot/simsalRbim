@@ -43,6 +43,7 @@ bimsim <- function(ydata = NULL, GT=NULL, simOpt=NULL, limitToRun=10,
     set.seed(123)
   }else{}
 
+
   # do the simulation
   reps    <- limitToRun
   deviate <- 0
@@ -72,6 +73,7 @@ bimsim <- function(ydata = NULL, GT=NULL, simOpt=NULL, limitToRun=10,
 
     W <- rbind(W, d)
   }
+
 
 
   # add to X-scale for better optics

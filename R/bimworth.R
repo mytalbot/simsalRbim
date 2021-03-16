@@ -21,6 +21,8 @@
 #' @import prefmod
 #' @importFrom graphics plot
 #' @importFrom stats anova as.formula poisson
+#' @importFrom stats confint
+#' @importFrom stats coef
 #'
 #' @return list with the worth values for each item and the total number of
 #' simulated combinations based on simOption
@@ -82,7 +84,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
     f <- function(d) {
       fit <- do.call("gnm", list(formula, data = d, family = poisson ))
-      confint(fit)
+      stats::confint(fit)
     }
     CI <- as.data.frame(f(as.data.frame(modelY)))
     rownames(CI)[1] <- simOpt
@@ -92,7 +94,6 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
     hworY           <- as.matrix(coef(h1Y))
     colnames(hworY) <- "estimate"
     row.names(hworY)[1] <- simOpt
-
 
 
     new_df          <- cbind(hworY[row.names(CI), ], CI)

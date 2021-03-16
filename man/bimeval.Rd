@@ -10,7 +10,9 @@ bimeval(
   GT = NULL,
   simOpt = NULL,
   coverage = 0.8,
-  showPlot = TRUE
+  showPlot = TRUE,
+  title = "Consensus Analysis",
+  subtitle = NULL
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ bimeval(
 \item{coverage}{the threshold for the ratio of tested subjects per total subjects (default=0.8)}
 
 \item{showPlot}{plot the worth plot as a bubble plot with uncertainty errors}
+
+\item{title}{plot title (default: "Consensus Analysis")}
+
+\item{subtitle}{plot subtitle (if NULL, a default will be used)}
 }
 \value{
 either a data.frame with the consensus errors and/or a plot object

@@ -24,6 +24,8 @@ w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
 w_errors
 
 
+
+
 # Introduction of a new item with restricted measurements -----------------
 # Import from a fresh file w/ Coke items
 # and 1 Tie
@@ -55,8 +57,9 @@ pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=78, showPlot
 pos$simerrors
 
 # now the informed simulation
-frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 1, showPlot=TRUE, ylim=c(0,0.7))
+frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 0.25, showPlot=TRUE, ylim=c(0,0.7))
 frqnc$frq
+
 
 
 # Wie einig sind sich die Probanden OHNE Simulation und wo überlappt es?

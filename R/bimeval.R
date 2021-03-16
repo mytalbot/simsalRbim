@@ -9,6 +9,8 @@
 #' @param coverage the threshold for the ratio of tested subjects per total subjects (default=0.8)
 #' @param worth the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!
 #' @param showPlot plot the worth plot as a bubble plot with uncertainty errors
+#' @param title plot title (default: "Consensus Analysis")
+#' @param subtitle plot subtitle (if NULL, a default will be used)
 #'
 #' @import ggplot2
 #' @import viridis
@@ -19,7 +21,9 @@
 #' @export
 #'
 #'
-bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL, coverage=0.8, showPlot=TRUE ){
+bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
+                     coverage=0.8, showPlot=TRUE,
+                     title="Consensus Analysis", subtitle=NULL){
 
   predat     <- ydata
   optionlist <- c(simOpt, GT)
@@ -33,41 +37,42 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL, coverage=0.8
 
     TT <- rbind(TT, tt)
   }
-  TT
+
 
   # check subjects data coverage - results may be underrepresented!
   BB        <- predat[grepl(simOpt,predat$test, fixed = TRUE),  ]
   provided  <- length(unique(BB$subjectID[BB$tie == FALSE   ]))
   simulated <- length(unique(BB$subjectID[BB$tie != FALSE   ]))
-  coverage  <- 0.8
+  subjratio <- provided/(simulated + provided)
 
   # item coverage
-  II              <- predat[grepl(optionlist[j], predat$test, fixed = TRUE),]
+  II              <- predat[grepl(simOpt, predat$test, fixed = TRUE),]
   items_provided  <- length(unique(II$test [II$tie == FALSE   ]))
   items_simulated <- length(unique(II$test [II$tie != FALSE   ]))
-  itemratio       <- items_provided/items_simulated
+  itemratio       <- items_provided/(items_simulated + items_provided)
+
+
 
 
   # warning: too few subjects
-  if((provided/simulated)<coverage){
+  if((subjratio)<coverage){
     warning(paste("simsalRbim: ","No. of SUBJECTS WARNING!
                 The number of subjects you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of subjects.
                 You are currently below ", coverage*100, "% data coverage for that item.
-                Your provided-to-simulated ratio is at: ",
-                  round(provided/simulated,4) * 100, "%.\n", sep=""))
+                Your provided-to-simulated subjects ratio is at: ",
+                  round(subjratio,4) * 100, "%.\n", sep=""))
 
   }else{}
 
   # warning if too few item combinations
-  if((items_provided/items_simulated)<coverage){
-
+  if((itemratio)<coverage){
   warning(paste("simsalRbim: ","No. of ITEMS WARNING!
                 The number of item tests you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of item combinations.
                 You are currently below ", coverage*100, "% item coverage for that item.
-                Your provided-to-simulated ratio is at: ",
-                round(items_provided/items_simulated,4) * 100, "%.\n", sep=""))
+                Your provided-to-simulated items ratio is at: ",
+                round(itemratio,4) * 100, "%.\n", sep=""))
   }else{}
 
 
@@ -96,11 +101,11 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL, coverage=0.8
     upr        <- mean_delta + qt(0.975,df=length(liste$delta)-1)*sd  (liste$delta, na.rm = TRUE)/sqrt(length(liste$delta))
 
     weights    <- rbind(weights, data.frame(item       = optionlist[j],
-                                            mean_delta = mean_delta,
-                                            sd_delta   = sd_delta,
-                                            n          = n_delta,
-                                            lwr        = lwr,
-                                            upr        = upr ))
+                                            mean_delta = mean_delta))#,
+                                            #sd_delta   = sd_delta,
+                                            #n          = n_delta,
+                                            #lwr        = lwr,
+                                            #upr        = upr ))
   }
 
 
@@ -109,22 +114,31 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL, coverage=0.8
   W              <- cbind(weights.sorted ,
                           worth = worth[match(weights.sorted$item, rownames(worth)),])
 
-
+  #W <- label <- NULL
   W$uncert       <- round((50-W$mean_delta)/50*100,2)
   W$label        <- paste(W$item," ", round((50-W$mean_delta)/50*100,2), "%",sep="")
 
-  round(mean(W$uncert),2)
+
+
 
   # Plot
   if(showPlot==TRUE){
+
+    # subtitle changes at user input
+    if(length(subtitle)==0){
+      subtitle <- paste("Bubble sizes indicate uncertainty in item choice (total=",round(mean(W$uncert),2),"%)",sep="")
+    }else{
+      subtitle <- subtitle
+    }
+
+    # setting the bubble color palette
     cols <- viridis_pal(option = "D")(length(W$item))
 
     p <- ggplot(W, aes(x=rep(1,dim(W)[1]), y=worth) ) +
       geom_point( aes(size = (50-mean_delta)/50*100), color="black", shape=21, fill=cols ) +
       geom_line() +
-
-      labs(title     = "Consensus Analysis",
-           subtitle  = "Bubble sizes indicate uncertainty in item choice",
+      labs(title     = title,
+           subtitle  = subtitle,
            size      = "Consensus error (%)") +
       ylab("Mean Worth Value") +
       xlab("worth")  +
@@ -140,10 +154,10 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL, coverage=0.8
 
     print(p)
 
-    return(list(errors=W,p=p))
+    return(list(errors=W[,-5],p=p))
 
   }else{
-    return(errors=W)
+    return(errors=W[,-5])
   }
 
 }

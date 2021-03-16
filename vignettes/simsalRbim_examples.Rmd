@@ -1,0 +1,201 @@
+---
+title: "simsalRbim Examples"
+author: "Steven R. Talbot"
+output: 
+    rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{simsalRbim Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6,
+  fig.height = 5
+)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(simsalRbim)
+library(knitr)
+library(kableExtra)
+```
+
+## Preference Tests
+For the purpose of this Vignette, we will use the internal ZickeZacke data. This
+is a 'perfect' set of preference tests, in which every subject was tested with
+every provided item. However, the data contain one item that was not tested with
+all subjects and also contains two ties. Let's see if we can evaluate the tests 
+and find the item.
+
+### Example 1 - The calculation of worth values
+First the data are loaded. In this example the internal data are used. You can
+use the `bimload` function to import data from a variety of formats.
+
+Next, an item that shall be tested is required (simOpt) and a Ground Truth (GT)
+of items that it is tested with. These entries depend on the data structure. Any
+items that are not listed here, will not be used in the analyis. This may lead
+to incomplete conclusions. So be careful what you put in here...
+
+These information are then put into the `bimpre` function which does some 
+pre-processing. Also, ties are identified. As you can see from the example 
+below, the ties were marked in the 'tie' column.
+
+```{r}
+dat        <- ZickeZacke
+
+simOpt     <- "HoiHoiHoi"
+GT         <- c("Zicke", "Zacke", "Huehner", "Kacke" )
+
+predat     <- bimpre(dat=dat, GT=GT, simOpt=simOpt)
+
+```
+
+ 
+In the next step, we will calculate the worth values of the item. This uses a
+non-linear GNM model to model the data and transforms the estimates into worth
+values. In the `showPlot` object, you can choose between the worth values or the 
+model coefficients ("coef").
+
+Note, that when `randOP` is set to TRUE, the attribution of ties in terms of the
+dependent results variable in the GNM model will be random. Each time this 
+function is executed, the worth values will change. This is an integral part of
+this package and will be used in the simulations later.
+
+```{r}
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       randOP   = FALSE,
+                       showPlot = "worth")
+```
+
+As you can see, the item "HoiHoiHoi" appears to be marginally better than
+"Zacke". But what can we actually say about the general data quality of this 
+plot? Maybe only a fraction of individuals were tested, or just some items and
+not all of them. When data are large this becomes difficult to evaluate.
+
+Therefore, we will use the `bimeval` function to evaluate the data together with
+the worth values. The results will be visualized as a bubble plot.
+
+Also, with these data, there will be two **warnings**. This is intentional.
+
+```{r}
+w_errors   <- bimeval(ydata    = predat, 
+                      worth    = worth, 
+                      GT       = GT, 
+                      simOpt   = simOpt,
+                      showPlot = TRUE)
+```
+
+The warnings indicate that the number of subjects tested maybe too low. The 
+second warning shows the same for the number of items tested. In order to get
+more reliable results, both should be increased.
+
+The bubbleplot shows the consensus error of each item. This means, the smaller
+the bubble (or error), the more agreement there is between subjects regarding
+the positioning of the respective item. With this tool we can assume that the 
+position of 'Zicke' at zero % error is secure. There was full agreement of all 
+subjects on the positioning of that item. However, 'HoiHoiHoi' shows 25% 
+disagreement. Take this together with the warnings from above, the positioning
+of this item is relatively insecure. It might be in position 2 or 3...
+
+## Example 2 - uninformed item position simulation
+From the example above we know that for the inclusion of ties, the results of 
+the preference test can be randomized. In the GNM it does not matter whether the
+test was binary or continuous. The preprocessing took care of that. However, for
+a certain amount of combinations, this leaves a number of degrees of freedom 
+that can be modeled in the GNM. This logic is used in the `bimUninformed` 
+function to simulate an **uninformed*'** worth calculation for optimal item
+positioning. 
+
+This procedure is called 'uninformed' because it uses no *a priori* knowledge
+about the transitivity of items. It is assumed that all choices in the 
+preference test were correct.
+
+For any number of randomization steps, an ANOVA with a MCP correction is used to
+compare the worth values. As long as they are not significantly different, the 
+items' position can be challenged. At a limited number of degrees of freedom 
+this will eventually lead into a saturation of the mean adjusted p-value. 
+Starting at relatively large confidence levels, the errors will become smaller
+and once the p-value hits zero, the cutoff is found. For ambiguous data this can
+mean a lot of required randomizations. **This is a heuristic!** So, be prepared
+to try this out manually for your data.
+
+```{r}
+# We will run 100 randomizations in this example to find the optimal cutoff
+cutoff     <- bimUninformed(ydata      = predat, 
+                            GT         = GT,
+                            simOpt     = simOpt, 
+                            limitToRun = 100, 
+                            ylim       = c(-1,2) )
+cutoff$cutoff
+```
+
+The simulation shows that the optimal cutoff for the data is
+at `r cutoff$cutoff` randomizations.
+
+This result can be displayed with 95% confidence intervals using the `bimpos`
+function. Here, we will insert the number of required randomizations.
+
+```{r}
+pos        <- bimpos(ydata      = predat, 
+                     GT         = GT, 
+                     simOpt     = simOpt, 
+                     limitToRun = cutoff$cutoff, # 65
+                     showPlot   = TRUE )
+
+```
+
+```{r echo=FALSE}
+pos$simerrors %>%
+  kbl() %>%
+  kable_styling()
+```
+
+
+The table shows the estimated mean worth values with errors. All values
+are sorted in the correct order. The items' positions are now clear as there are
+no overlapping confidence intervals. 
+
+From the evaluation above our confidence in the positioning of 'HoiHoiHoi' was
+low. Now we can be rather sure that it is in position 2. If in doubt, increase 
+the number of randomizations until the items are separated.
+
+
+## Example 3 - informed item position simulation
+In the last example, we will perform an **informed** simulation of the data. By 
+calculating the intransitivity of the item combinations, we can estimate which
+choices were wrong and include this in our evaluation. 
+We will use a frequency distribution to finally decide on the tested item's
+position.
+
+```{r}
+frqnc      <- bimsim(ydata       = predat,
+                     GT          = GT,
+                     simOpt      = simOpt, 
+                     limitToRun  = 78,
+                     fval        = 1, 
+                     showPlot    = TRUE, 
+                     ylim        = c(0,0.7))
+frqnc$frq
+```
+
+
+```{r echo=FALSE}
+frqnc$frq %>%
+  kbl() %>%
+  kable_styling() 
+```
+
+The table shows, that the items with a low intransitivity ratio (Iratio) are 
+mostly in position 2. Therefore, for the 'HoiHoiHoi' item, we can opt for
+position 2.
+
+
+
+
+

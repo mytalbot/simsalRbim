@@ -107,8 +107,7 @@ bimpre <- function(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
                     inData$qPercentB & inData$tie == FALSE] <- -1
 
     if(verbose==TRUE){
-      printf(paste("simsalRbim: ", sum(inData$tie),
-                   " ties were marked.\n", sep=""))
+      printf("simsalRbim: ties were marked.\n")
     }else{}
 
     return(inData)

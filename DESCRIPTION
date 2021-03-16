@@ -45,6 +45,7 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
+    kableExtra,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
