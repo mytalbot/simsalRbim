@@ -36,7 +36,8 @@ prefmod
 reshape2  
 rlang  
 stringr  
-viridis ggrepel
+viridis  
+ggrepel
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.
@@ -70,7 +71,7 @@ simOpt     <- "HoiHoiHoi"
 GT         <- c("Zacke", "Huehner", "Kacke",  "Zicke" )
 
 predat     <- bimpre(dat=dat, GT=GT, simOpt=simOpt)
-#> simsalRbim: 1 ties were marked.
+#> simsalRbim: ties were marked.
 
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
