@@ -97,7 +97,7 @@
 <div id="preference-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preference-tests" class="anchor"></a>Preference Tests</h2>
-<p>For the purpose of this Vignette, we will use the internal ZickeZacke data. This is a ‘perfect’ set of preference tests, in which every subject was tested with every provided item. However, the data contain one item that was not tested with all subjects and also contains two ties. Let’s see if we can evaluate the tests and find the item.</p>
+<p>For the purpose of this Vignette, we will use the artificial ZickeZacke data. This is a ‘perfect’ set of preference tests that comes with this package, in which every subject was tested with every provided item. However, the data contain one item that was not tested with all subjects and also contains two ties (‘HoiHoiHoi’). Let’s see if we can evaluate the item’s position. For this purpose, we will employ three different strategies which are covered by the following examples.</p>
 <div id="example-1---the-calculation-of-worth-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1---the-calculation-of-worth-values" class="anchor"></a>Example 1 - The calculation of worth values</h3>
@@ -347,11 +347,6 @@ Kacke
                      showPlot    <span class="op">=</span> <span class="cn">TRUE</span>, 
                      ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">frqnc</span><span class="op">$</span><span class="va">frq</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      2      3      4 </span>
-<span class="co">#&gt; 0.7051 0.2692 0.0256</span></code></pre></div>
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">

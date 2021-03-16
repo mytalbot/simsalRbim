@@ -25,11 +25,13 @@ library(kableExtra)
 ```
 
 ## Preference Tests
-For the purpose of this Vignette, we will use the internal ZickeZacke data. This
-is a 'perfect' set of preference tests, in which every subject was tested with
-every provided item. However, the data contain one item that was not tested with
-all subjects and also contains two ties. Let's see if we can evaluate the tests 
-and find the item.
+For the purpose of this Vignette, we will use the artificial ZickeZacke data. 
+This is a 'perfect' set of preference tests that comes with this package, in
+which every subject was tested with every provided item. However, the data
+contain one item that was not tested with all subjects and also contains two
+ties ('HoiHoiHoi'). Let's see if we can evaluate the item's position. For this 
+purpose, we will employ three different strategies which are covered by the 
+following examples.
 
 ### Example 1 - The calculation of worth values
 First the data are loaded. In this example the internal data are used. You can
@@ -181,7 +183,6 @@ frqnc      <- bimsim(ydata       = predat,
                      fval        = 1, 
                      showPlot    = TRUE, 
                      ylim        = c(0,0.7))
-frqnc$frq
 ```
 
 
