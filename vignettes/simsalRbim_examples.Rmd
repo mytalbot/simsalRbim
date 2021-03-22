@@ -83,10 +83,12 @@ worth      <- bimworth(ydata    = predat,
 In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and 
 “Zacke” scaling closer to “Zacke”. 
 
-LINK CONSENSUS Score
-
 Consensus scores will be displayed as a function of bubble size as well as 
 printed as numbers in the plot and an output table.
+
+Here, 
+we provide an [explanation on how the consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_worth_evaluation.html) 
+is calculated.
 
 The “ZickeZacke” dataset elicits two **warnings** The warnings indicate that the 
 number of subjects tested with the “HoiHoiHoi” item may be too low. The second
@@ -120,8 +122,6 @@ Meaning that 25% of subjects indicated different preference in item combinations
 including “HoiHoiHoi” (i.e., in 25% of the item triplets an intransitivity was 
 detected). Taken this together with the displayed warnings for that item, the
 positioning of it is relatively insecure. 
-
-
 
 ## Example 2 - uninformed item position simulation
 Once the rank and scale of a number of items is known (see example 1), one might

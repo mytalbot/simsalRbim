@@ -134,8 +134,8 @@
                        showPlot <span class="op">=</span> <span class="st">"worth"</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 <p>In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and “Zacke” scaling closer to “Zacke”.</p>
-<p>LINK CONSENSUS Score</p>
 <p>Consensus scores will be displayed as a function of bubble size as well as printed as numbers in the plot and an output table.</p>
+<p>Here, we provide an <a href="https://talbotsr.com/simsalRbim/articles/simsalRbim_worth_evaluation.html">explanation on how the consensus error</a> is calculated.</p>
 <p>The “ZickeZacke” dataset elicits two <strong>warnings</strong> The warnings indicate that the number of subjects tested with the “HoiHoiHoi” item may be too low. The second warning shows the same for the number of items tested. To get more reliable results, both should be increased.</p>
 <p>By setting filtersim=TRUE (default), the subjects warning can be removed. The command removes all missing item combinations for which ties were set. This will effectively reduce the number of subjects that are available for any test, resulting in differently weighted mean in the consensus error calculation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
