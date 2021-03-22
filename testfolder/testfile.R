@@ -44,11 +44,11 @@ worth      <- bimworth(ydata    = predat,
                        showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, filtersim=FALSE )
 w_errors
 
 ### Now we do an uninformed item positioning, also to obtain a reasonable threshold for the no. of randomizations
-cutoff     <- bimUninformed(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=100, ylim=c(-1,2) )
+cutoff     <- bimUninformed(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=100, ylim=c(-0.6,1.1) )
 cutoff$cutoff
 
 ### now the randomized worth calculation is reapeated n-times

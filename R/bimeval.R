@@ -1,14 +1,15 @@
 #' Worth Values Evaluation Function
 #'
 #' The \code{bimeval} will evaluate the worth values and will give an estimate
-#' on the error of uncertainty in the unsimulated data.
+#' on the error of uncertainty (consensus error (CE) in the unsimulated data.
 #'
 #' @param ydata curated data.frame from the preprocessing function.
 #' @param GT item list with the ground truth (GT; letters are case sensitive!)
 #' @param simOpt item to be checked (this can be an item from the GT or a new
 #' @param coverage the threshold for the ratio of tested subjects per total subjects (default=0.8)
 #' @param worth the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!
-#' @param showPlot plot the worth plot as a bubble plot with uncertainty errors
+#' @param filtersim exclude the simulated items from the evaluation function (defaults to TRUE)
+#' @param showPlot plot the worth plot as a bubble plot with consensus errors
 #' @param title plot title (default: "Consensus Analysis")
 #' @param subtitle plot subtitle (if NULL, a default will be used)
 #'
@@ -22,11 +23,17 @@
 #'
 #'
 bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
-                     coverage=0.8, showPlot=TRUE,
+                     coverage=0.8, showPlot=TRUE, filtersim=FALSE,
                      title="Consensus Analysis", subtitle=NULL){
 
   predat     <- ydata
   optionlist <- c(simOpt, GT)
+
+  # filter sim = TRUE; take only non randomized data
+  if(filtersim==TRUE){
+    predat     <- predat[predat$sim==FALSE, ]
+  }else{}
+
 
   # compute the decision matrix for all data combinations in the predat object
   TT <- NULL
@@ -60,6 +67,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                 The number of subjects you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of subjects.
                 You are currently below ", coverage*100, "% data coverage for that item.
+                The consensus error may be biased!
                 Your provided-to-simulated subjects ratio is at: ",
                   round(subjratio,4) * 100, "%.\n", sep=""))
 
@@ -71,16 +79,16 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                 The number of item tests you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of item combinations.
                 You are currently below ", coverage*100, "% item coverage for that item.
+                The consensus error may be biased!
                 Your provided-to-simulated items ratio is at: ",
                 round(itemratio,4) * 100, "%.\n", sep=""))
   }else{}
 
 
 
-
-
   # calculate the mean deviation weights
-  weights    <- NULL
+  weights        <- NULL
+ # no_of_subjects <- max( length( unique(predat$subjectID)), na.rm=TRUE ) # max!
   for(j in 1:length(optionlist)){
 
     item  <- TT[grepl(optionlist[j], TT$test, fixed = TRUE),]
@@ -89,12 +97,12 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
       if( item[i, "pct_first" ] > item[i, "pct_second" ]  ){
         delta  <- (50 - item[i, "pct_second" ])
       }else{
-        delta <- (50 - item[i, "pct_first" ])
+        delta  <- (50 - item[i, "pct_first" ])
       }
       liste    <- rbind(liste, data.frame(item =optionlist[j], delta = delta))
     }
 
-    mean_delta <- mean(liste$delta, na.rm = TRUE)
+    mean_delta <- mean(liste$delta)
     sd_delta   <- sd  (liste$delta, na.rm = TRUE)
     n_delta    <- length(liste$delta)
     lwr        <- mean_delta - qt(0.975,df=length(liste$delta)-1)*sd  (liste$delta, na.rm = TRUE)/sqrt(length(liste$delta))
@@ -108,14 +116,12 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                                             #upr        = upr ))
   }
 
-
-
   weights.sorted <- weights[order(rownames(weights)),]
   W              <- cbind(weights.sorted ,
                           worth = worth[match(weights.sorted$item, rownames(worth)),])
 
   #W <- label <- NULL
-  W$uncert       <- round((50-W$mean_delta)/50*100,2)
+  W$CE           <- round((50-W$mean_delta)/50*100,2)
   W$label        <- paste(W$item," ", round((50-W$mean_delta)/50*100,2), "%",sep="")
 
 
@@ -126,7 +132,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
 
     # subtitle changes at user input
     if(length(subtitle)==0){
-      subtitle <- paste("Bubble sizes indicate uncertainty in item choice (total=",round(mean(W$uncert),2),"%)",sep="")
+      subtitle <- paste("Bubble sizes indicate uncertainty in item choice (total=",round(mean(W$CE),2),"%)",sep="")
     }else{
       subtitle <- subtitle
     }
@@ -140,7 +146,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
       labs(title     = title,
            subtitle  = subtitle,
            size      = "Consensus error (%)") +
-      ylab("Mean Worth Value") +
+      ylab("Worth value") +
       xlab("worth")  +
       theme_bw() +
       scale_x_discrete(limits = factor(1 ))
@@ -151,6 +157,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                               box.padding   = unit(0.6, "lines"),
                               point.padding = unit(0.6, "lines"),
                               show.legend   = FALSE )
+    p <- p + theme(axis.text.x = element_blank())
 
     print(p)
 

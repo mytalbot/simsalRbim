@@ -86,7 +86,7 @@ bimpre <- function(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
 
 
   ### Mark the ties
-  markTies   <- function(inData=NULL, deviation = 0, minQuantity = 0) {
+  markTies   <- function(inData=NULL, deviation = deviation, minQuantity = minQuantity) {
 
     for (i in seq_len(nrow(inData)) ) {
       sumQ <- inData$quantityA[i] + inData$quantityB[i]
@@ -107,7 +107,7 @@ bimpre <- function(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
                     inData$qPercentB & inData$tie == FALSE] <- -1
 
     if(verbose==TRUE){
-      printf("simsalRbim: ties were marked.\n")
+      printf ( paste("simsalRbim: ",sum(inData$tie==TRUE)," tie(s) marked.\n" ,sep="") )
     }else{}
 
     return(inData)
@@ -115,8 +115,6 @@ bimpre <- function(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
 
   # mark the ties in the data & prepare the results column
   dat        <- markTies(dat, deviation = deviation, minQuantity = deviation)
-
-
 
 
   subjectList <- unique(dat$subjectID)

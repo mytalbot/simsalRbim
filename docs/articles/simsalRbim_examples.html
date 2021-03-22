@@ -66,6 +66,9 @@
     <li>
       <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
+    <li>
+      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Worth Evaluation</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -92,6 +95,8 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>simsalRbim Examples</h1>
                         <h4 class="author">Steven R. Talbot</h4>
+                        <h4 class="author">Dana Pfefferle</h4>
+                        <h4 class="author">Lars Lewejohann</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_examples.Rmd"><code>vignettes/simsalRbim_examples.Rmd</code></a></small>
@@ -104,13 +109,13 @@
 <div id="preference-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preference-tests" class="anchor"></a>Preference Tests</h2>
-<p>For this Vignette, we will use the artificial ZickeZacke data. This is a ‘perfect’ set of preference tests that comes with this package, in which every subject was tested with every provided item. However, the data contain one item that was not tested with all subjects and also contains two ties (‘HoiHoiHoi’). Let’s see if we can evaluate the item’s position. For this purpose, we will employ three different strategies which are covered by the following examples.</p>
+<p>For this Vignette, we will use the artificial ZickeZacke dataset, a perfectly balanced set of paired choice preference tests, integrated in <code>simsalRbim</code>. In this dataset every subject was tested with every possible items combination, but one (‘HoiHoiHoi’) that was tested with only X subjects. In addition, there are two item combinations with ‘HoiHoiHoi’ that resulted in equal responses (no preference, ties). Let’s see if we can evaluate the item’s position. For this purpose, we will employ three different strategies which are covered by the following examples.</p>
 <div id="example-1---the-calculation-of-worth-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1---the-calculation-of-worth-values" class="anchor"></a>Example 1 - The calculation of worth values</h3>
 <p>First, the data are loaded. In this example, internal data are used. You can use the <code>bimload</code> function to import data from a variety of formats.</p>
-<p>Next, an item that shall be tested is required (simOpt), and a Ground Truth (GT) of items that it is tested with. These entries depend on the data structure. Any items that are not listed here, will not be used in the analysis. This may lead to incomplete conclusions. So be careful what you put in here…</p>
-<p>This information is then used in the <code>bimpre</code> function which does some pre-processing. Also, ties are identified. As you can see from the example below, the ties were marked in the ‘tie’ column.</p>
+<p>Define the item to be tested (<code>simOpt</code>) and a Ground Truth (GT) of items that it is tested with. Any items that are not defined here, will not be used in the analysis. This may lead to incomplete conclusions. So be careful what you put</p>
+<p><code>simOpt</code> and <code>GT</code> are then used in the <code>bimpre</code> function to preprocess the data into a unified format bimpre also identifies ties. As you can see from the example below, the ties get marked in the ‘tie’ column.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span>        <span class="op">&lt;-</span> <span class="va">ZickeZacke</span>
 
@@ -118,9 +123,9 @@
 <span class="va">GT</span>         <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Zicke"</span>, <span class="st">"Zacke"</span>, <span class="st">"Huehner"</span>, <span class="st">"Kacke"</span> <span class="op">)</span>
 
 <span class="va">predat</span>     <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimpre.html">bimpre</a></span><span class="op">(</span>dat<span class="op">=</span><span class="va">dat</span>, GT<span class="op">=</span><span class="va">GT</span>, simOpt<span class="op">=</span><span class="va">simOpt</span><span class="op">)</span>
-<span class="co">#&gt; simsalRbim: ties were marked.</span></code></pre></div>
-<p>In the next step, we will calculate the worth values of the item. This uses a non-linear GNM model to model the data and transforms the estimates into worth values. In the <code>showPlot</code> object, you can choose between the worth values or the model coefficients (“coef”).</p>
-<p>Note, that when <code>randOP</code> is set to TRUE, the attribution of ties in terms of the dependent results variable in the GNM model will be random. Each time this function is executed, the worth values will change. This is an integral part of this package and will be used in the simulations later.</p>
+<span class="co">#&gt; simsalRbim: 1 tie(s) marked.</span></code></pre></div>
+<p>In the next step, we calculate the worth values of all items specified in the <code>simOpt</code> and the <code>GT</code> term. This uses a non-linear GNM model from the <code>prefmod</code><span class="citation">[@prefmodcit]</span> package to model the data and to transform the estimates into worth values. The <code>showPlot</code> object can be set to “worth” providing the worth values, or “coefs” providing the model coefficients in the output.</p>
+<p>Note, that when <code>randOP</code> is set to TRUE, the attribution of ties in terms of the dependent results variable in the GNM model will be random. This means that each time this function is executed, the worth values will change. This is an integral part of this package and will be used in the simulations later.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">worth</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimworth.html">bimworth</a></span><span class="op">(</span>ydata    <span class="op">=</span> <span class="va">predat</span>,
                        GT       <span class="op">=</span> <span class="va">GT</span>,
@@ -128,36 +133,43 @@
                        randOP   <span class="op">=</span> <span class="cn">FALSE</span>,
                        showPlot <span class="op">=</span> <span class="st">"worth"</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
-<p>As you can see, the item “HoiHoiHoi” appears to be marginally better than “Zacke”. But what can we actually say about the general data quality of this plot? Maybe only a fraction of individuals were tested, or just some items and not all of them. When data are large this becomes difficult to evaluate.</p>
-<p>Therefore, we will use the <code>bimeval</code> function to evaluate the data together with the worth values. The results will be visualized as a bubble plot.</p>
-<p>Also, with these data, there will be two <strong>warnings</strong>. This is intentional.</p>
+<p>In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and “Zacke” scaling closer to “Zacke”.</p>
+<p>LINK CONSENSUS Score</p>
+<p>Consensus scores will be displayed as a function of bubble size as well as printed as numbers in the plot and an output table.</p>
+<p>The “ZickeZacke” dataset elicits two <strong>warnings</strong> The warnings indicate that the number of subjects tested with the “HoiHoiHoi” item may be too low. The second warning shows the same for the number of items tested. To get more reliable results, both should be increased.</p>
+<p>By setting filtersim=TRUE (default), the subjects warning can be removed. The command removes all missing item combinations for which ties were set. This will effectively reduce the number of subjects that are available for any test, resulting in differently weighted mean in the consensus error calculation.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">w_errors</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimeval.html">bimeval</a></span><span class="op">(</span>ydata    <span class="op">=</span> <span class="va">predat</span>, 
-                      worth    <span class="op">=</span> <span class="va">worth</span>, 
-                      GT       <span class="op">=</span> <span class="va">GT</span>, 
-                      simOpt   <span class="op">=</span> <span class="va">simOpt</span>,
-                      showPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">w_errors</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimeval.html">bimeval</a></span><span class="op">(</span>ydata     <span class="op">=</span> <span class="va">predat</span>, 
+                      worth     <span class="op">=</span> <span class="va">worth</span>, 
+                      GT        <span class="op">=</span> <span class="va">GT</span>, 
+                      simOpt    <span class="op">=</span> <span class="va">simOpt</span>,
+                      filtersim <span class="op">=</span> <span class="cn">FALSE</span>,
+                      showPlot  <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of SUBJECTS WARNING!</span>
 <span class="co">#&gt;                 The number of subjects you have provided for testing the simOpt='HoiHoiHoi' item is probably insufficient!</span>
 <span class="co">#&gt;                 Try increasing the number of subjects.</span>
 <span class="co">#&gt;                 You are currently below 80% data coverage for that item.</span>
+<span class="co">#&gt;                 The consensus error may be biased!</span>
 <span class="co">#&gt;                 Your provided-to-simulated subjects ratio is at: 50%.</span>
 <span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of ITEMS WARNING!</span>
 <span class="co">#&gt;                 The number of item tests you have provided for testing the simOpt='HoiHoiHoi' item is probably insufficient!</span>
 <span class="co">#&gt;                 Try increasing the number of item combinations.</span>
 <span class="co">#&gt;                 You are currently below 80% item coverage for that item.</span>
+<span class="co">#&gt;                 The consensus error may be biased!</span>
 <span class="co">#&gt;                 Your provided-to-simulated items ratio is at: 40%.</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
-<p>The warnings indicate that the number of subjects tested may be too low. The second warning shows the same for the number of items tested. To get more reliable results, both should be increased.</p>
-<p>The bubble plot shows the consensus error of each item. This means, the smaller the bubble (or error), the more agreement there is between subjects regarding the positioning of the respective item. With this tool, we can assume that the position of ‘Zicke’ at zero % error is secure. There was a full agreement of all subjects on the positioning of that item. However, ‘HoiHoiHoi’ shows 25% disagreement. Take this together with the warnings from above, the positioning of this item is relatively insecure. It might be in position 2 or 3…</p>
+<p>The size of the bubble indicates the consensus error of each item. This means, the smaller the bubble (or error) the more agreement there is between subjects regarding the positioning of the respective item. In the example of the item “Zicke”, the value of 0% indicates that all subjects that were presented with item combinations including “Zicke” were in full agreement in terms of preference, i.e., no intransitivity was detected. The position of “Zicke” can, hence, be assumed to be warranted.</p>
+<p>In contrast, the consensus error for item “HoiHoiHoi” was calculated with 25%. Meaning that 25% of subjects indicated different preference in item combinations including “HoiHoiHoi” (i.e., in 25% of the item triplets an intransitivity was detected). Taken this together with the displayed warnings for that item, the positioning of it is relatively insecure.</p>
 </div>
 </div>
 <div id="example-2---uninformed-item-position-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-2---uninformed-item-position-simulation" class="anchor"></a>Example 2 - uninformed item position simulation</h2>
-<p>From the example above we know that for the inclusion of ties, the results of the preference test can be randomized. In the GNM it does not matter whether the test was binary or continuous. The preprocessing took care of that. However, for a certain amount of combinations, this leaves some degrees of freedom that can be modeled in the GNM. This logic is used in the <code>bimUninformed</code> function to simulate an **uninformed*’** worth calculation for optimal item positioning.</p>
-<p>This procedure is called ‘uninformed’ because it uses no <em>a priori</em> knowledge about the transitivity of items. It is assumed that all choices in the preference test were correct.</p>
-<p>For any number of randomization steps, an ANOVA with an MCP correction is used to compare the worth values. As long as they are not significantly different, the items’ position can be challenged. At a limited number of degrees of freedom, this will eventually lead to a saturation of the mean adjusted p-value. Starting at relatively large confidence levels, the errors will become smaller and once the p-value hits zero, the cutoff is found. For ambiguous data, this can mean a lot of required randomizations. <strong>This is a heuristic!</strong> So, be prepared to try this out manually for your data.</p>
+<p>Once the rank and scale of a number of items is known (see example 1), one might want to sequentially extend it with additional items. For extending an existing scale it might not be feasible to conduct all possible binary preference tests. In cases of incomplete binary comparisons, we propose a simulation approach, allowing to rank items with a reasonable precision.</p>
+<p>Items that were not tested with all possible item combinations are attributed a tie. In the GNM model, results can assume the states c(-1,0,1). By randomizing this outcome, the degrees of freedom for the unknown combinations get constrained so that the estimate of the item becomes more secure.This logic is used in the <code>bimUninformed</code> function to simulate an **uninformed*’** worth calculation for optimal item positioning.</p>
+<p>We differentiate between ‘uninformed’ (this example) and ‘informed’ (see example 3) item positioning simulations. In uninformed item positioning, no <em>a priori</em> knowledge about item transitivity is available. Hence, it is assumed that all choices are transitive, i.e., if A&lt;B and B&lt;C, then A&lt;C.</p>
+<p>The function <code>bimUninformed</code> allows the determination of the number of necessary randomization steps. Here, for any number of randomization steps, an ANOVA with a correction for multiple comparisons (MCP) is used to compare the worth values within a simulation run. As long as the calculated worth values are not significantly different, the items’ position is not secured.</p>
+<p>Each increase in the number of randomizations will decrease the number of degrees of freedom. Eventually, this will lead to a saturation of the mean adjusted p-values in the MCP tests and a decrease in errors. We define the number of required randomizations as the point at which the adjusted p-value hits zero. For ambiguous data, this can mean a lot of required randomizations. <strong>This is a heuristic!</strong> So, be prepared to try this out manually for your data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># We will run 100 randomizations in this example to find the optimal cutoff</span>
 <span class="va">cutoff</span>     <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimUninformed.html">bimUninformed</a></span><span class="op">(</span>ydata      <span class="op">=</span> <span class="va">predat</span>, 
@@ -169,8 +181,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cutoff</span><span class="op">$</span><span class="va">cutoff</span>
 <span class="co">#&gt; [1] 65</span></code></pre></div>
-<p>The simulation shows that the optimal cutoff for the data is at 65 randomizations.</p>
-<p>This result can be displayed with 95% confidence intervals using the <code>bimpos</code> function. Here, we will insert the number of required randomizations.</p>
+<p>The simulation proposes 65 randomizations. This result can be displayed with 95% confidence intervals using the <code>bimpos</code> function. Here, we will insert the number of required randomizations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pos</span>        <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimpos.html">bimpos</a></span><span class="op">(</span>ydata      <span class="op">=</span> <span class="va">predat</span>, 
                      GT         <span class="op">=</span> <span class="va">GT</span>, 
@@ -338,13 +349,14 @@ Kacke
 </tr>
 </tbody>
 </table>
-<p>The table shows the estimated mean worth values with errors. All values are sorted in the correct order. The items’ positions are now clear as there are no overlapping confidence intervals.</p>
-<p>From the evaluation above our confidence in the positioning of ‘HoiHoiHoi’ was low. Now we can be rather sure that it is in position 2. If in doubt, increase the number of randomizations until the items are separated.</p>
+<p>The table shows the ordered estimated mean worth values for each item with errors. The items’ positions are secured as there are no overlapping 95% confidence intervals.</p>
+<p>Compared to results in example 1 where the confidence in the positioning of “HoiHoiHoi” was low, we now we can be rather sure that it is in position 2. (If in doubt, increase the number of randomizations until the items are separated.)</p>
 </div>
 <div id="example-3---informed-item-position-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-3---informed-item-position-simulation" class="anchor"></a>Example 3 - informed item position simulation</h2>
-<p>In the last example, we will perform an <strong>informed</strong> simulation of the data. By calculating the intransitivity of the item combinations, we can estimate which choices were wrong and include this in our evaluation. We will use a frequency distribution to finally decide on the tested item’s position.</p>
+<p>In the last example, we will perform an <strong>informed</strong> simulation of the data, including incomplete binary comparisons. In an informed simulation intransitive and transitive choices are considered. Intransitivity is defined as A&lt;B and B&lt;C, but A&gt;C.</p>
+<p>By calculating the intransitivity of the item combinations, we can estimate which choices were inconsistent and include this in our evaluation. We use a frequency distribution to decide on the most likely position of items.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">frqnc</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimsim.html">bimsim</a></span><span class="op">(</span>ydata       <span class="op">=</span> <span class="va">predat</span>,
                      GT          <span class="op">=</span> <span class="va">GT</span>,
@@ -390,7 +402,7 @@ Freq
 </tr>
 </tbody>
 </table>
-<p>The table shows, that the items with a low intransitivity ratio (Iratio) are mostly in position 2. Therefore, for the ‘HoiHoiHoi’ item, we can opt for position 2.</p>
+<p>The table shows, that the items with a low intransitivity ratio (Iratio), i.e., a high transitivity, are mostly in position 2. Therefore, for the ‘HoiHoiHoi’ item, we can opt for position 2.</p>
 </div>
   </div>
 

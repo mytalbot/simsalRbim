@@ -77,8 +77,6 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
 
 
-
-
   # Show the model estimates with 95% CIs in a separate plot
   if(showPlot=="coef"){
 
@@ -109,7 +107,6 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
       print(new_df)
     }else{}
 
-
     p <- ggplot(new_df, aes(x=item, y=estimate)) +
       geom_point(size=2) +
       geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1 ) +
@@ -126,9 +123,6 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   }else{ }
 
 
-
-
-
   # print the model summary
   if(verbose==TRUE){
     print(summary(h1Y))
@@ -138,7 +132,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
   # show plot and adapt the error message
   if(showPlot=="worth"){
-    plot( hworY, ylim=ylim, ylab="worth")
+    plot( hworY, ylim=ylim, ylab="Worth value")
   }else{}
 
   if(intrans==TRUE){

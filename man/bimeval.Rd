@@ -11,6 +11,7 @@ bimeval(
   simOpt = NULL,
   coverage = 0.8,
   showPlot = TRUE,
+  filtersim = FALSE,
   title = "Consensus Analysis",
   subtitle = NULL
 )
@@ -26,7 +27,9 @@ bimeval(
 
 \item{coverage}{the threshold for the ratio of tested subjects per total subjects (default=0.8)}
 
-\item{showPlot}{plot the worth plot as a bubble plot with uncertainty errors}
+\item{showPlot}{plot the worth plot as a bubble plot with consensus errors}
+
+\item{filtersim}{exclude the simulated items from the evaluation function (defaults to TRUE)}
 
 \item{title}{plot title (default: "Consensus Analysis")}
 
@@ -37,5 +40,5 @@ either a data.frame with the consensus errors and/or a plot object
 }
 \description{
 The \code{bimeval} will evaluate the worth values and will give an estimate
-on the error of uncertainty in the unsimulated data.
+on the error of uncertainty (consensus error (CE) in the unsimulated data.
 }

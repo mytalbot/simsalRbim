@@ -123,7 +123,7 @@ bimUninformed <- function(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5,
            color    = "lower CI threshold") +
       ylim(ylim) +
       ylab("Mean adjusted p-values") +
-      xlab("Randomization run") +
+      xlab("Randomizations") +
       geom_hline(yintercept = 0.05, color="red",  linetype="dashed")   +
       geom_hline(yintercept = 0,    color="gray", linetype="solid")   +
       theme_bw() +
@@ -143,19 +143,20 @@ bimUninformed <- function(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5,
                       axis.text.y      = element_text(size = 13),
                       axis.title.y     = element_text(size = 14))
 
-    if(showPlot==TRUE){
-      print(p1)
-    }else{}
-
-
     cutoff <- itemCI[itemCI$delta ==0,][1,]$run
 
     if(is.na(cutoff)==TRUE){
       printf("simsalRbim: Random fluctuation is still high -
                    try increasing the number of runs.\n")
     }else{
+      p1 <- p1 + geom_vline(xintercept = cutoff, linetype="dashed")
       cutoff
     }
+
+    if(showPlot==TRUE){
+      print(p1)
+    }else{}
+
 
     return(list(cutoff=cutoff, p=p1))
 

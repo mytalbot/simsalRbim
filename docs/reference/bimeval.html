@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Worth Values Evaluation Function — bimeval" />
 <meta property="og:description" content="The bimeval will evaluate the worth values and will give an estimate
-on the error of uncertainty in the unsimulated data." />
+on the error of uncertainty (consensus error (CE) in the unsimulated data." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -109,6 +109,9 @@ on the error of uncertainty in the unsimulated data." />
     <li>
       <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
+    <li>
+      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Worth Evaluation</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -139,7 +142,7 @@ on the error of uncertainty in the unsimulated data." />
 
     <div class="ref-description">
     <p>The <code>bimeval</code> will evaluate the worth values and will give an estimate
-on the error of uncertainty in the unsimulated data.</p>
+on the error of uncertainty (consensus error (CE) in the unsimulated data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>bimeval</span><span class='op'>(</span>
@@ -149,6 +152,7 @@ on the error of uncertainty in the unsimulated data.</p>
   simOpt <span class='op'>=</span> <span class='cn'>NULL</span>,
   coverage <span class='op'>=</span> <span class='fl'>0.8</span>,
   showPlot <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  filtersim <span class='op'>=</span> <span class='cn'>FALSE</span>,
   title <span class='op'>=</span> <span class='st'>"Consensus Analysis"</span>,
   subtitle <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
@@ -178,7 +182,11 @@ on the error of uncertainty in the unsimulated data.</p>
     </tr>
     <tr>
       <th>showPlot</th>
-      <td><p>plot the worth plot as a bubble plot with uncertainty errors</p></td>
+      <td><p>plot the worth plot as a bubble plot with consensus errors</p></td>
+    </tr>
+    <tr>
+      <th>filtersim</th>
+      <td><p>exclude the simulated items from the evaluation function (defaults to TRUE)</p></td>
     </tr>
     <tr>
       <th>title</th>
