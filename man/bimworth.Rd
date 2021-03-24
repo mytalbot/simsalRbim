@@ -11,7 +11,8 @@ bimworth(
   randOP = FALSE,
   intrans = FALSE,
   showPlot = FALSE,
-  ylim = c(0, 0.7),
+  ylim = c(0, 0.8),
+  size = 7,
   verbose = FALSE
 )
 }
@@ -32,6 +33,8 @@ one. Remove the item from GT if specified here!)}
 \item{showPlot}{plot the worth plot (c("FALSE","worth","coef"))}
 
 \item{ylim}{y limits of the worth plot (default c(0,0.7))}
+
+\item{size}{point size in the worth plot (default = 7)}
 
 \item{verbose}{show model outputs (default= FALSE)}
 }

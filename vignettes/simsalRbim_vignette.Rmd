@@ -214,7 +214,6 @@ potential ambiguity in item positioning.
 # bimsim - informed position simulation
 bimsim(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=10,seed=TRUE,fval=0.9,
 showPlot=TRUE,ylim=c(0, 0.7))
- 
 ```
 
 The `bimsim` function performs an informed position simulation of variable

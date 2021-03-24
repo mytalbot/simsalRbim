@@ -15,7 +15,7 @@
 #'
 #' @import ggplot2
 #' @import viridis
-#' @import ggrepel
+#' @importFrom ggrepel geom_label_repel
 #'
 #' @return either a data.frame with the consensus errors and/or a plot object
 #'
@@ -147,7 +147,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
            subtitle  = subtitle,
            size      = "Consensus error (%)") +
       ylab("Worth value") +
-      xlab("worth")  +
+      xlab("Items")  +
       theme_bw() +
       scale_x_discrete(limits = factor(1 ))
     #p <- p + scale_size(range = c(0, 10))
@@ -158,6 +158,13 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                               point.padding = unit(0.6, "lines"),
                               show.legend   = FALSE )
     p <- p + theme(axis.text.x = element_blank())
+    p <- p +  theme(axis.line        = element_line(colour = "black"),
+                    strip.background = element_rect(fill = "white", colour = "black", size = 0.8),
+                    strip.text       = element_text(size = 12),
+                    axis.text.x      = element_text(size = 12),
+                    axis.title.x     = element_text(size = 13),
+                    axis.text.y      = element_text(size = 13),
+                    axis.title.y     = element_text(size = 14))
 
     print(p)
 

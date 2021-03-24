@@ -13,6 +13,7 @@
 #' (calculation intense! TRUE/FALSE)
 #' @param showPlot plot the worth plot (c("FALSE","worth","coef"))
 #' @param ylim y limits of the worth plot (default c(0,0.7))
+#' @param size point size in the worth plot (default = 7)
 #' @param verbose show model outputs (default= FALSE)
 #'
 #' @import gnm
@@ -23,6 +24,7 @@
 #' @importFrom stats anova as.formula poisson
 #' @importFrom stats confint
 #' @importFrom stats coef
+#' @importFrom ggrepel geom_label_repel
 #'
 #' @return list with the worth values for each item and the total number of
 #' simulated combinations based on simOption
@@ -33,7 +35,7 @@
 
 bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
                      randOP=FALSE, intrans=FALSE, showPlot=FALSE,
-                     ylim=c(0,0.7), verbose=FALSE){
+                     ylim=c(0,0.8), size = 7, verbose=FALSE){
 
   # Decision Ratio (a quality estimatation)
   Dratio = sum(ydata$result==1)/sum(ydata$result==-1)
@@ -132,7 +134,51 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
   # show plot and adapt the error message
   if(showPlot=="worth"){
-    plot( hworY, ylim=ylim, ylab="Worth value")
+    # plot( hworY, ylim=ylim, ylab="Worth value") # traditional worth plot
+
+
+    # ze own worthplot --------------------------------------------------------
+
+    # color function (standard colors)
+    gg_color_hue <- function(n) {
+      hues = seq(15, 375, length = n + 1)
+      hcl(h = hues, l = 65, c = 100)[1:n]
+    }
+
+    n    = dim(hworY)[1]
+    cols = gg_color_hue(n)
+
+    # plotting the worth values
+    p <- ggplot(data.frame(hworY), aes(x=rep(1,dim(hworY)[1]), y=worth) ) +
+      geom_line() +
+      geom_point(color="black", shape=21, size=size, fill= cols, stroke=1.2  ) +
+      labs(title     = "Preferences") +
+      ylab("Worth value") +
+      xlab("Items")  +
+      ylim(ylim) +
+      theme_bw() +
+      scale_x_discrete(limits = factor(1))
+
+    p <- p + theme(legend.position         = "none")
+
+    p <- p + geom_label_repel(aes(label     = rownames(data.frame(hworY))),
+                              size          = 4,
+                              box.padding   = unit(1.2, "lines"),
+                              point.padding = unit(1.2, "lines"),
+                              show.legend   = FALSE )
+
+    p <- p + theme(axis.text.x = element_blank())
+
+    p <- p +  theme(axis.line        = element_line(colour = "black"),
+                      strip.background = element_rect(fill = "white", colour = "black", size = 0.8),
+                      strip.text       = element_text(size = 12),
+                      axis.text.x      = element_text(size = 12),
+                      axis.title.x     = element_text(size = 13),
+                      axis.text.y      = element_text(size = 13),
+                      axis.title.y     = element_text(size = 14))
+    p <- p + theme(axis.text.x = element_blank())
+    print(p)
+
   }else{}
 
   if(intrans==TRUE){

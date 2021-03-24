@@ -95,7 +95,7 @@
       <h1 data-toc-skip>simsalRbim</h1>
                         <h4 class="author">Steven R. Talbot</h4>
             
-            <h4 class="date">2021-03-22</h4>
+            <h4 class="date">2021-03-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -213,8 +213,7 @@ bimpos(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,showPlot=TRUE)</a></code></pr
 <a href="#bimsim" class="anchor"></a>bimsim</h3>
 <pre><code><a href="../reference/bimsim.html"># bimsim - informed position simulation
 bimsim(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=10,seed=TRUE,fval=0.9,
-showPlot=TRUE,ylim=c(0, 0.7))
- </a></code></pre>
+showPlot=TRUE,ylim=c(0, 0.7))</a></code></pre>
 <p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>fval</code> argument sets the cutoff for showing the intransitivity ratio (Iratio) of the results in the plot. fval=1 means that 100% of the intransitive results are plotted. The IRatio is calculated as the (number of triplets / no. of intransitive triplets) * 100. The more stringent (= lower fval) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>fval</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesize codes for the IRatio.</p>
 </div>
 </div>
