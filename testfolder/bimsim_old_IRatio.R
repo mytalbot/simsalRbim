@@ -6,21 +6,18 @@
 #' intransitivity calculations a cutoff can be set to exclude any simulation
 #' results that do not show transitivity.
 #'
-#' @param rawdat rawdata from the bimload function
+#' @param ydata curated data.frame from the preprocessing function.
 #' @param GT item list with the ground truth (GT; letters are case sensitive!)
 #' @param simOpt item to be checked (this can be an item from the GT or a new
 #' one. Remove the item from GT if specified here!)
 #' @param limitToRun limit to this number of repetitions for the randomizations
 #'  (default 5, you'll probably need more)
-#' @param fval filter value for consensus error (default = 100 for
-#'  100% of all errors), the lower the value the more informed the
-#'  positioning becomes
-##' @param deviation how much deviation is allowed for marking ties
-#' (default is 0 which translates to 50%)
-#' @param minQuantity minimum quantitiy to be recognized as difference
-#' (default is 0)
 #' @param seed use constant seeding for stable plot results (default=TRUE)
-#' @param showPlot show simulation runs with consensus error bubbles
+#' @param fval filter value for informed transitivity checks (default = 0.9 for
+#'  90% of all possible values), the lower the value the more informed the
+#'  positioning becomes
+#' @param showPlot show the bubble plot with the intransitivity value vs item
+#' position (bubble size=worth-value)
 #' @param ylim scale y axis of the worth plot (default: c(0,0.7))
 #'
 #' @import ggplot2
@@ -32,12 +29,14 @@
 #' @export
 #'
 
-bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt,
-                   limitToRun=5, fval=100, deviation=0, minQuantity=0,
-                   seed=TRUE, showPlot=TRUE,ylim=c(0,0.7)){
+bimsim <- function(ydata = NULL, GT=NULL, simOpt=NULL, limitToRun=10,
+                   seed=TRUE, fval= 0.9, showPlot=TRUE, ylim=c(0,0.7)){
 
   # Helperfunction
   printf <- function(...) cat(sprintf(...))
+
+  # variable definition
+  worth      <- pos <- NULL
 
   # use seeding?
   if(seed==TRUE){
@@ -50,59 +49,52 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt,
   deviate <- 0
   W       <- NULL
   D       <- NULL
-  D       <- pos <- CE <- NULL
   for(i in 1:reps){
+    D       <- NULL
+    w       <- bimworth(ydata           = ydata,
+                        GT              = GT,
+                        simOpt          = simOpt,
+                        randOP          = TRUE,
+                        showPlot        = FALSE,
+                        intrans         = TRUE)
 
-    predat     <- bimpre (dat=rawdat, GT=GT, simOpt=simOpt, deviation=deviation,
-                          minQuantity=minQuantity, verbose=FALSE)
+    D <- rbind(D, data.frame(run        = i,
+                             Icounts    = w$I$intranscount,
+                             triplets   = w$I$no_tripl,
+                             Iratio     = w$I$Iratio,
+                             item       = rownames(w$worth),
+                             worth      = as.numeric(w$worth)))
 
-    # Randomize open pairs
-    nosim   <- predat[predat$sim==FALSE, ]
-    simdat  <- predat[predat$sim==TRUE,  ]
-    simdat$result  <- sample(c(0,1,-1), replace=TRUE, length(simdat$result))
-    ydata   <- rbind(nosim, simdat)
-    ydata
 
-    worth      <- bimworth(ydata    = ydata,
-                           GT       = GT,
-                           simOpt   = simOpt,
-                           randOP   = FALSE,
-                           intrans  = FALSE)
-    options(warn=-1)
-    w_errors   <- bimeval(ydata     = ydata,
-                          worth     = worth,
-                          GT        = GT,
-                          simOpt    = simOpt,
-                          filtersim = FALSE)
-    options(warn=0)
-
-    d <- w_errors %>%
+    d <- D %>%
       arrange(desc(worth)) %>%
       mutate(pos = 1:n()) %>%
       as.data.frame()
 
-    D <- rbind(D, data.frame(run        = i, d) )
+    W <- rbind(W, d)
   }
+
+
 
   # add to X-scale for better optics
   L    <- length(GT) + 1
 
-  # plot
-  p  <- D %>%
+  # Plot
+  p  <- W %>%
     filter(item %in% simOpt) %>%
-    filter(CE <= fval) %>%
+    filter(Iratio <= fval) %>%
     ggplot(aes(x=factor(pos), y=worth)) +
-    geom_jitter( aes(size =  CE, fill=CE ),  shape = 21, alpha = 0.7,
+    geom_jitter( aes(size = Iratio, fill =  Iratio),  shape = 21, alpha = 0.7,
                  width=0.2) +
-    ylim(ylim) +
+    ylim(0,0.7) +
     scale_fill_viridis_c(guide = "legend") +
     scale_size_continuous(range = c(0, L+1  )) + # adjust this
     xlab("Position") +
     ylab("Mean Worth Value")   +
     labs(title    = "Informed position simulation",
          subtitle = paste("Item: ",simOpt, " at ", limitToRun,
-                          " randomizations (CE cutoff=",fval,"%).", sep=""),
-         legend   = "Consensus Error") +
+                          " randomizations (Iratio cutoff=",fval,").", sep=""),
+         legend   = "Intransitivity Ratio") +
     theme_bw() +
     theme(axis.title.x = element_text(hjust= 0.5)) +
     theme(axis.title.y = element_text(hjust= 0.5)) +
@@ -113,14 +105,15 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt,
     print(p)
   }else{}
 
-  fltrd <- D %>%
-    filter(item %in% simOpt) %>%
-    filter(CE <= fval)
+  fltrd <- W %>%
+    filter(item %in% simOpt)%>%
+    filter(Iratio <= fval)
 
   frq   <- round(table(fltrd$pos) / sum(table(fltrd$pos)),4)
 
   return(list(frq=frq, p=p))
 }
+
 
 
 

@@ -95,6 +95,8 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>simsalRbim - Worth Evaluation</h1>
                         <h4 class="author">Steven R. Talbot</h4>
+                        <h4 class="author">Dana Pfefferle</h4>
+                        <h4 class="author">Lars Lewejohann</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_worth_evaluation.Rmd"><code>vignettes/simsalRbim_worth_evaluation.Rmd</code></a></small>
@@ -107,12 +109,12 @@
 <div id="worth-evaluation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#worth-evaluation" class="anchor"></a>Worth Evaluation</h2>
-<p>The <code>bimeval</code> function compares the preferences of each subject and calculates the mean consensus error. Because this can be a bit abstract, we provide an example.</p>
+<p>The <code>bimeval</code> function compares the preferences of each subject and calculates the mean consensus error. Because this can be a bit abstract, we provide an example below.</p>
 <div id="example-item-hoihoihoi" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-item-hoihoihoi" class="anchor"></a>Example item: ‘HoiHoiHoi’</h3>
-<p>Let’s say, we want to assess the consensus error of the ‘HoiHoiHoi’ item in the ZickeZacke data.</p>
-<p>First, we look at the distribution of all combinations with ‘HoiHoiHoi’. From the results column it is evident, how the subjects decided. A value of 1 means that they preferred option A, and with results = -1 they preferred option B. A value of 0 is a tie. Item combinations that were not provided in the data are filled as ties but are not regarded in this analysis (note, that the quantities are zero in these cases, while natural ties still show quantities).</p>
+<p>Let’s say, we want to assess the consensus error of the newly entered ‘HoiHoiHoi’ item in the ZickeZacke dataset. For this, we consider all item pairings that include ‘HoiHoiHoi’.</p>
+<p>The table below provides the quantities (e.g., amount drunk) for items A and B if available, and the result of the preference in relation to quantity A, i.e., 1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that are not provided in the data are filled in as ties (note, that the quantities are zero in these cases, while natural ties still show quantities).</p>
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">
@@ -507,8 +509,8 @@ HoiHoiHoi
 </tr>
 </tbody>
 </table>
-<p>Now, let’s do an example and focus on the items ‘Zacke’ vs ‘HoiHoiHoi’. The table above shows that from four subjects only one (‘drei’) has result = 1. The others are all -1. This can be converted to percentages, so that 25% of the total subjects preferred option A and 75% option B.</p>
-<p>This can be done for all items in the data, resulting in the following table.</p>
+<p>Example: ‘Zacke’ vs ‘HoiHoiHoi’. The table above shows that from four subjects only one (‘drei’) preferred the item ‘Zacke’ over item ‘HoiHoiHoi’, result = 1. The other subjects prefered ‘HoiHoiHoi’ over ‘Zacke’, result = -1. This is converted into percentages, so that 25% of the total subjects preferred option A (‘Zacke’) and 75% option B (‘HoiHoiHoi’).</p>
+<p>This calculation is applied to all item pairings in the dataset, resulting in the following table.</p>
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">
@@ -535,7 +537,106 @@ HuehnerKacke
 </tr>
 <tr>
 <td style="text-align:left;">
+HuehnerKacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerKacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerKacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 HuehnerZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZicke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZicke
 </td>
 <td style="text-align:right;">
 0
@@ -568,6 +669,72 @@ HuehnerZacke
 </tr>
 <tr>
 <td style="text-align:left;">
+HuehnerZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeZacke
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 KackeZacke
 </td>
 <td style="text-align:right;">
@@ -590,13 +757,79 @@ ZickeZacke
 </tr>
 <tr>
 <td style="text-align:left;">
+ZickeZacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZickeZacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZickeZacke
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 HuehnerHoiHoiHoi
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-100
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HuehnerHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
@@ -612,13 +845,112 @@ KackeHoiHoiHoi
 </tr>
 <tr>
 <td style="text-align:left;">
+KackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 ZickeHoiHoiHoi
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-100
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZickeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZickeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZickeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZackeHoiHoiHoi
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+75
 </td>
 </tr>
 <tr>
@@ -634,33 +966,31 @@ ZackeHoiHoiHoi
 </tr>
 </tbody>
 </table>
-<p>In the test Huehner vs Kacke, 100% of the subjects preferred option A (Huehner), etc.</p>
+<p>In the example ‘Huehner’ vs ‘Kacke’, 100% of the subjects preferred option A (‘Huehner’), etc.</p>
 </div>
 <div id="calculation-of-the-consensus-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#calculation-of-the-consensus-error" class="anchor"></a>Calculation of the Consensus Error</h3>
-<p>While knowing the exact distribution of option A vs B is beneficial, we find it more intuitive to calculate the error of disagreement on any particular combination. Since this error is about a preference consensus, we propose the name ‘consensus error’ (CE).</p>
-<p>The threshold for deciding whether option A or B was chosen is set to 50%. In the worth functions, these thresholds can be changed. However, here, we calculate the deviation of the smallest percentage to 50%.</p>
-<p>The closer the difference is to 50%, the more agreement there was <em>between subjects</em> on any particular item.</p>
-<p>The following pseudocode illustrates how the deviations were calculated.</p>
+<p>The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference within a given item pairing.</p>
+<p>We set the threshold for deciding whether option A or B is preferred to 50% (default setting) and calculate the deviation of the smallest percentage from it (deviation = delta). (Note: the threshold can be changed in the <code>bimpre</code> functions using the function objects <code>deviation</code> and/or <code>minQuantity</code>).</p>
+<p>The following pseudocode illustrates how the deviation delta was calculated.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Pseudococde - deviation calculation</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">itemlist</span><span class="op">)</span><span class="op">{</span>
   <span class="kw">if</span><span class="op">(</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option A"</span> <span class="op">]</span> <span class="op">&gt;</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option B"</span> <span class="op">]</span>  <span class="op">)</span><span class="op">{</span>
-        <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option B"</span> <span class="op">]</span><span class="op">)</span>
-      <span class="op">}</span><span class="kw">else</span><span class="op">{</span>
-        <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option A"</span> <span class="op">]</span><span class="op">)</span>
-      <span class="op">}</span>
- <span class="op">}</span></code></pre></div>
-<p>The deviations (delta) were then pooled and the mean calculated. This number is subtracted from 50% and standardized to 50% to calculate the consensus error (CE) in percentage:</p>
+    <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option B"</span> <span class="op">]</span><span class="op">)</span>
+  <span class="op">}</span><span class="kw">else</span><span class="op">{</span>
+    <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"option A"</span> <span class="op">]</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
+<p>The closer the resulting value is to 50, the more agreement there was between subjects on any given item.</p>
+<p>The delta is then averaged, standardized, and subtracted from 50%, resulting in the consensus error (CE in %):</p>
 <p><span class="math display">\[\begin{align*}
 CE = 50-(\sum_{i=1}^n delta_i/n)/50*100\\
 \end{align*}\]</span></p>
-<p>The example above shows that we have two-times 25% preference of option A over B for the items ‘KackeHoiHoiHoi’ and ‘ZackeHoiHoiHoi’. Using the formula for CE we get</p>
-<p><span class="math display">\[\begin{align*}
-CE_{HoiHoiHoi} = (50-((25+25+0+0)/4))/50*100=25%\\
-\end{align*}\]</span></p>
-<p>The item ‘HoiHoiHoi’ shows a 25% consensus error. This can also be displayed in the corresponsing plot of the <code>bimeval</code> function.</p>
+<p>The mean delta of all ‘HoiHoiHoi’ items is 39.06%: ((50+50+50+50) + (25+25+25+50)+ (50+50+50+50) + (25+25+25+25))/16 = 625/16 = 39.06%.</p>
+<p>Then we calculate 50%-39.06%=10.94% deviation. This is standardized to 50, resulting in a CE of 10.94%/50*100=21.88% which is also shown in the following plot.</p>
+<p>Therefore, the item ‘HoiHoiHoi’ shows a 21.88% consensus error indicating that 21.88% of test subjects disagreed on the positioning of the item. This is also displayed in the corresponding plot of the <code>bimeval</code> function.</p>
 <p><img src="simsalRbim_worth_evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
 </div>

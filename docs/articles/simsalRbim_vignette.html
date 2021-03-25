@@ -95,7 +95,7 @@
       <h1 data-toc-skip>simsalRbim</h1>
                         <h4 class="author">Steven R. Talbot</h4>
             
-            <h4 class="date">2021-03-24</h4>
+            <h4 class="date">2021-03-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -108,6 +108,11 @@
 <h2 class="hasAnchor">
 <a href="#simsalrbim---a-package-for-preference-test-simulations" class="anchor"></a>simsalRbim - A package for preference test simulations</h2>
 <p>Preference tests are a valuable tool to measure the “wants” of individuals and have been proven to be a valid method to rate different commodities. The number of commodities presented at the same time is, however, limited and in classical test settings usually, only two options are presented. In our paper, we evaluate the option of combining multiple binary choices to rank preferences among a larger number of commodities. The <strong>simsalRbim</strong> package offers the necessary tools to test selections of commodities and to obtain an estimate of new or incompletely tested items and their relative position.</p>
+<div id="data-availability" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-availability" class="anchor"></a>Data availability</h3>
+<p>Besides the internal ZickeZacke data, we provide additional experimental data from six different preference tests. These data can be downloaded from a separate <a href="https://github.com/mytalbot/simsalRbim_data">GitHub</a> repository and can be used directly in this package (e.g., with the bimload function).</p>
+</div>
 <div id="dependencies" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h3>
@@ -172,7 +177,7 @@ bimload(filename)</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#bimpre" class="anchor"></a>bimpre</h3>
 <pre><code><a href="../reference/bimpre.html"># bimpre - will take care of the data preprocessing.
-bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0, 
+bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
 verbose=TRUE)</a></code></pre>
 <p>The function takes the data object (<code>dat</code>) from <code>bimload</code>, a parameter defining the ground truth (<code>GT</code>) as well as the item that requires simulation (<code>simOpt</code>). The <code>deviation</code> and <code>minQuantity</code> arguments can be used to modify the threshold of the tie selection (e.g, 50% + deviation).</p>
 </div>
@@ -180,15 +185,17 @@ verbose=TRUE)</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#bimworth" class="anchor"></a>bimworth</h3>
 <pre><code><a href="../reference/bimworth.html"># bimworth is the central function of the package doing the worth calculations.
-bimworth(ydata=NULL,GT=NULL,simOpt=NULL,randOP=FALSE,intrans=FALSE,
-showPlot=FALSE,ylim=c(0, 0.7),verbose=FALSE)</a></code></pre>
+bimworth(ydata=NULL, GT=NULL, simOpt=NULL, randOP=FALSE, intrans=FALSE,
+showPlot=FALSE, ylim=c(0,0.8), size = 5, verbose=FALSE)</a></code></pre>
 <p>The <code>ydata</code> object takes the output from the preprocessing function (<code>bimpre</code>) as well as the ground truth (<code>GT</code>) and the simulated item (<code>simOpt</code>). With the <code>randOP</code> argument the randomization process can be controlled. If randOP=TRUE (present!) ties are randomized each time the function is executed. The <code>intrans</code> argument controls whether the intransitivity of the items shall be computed.</p>
 </div>
 <div id="bimeval" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bimeval" class="anchor"></a>bimeval</h3>
 <pre><code><a href="../reference/bimeval.html"># bimeval evaluates the consensus error in the worth calculations
-bimeval(ydata=NULL,GT=NULL,simOpt=NULL,worth= NULL,coverage=0.8,showPlot=TRUE )</a></code></pre>
+bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8, 
+showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis", subtitle=NULL, 
+verbose=FALSE, ylim=c(0,1))</a></code></pre>
 <p>The first three input objects are the same as in <code>bimworth</code>. Additionally, the function requires the output from <code>bimworth</code> for the evaluation. Be aware that the <code>bimworth</code> output can be a list when <code>intrans=TRUE</code>. The <code>coverage</code> object defines an arbitrary threshold for data coverage warnings. There can be two warnings: number of subjects and number of items warnings. The graphical output can be controlled with the <code>showPlot</code> object.</p>
 </div>
 <div id="bimuninformed" class="section level3">
@@ -196,8 +203,8 @@ bimeval(ydata=NULL,GT=NULL,simOpt=NULL,worth= NULL,coverage=0.8,showPlot=TRUE )<
 <a href="#bimuninformed" class="anchor"></a>bimUninformed</h3>
 <pre><code><a href="../reference/bimUninformed.html"># bimUninformed does an uninformed simulation of item positions to find a
 # cutoff.
-bimUninformed(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,seed=TRUE,
-showPlot=TRUE,ylim=c(-0.5, 1.5))</a></code></pre>
+bimUninformed(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, seed=TRUE, 
+showPlot=TRUE, ylim=c(-0.5,1.5) )</a></code></pre>
 <p>The function has the same first three input parameters as <code>bimworth</code>. In addition, the <code>limitToRun</code> object controls the number of randomizations in the worth calculations. The seeding can be set constant (<code>seed</code>). The output indicates an optimal cutoff for the number of required randomizations, e.g., for the separation of items, and, therefore, potential item positioning.</p>
 <p>The function also plots the results with 95% confidence intervals of the adjusted p-values, derived from a post-hoc ANOVA with multiple comparisons (Tukey) test. There will be perfect item separation when the plotted value reaches zero. Any remaining variance indicates potential overlaps in the 95% confidence intervals. A less stringent (but less confident) threshold can be obtained when the upper level of the 95% confidence intervals falls below (0.05, see green points in the plot). This may be useful when calculation times are long. There will be a warning, if the function did not converge to a threshold.</p>
 </div>
@@ -205,16 +212,16 @@ showPlot=TRUE,ylim=c(-0.5, 1.5))</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#bimpos" class="anchor"></a>bimpos</h3>
 <pre><code><a href="../reference/bimpos.html"># bimpos - calculates item positions at a discrete number of randomizations.
-bimpos(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,showPlot=TRUE)</a></code></pre>
+bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)</a></code></pre>
 <p>This function is very similar to <code>bimUninformed</code> and uses the same input arguments. However, it will not explore randomization space but will rather use a distinct cutoff to show the items’ relative position. The query item (<code>simOpt</code>) is shown in “red” in the plot. All items will be shown on the worth scale, together with 95% confidence invervals. Any overlap will indicate potential ambiguity in item positioning.</p>
 </div>
 <div id="bimsim" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bimsim" class="anchor"></a>bimsim</h3>
 <pre><code><a href="../reference/bimsim.html"># bimsim - informed position simulation
-bimsim(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=10,seed=TRUE,fval=0.9,
-showPlot=TRUE,ylim=c(0, 0.7))</a></code></pre>
-<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>fval</code> argument sets the cutoff for showing the intransitivity ratio (Iratio) of the results in the plot. fval=1 means that 100% of the intransitive results are plotted. The IRatio is calculated as the (number of triplets / no. of intransitive triplets) * 100. The more stringent (= lower fval) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>fval</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesize codes for the IRatio.</p>
+bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, limitToRun=5, fval=100, deviation=0,
+minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
+<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>fval</code> argument sets the cutoff for showing the consensus error (%) of the results in the plot. fval=100 means that 100% of the CEs are shown. The more stringent (= lower fval) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>fval</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error.</p>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">

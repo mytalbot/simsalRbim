@@ -23,7 +23,15 @@ incompletely tested items and their relative position.
 
 [simsalRbim Website](https://talbotsr.com/simsalRbim/index.html)
 
-### Dependencies
+## Data availability
+
+Besides the internal ZickeZacke data, we provide additional experimental
+data from six different preference tests. These data can be downloaded
+from a separate [GitHub](https://github.com/mytalbot/simsalRbim_data)
+repository and can be used directly in this package (e.g., with the
+bimload function).
+
+## Dependencies
 
 **simsalRbim** was developed on R (v4.0.3). It depends on the following
 packages (in no particular order, excluding R base packages) and may
@@ -71,12 +79,12 @@ simOpt     <- "HoiHoiHoi"
 GT         <- c("Zacke", "Huehner", "Kacke",  "Zicke" )
 
 predat     <- bimpre(dat=dat, GT=GT, simOpt=simOpt)
-#> simsalRbim: ties were marked.
+#> simsalRbim: 1 tie(s) marked.
 
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
-                       randOP   = FALSE,
-                       intrans  = FALSE,
-                       showPlot = TRUE)
+                       showPlot = "worth")
 ```
+
+<img src="man/figures/README-example-1.png" width="70%" />

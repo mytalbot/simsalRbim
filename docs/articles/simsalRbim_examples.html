@@ -109,13 +109,12 @@
 <div id="preference-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preference-tests" class="anchor"></a>Preference Tests</h2>
-<p>For this Vignette, we will use the artificial ZickeZacke dataset, a perfectly balanced set of paired choice preference tests, integrated in <code>simsalRbim</code>. In this dataset every subject was tested with every possible items combination, but one (‘HoiHoiHoi’) that was tested with only X subjects. In addition, there are two item combinations with ‘HoiHoiHoi’ that resulted in equal responses (no preference, ties). Let’s see if we can evaluate the item’s position. For this purpose, we will employ three different strategies which are covered by the following examples.</p>
+<p>For this Vignette, we will use the artificial ZickeZacke dataset, a perfectly balanced set of paired choice preference tests, integrated in <code>simsalRbim</code>. In this dataset every subject was tested with every possible items combination, but one (‘HoiHoiHoi’) that was tested with only 4 subjects. In addition, there are two item combinations with ‘HoiHoiHoi’ that resulted in equal responses (no preference, ties). Let’s see if we can evaluate the item’s position. For this purpose, we will employ three different strategies which are covered by the following examples.</p>
 <div id="example-1---the-calculation-of-worth-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1---the-calculation-of-worth-values" class="anchor"></a>Example 1 - The calculation of worth values</h3>
 <p>First, the data are loaded. In this example, internal data are used. You can use the <code>bimload</code> function to import data from a variety of formats.</p>
-<p>Define the item to be tested (<code>simOpt</code>) and a Ground Truth (GT) of items that it is tested with. Any items that are not defined here, will not be used in the analysis. This may lead to incomplete conclusions. So be careful what you put</p>
-<p><code>simOpt</code> and <code>GT</code> are then used in the <code>bimpre</code> function to preprocess the data into a unified format bimpre also identifies ties. As you can see from the example below, the ties get marked in the ‘tie’ column.</p>
+<p>Define the item to be tested (<code>simOpt</code>) and a Ground Truth (GT) of items that it is tested with. Any items that are not defined here, will not be used in the analysis. This may lead to incomplete conclusions. So be careful with what you put in here. The <code>simOpt</code> and <code>GT</code> objects are then used in the <code>bimpre</code> function to preprocess the data into a unified format <code>bimpre</code> also identifies ties. As you can see from the example below, the ties get marked in the ‘tie’ column.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span>        <span class="op">&lt;-</span> <span class="va">ZickeZacke</span>
 
@@ -124,14 +123,15 @@
 
 <span class="va">predat</span>     <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimpre.html">bimpre</a></span><span class="op">(</span>dat<span class="op">=</span><span class="va">dat</span>, GT<span class="op">=</span><span class="va">GT</span>, simOpt<span class="op">=</span><span class="va">simOpt</span><span class="op">)</span>
 <span class="co">#&gt; simsalRbim: 1 tie(s) marked.</span></code></pre></div>
-<p>In the next step, we calculate the worth values of all items specified in the <code>simOpt</code> and the <code>GT</code> term. This uses a non-linear GNM model from the <code>prefmod</code><span class="citation">[@prefmodcit]</span> package to model the data and to transform the estimates into worth values. The <code>showPlot</code> object can be set to “worth” providing the worth values, or “coefs” providing the model coefficients in the output.</p>
+<p>In the next step, we calculate the worth values of all items specified in the <code>simOpt</code> and the <code>GT</code> term. This uses a non-linear GNM model from the prefmod<span class="citation">[1]</span> package to model the data and to transform the estimates into worth values. The <code>showPlot</code> object can be set to “worth” providing the worth values, or “coefs” providing the model coefficients in the output.</p>
 <p>Note, that when <code>randOP</code> is set to TRUE, the attribution of ties in terms of the dependent results variable in the GNM model will be random. This means that each time this function is executed, the worth values will change. This is an integral part of this package and will be used in the simulations later.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">worth</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimworth.html">bimworth</a></span><span class="op">(</span>ydata    <span class="op">=</span> <span class="va">predat</span>,
                        GT       <span class="op">=</span> <span class="va">GT</span>,
                        simOpt   <span class="op">=</span> <span class="va">simOpt</span>,
                        randOP   <span class="op">=</span> <span class="cn">FALSE</span>,
-                       showPlot <span class="op">=</span> <span class="st">"worth"</span><span class="op">)</span></code></pre></div>
+                       showPlot <span class="op">=</span> <span class="st">"worth"</span>,
+                       ylim     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 <p>In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and “Zacke” scaling closer to “Zacke”.</p>
 <p>Consensus scores will be displayed as a function of bubble size as well as printed as numbers in the plot and an output table.</p>
@@ -144,7 +144,8 @@
                       GT        <span class="op">=</span> <span class="va">GT</span>, 
                       simOpt    <span class="op">=</span> <span class="va">simOpt</span>,
                       filtersim <span class="op">=</span> <span class="cn">FALSE</span>,
-                      showPlot  <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+                      showPlot  <span class="op">=</span> <span class="cn">TRUE</span>,
+                      ylim      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of SUBJECTS WARNING!</span>
 <span class="co">#&gt;                 The number of subjects you have provided for testing the simOpt='HoiHoiHoi' item is probably insufficient!</span>
 <span class="co">#&gt;                 Try increasing the number of subjects.</span>
@@ -176,7 +177,7 @@
                             GT         <span class="op">=</span> <span class="va">GT</span>,
                             simOpt     <span class="op">=</span> <span class="va">simOpt</span>, 
                             limitToRun <span class="op">=</span> <span class="fl">100</span>, 
-                            ylim       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
+                            ylim       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.6</span>,<span class="fl">1.1</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cutoff</span><span class="op">$</span><span class="va">cutoff</span>
@@ -355,16 +356,14 @@ Kacke
 <div id="example-3---informed-item-position-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-3---informed-item-position-simulation" class="anchor"></a>Example 3 - informed item position simulation</h2>
-<p>In the last example, we will perform an <strong>informed</strong> simulation of the data, including incomplete binary comparisons. In an informed simulation intransitive and transitive choices are considered. Intransitivity is defined as A&lt;B and B&lt;C, but A&gt;C.</p>
-<p>By calculating the intransitivity of the item combinations, we can estimate which choices were inconsistent and include this in our evaluation. We use a frequency distribution to decide on the most likely position of items.</p>
+<p>In the last example, we will perform an <strong>informed</strong> simulation of the data, including incomplete binary comparisons. In an informed simulation, intransitive and transitive choices are considered. The intransitivity is expressed as the consensus error (CE) at each randomization step. This way, we can estimate which choices were inconsistent and include this in our evaluation. We use a frequency distribution to decide on the most likely position of items.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">frqnc</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimsim.html">bimsim</a></span><span class="op">(</span>ydata       <span class="op">=</span> <span class="va">predat</span>,
-                     GT          <span class="op">=</span> <span class="va">GT</span>,
-                     simOpt      <span class="op">=</span> <span class="va">simOpt</span>, 
-                     limitToRun  <span class="op">=</span> <span class="fl">78</span>,
-                     fval        <span class="op">=</span> <span class="fl">1</span>, 
-                     showPlot    <span class="op">=</span> <span class="cn">TRUE</span>, 
-                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">frqnc</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimsim.html">bimsim</a></span><span class="op">(</span>rawdat      <span class="op">=</span> <span class="va">dat</span>, 
+                     GT          <span class="op">=</span> <span class="va">GT</span>, 
+                     simOpt      <span class="op">=</span> <span class="va">simOpt</span>,
+                     limitToRun  <span class="op">=</span> <span class="fl">78</span>, 
+                     fval        <span class="op">=</span> <span class="fl">100</span>,
+                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 <table class="table table">
 <thead><tr>
@@ -402,7 +401,16 @@ Freq
 </tr>
 </tbody>
 </table>
-<p>The table shows, that the items with a low intransitivity ratio (Iratio), i.e., a high transitivity, are mostly in position 2. Therefore, for the ‘HoiHoiHoi’ item, we can opt for position 2.</p>
+<p>The table shows, that the items with a low consensus error, i.e., a high transitivity, are mostly in position 2. Therefore, for the ‘HoiHoiHoi’ item, we can opt for position 2.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<div id="refs" class="references">
+<div id="ref-prefmodcit">
+<p>1. Hatzinger R, Dittrich R: <strong>prefmod: An R Package for Modeling Preferences Based on Paired Comparisons, Rankings, or Ratings</strong>. <span class="csl-baseline"><em>Journal of Statistical Software</em></span> 2012, <strong>48</strong>:1–31.</p>
+</div>
+</div>
 </div>
   </div>
 

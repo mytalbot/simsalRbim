@@ -35,6 +35,12 @@ among a larger number of commodities. The **simsalRbim** package offers the
 necessary tools to test selections of commodities and to obtain an estimate of 
 new or incompletely tested items and their relative position. 
 
+### Data availability
+Besides the internal ZickeZacke data, we provide additional experimental data
+from six different preference tests. These data can be downloaded from a 
+separate [GitHub](https://github.com/mytalbot/simsalRbim_data) repository and 
+can be used directly in this package (e.g., with the bimload function).
+
 
 ### Dependencies
 
@@ -135,7 +141,7 @@ the format shown the Data section above.
 ### bimpre
 ```
 # bimpre - will take care of the data preprocessing.
-bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0, 
+bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
 verbose=TRUE)
 ```
 
@@ -148,8 +154,8 @@ of the tie selection (e.g, 50% + deviation).
 ### bimworth
 ```
 # bimworth is the central function of the package doing the worth calculations.
-bimworth(ydata=NULL,GT=NULL,simOpt=NULL,randOP=FALSE,intrans=FALSE,
-showPlot=FALSE,ylim=c(0, 0.7),verbose=FALSE)
+bimworth(ydata=NULL, GT=NULL, simOpt=NULL, randOP=FALSE, intrans=FALSE,
+showPlot=FALSE, ylim=c(0,0.8), size = 5, verbose=FALSE)
 ```
 The `ydata` object takes the output from the preprocessing function (`bimpre`) 
 as well as the ground truth (`GT`) and the simulated item (`simOpt`). With the 
@@ -161,7 +167,9 @@ argument controls whether the intransitivity of the items shall be computed.
 ### bimeval
 ```
 # bimeval evaluates the consensus error in the worth calculations
-bimeval(ydata=NULL,GT=NULL,simOpt=NULL,worth= NULL,coverage=0.8,showPlot=TRUE )
+bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8, 
+showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis", subtitle=NULL, 
+verbose=FALSE, ylim=c(0,1))
 ```
 The first three input objects are the same as in `bimworth`. Additionally, the
 function requires the output from `bimworth` for the evaluation. Be aware that
@@ -175,8 +183,8 @@ can be controlled with the `showPlot` object.
 ```
 # bimUninformed does an uninformed simulation of item positions to find a
 # cutoff.
-bimUninformed(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,seed=TRUE,
-showPlot=TRUE,ylim=c(-0.5, 1.5))
+bimUninformed(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, seed=TRUE, 
+showPlot=TRUE, ylim=c(-0.5,1.5) )
 ```
 
 The function has the same first three input parameters as `bimworth`. In 
@@ -198,7 +206,7 @@ threshold.
 ### bimpos
 ```
 # bimpos - calculates item positions at a discrete number of randomizations.
-bimpos(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=5,showPlot=TRUE)
+bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)
 ```
 
 This function is very similar to `bimUninformed` and uses the same input 
@@ -212,21 +220,19 @@ potential ambiguity in item positioning.
 ### bimsim 
 ```
 # bimsim - informed position simulation
-bimsim(ydata=NULL,GT=NULL,simOpt=NULL,limitToRun=10,seed=TRUE,fval=0.9,
-showPlot=TRUE,ylim=c(0, 0.7))
+bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, limitToRun=5, fval=100, deviation=0,
+minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))
 ```
 
 The `bimsim` function performs an informed position simulation of variable
 preference test data. The `limitToRun` argument from the `bimUninformed` output 
 can be used as an estimate for the required number of randomizations. The `fval`
-argument sets the cutoff for showing the intransitivity ratio (Iratio) of the 
-results in the plot. fval=1 means that 100% of the intransitive results are 
-plotted. The IRatio is calculated as the (number of triplets / no. of
-intransitive triplets) * 100. The more stringent (= lower fval) the criterion,
-the more informed the simulation becomes. The output is a frequency distribution
-of `simOpts` preferred position at the given `fval`. The plot shows the worth 
-value of the `simOpt` item as a function of its position. The bubblesize codes 
-for the IRatio.
+argument sets the cutoff for showing the consensus error (%) of the 
+results in the plot. fval=100 means that 100% of the CEs are shown. The more
+stringent (= lower fval) the criterion, the more informed the simulation
+becomes. The output is a frequency distribution of `simOpts` preferred position
+at the given `fval`. The plot shows the worth value of the `simOpt` item as a 
+function of its position. The bubblesizes code for the consensus error.
 
 
 ## References

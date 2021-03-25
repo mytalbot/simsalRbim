@@ -20,7 +20,7 @@ worth      <- bimworth(ydata    = predat,
                        showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, showPlot=TRUE  )
 w_errors
 
 
@@ -29,6 +29,9 @@ w_errors
 # Introduction of a new item with restricted measurements -----------------
 # Import from a fresh file w/ Coke items
 # and 1 Tie
+library(simsalRbim)
+
+
 dat        <- ZickeZacke
 
 simOpt     <- "HoiHoiHoi"
@@ -44,8 +47,21 @@ worth      <- bimworth(ydata    = predat,
                        showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, filtersim=FALSE )
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, filtersim=FALSE, showPlot=TRUE )
 w_errors
+
+
+
+
+ydata=predat
+worth= worth$worth
+GT=GT
+simOpt=simOpt
+showPlot=TRUE
+
+\begin{align*}
+CE_{HoiHoiHoi} = (50-((25+25+0+0)/4))/50*100=25%\\
+\end{align*}
 
 ### Now we do an uninformed item positioning, also to obtain a reasonable threshold for the no. of randomizations
 cutoff     <- bimUninformed(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=100, ylim=c(-0.6,1.1) )
@@ -57,10 +73,48 @@ pos        <- bimpos(ydata=predat, GT=GT, simOpt=simOpt, limitToRun=78, showPlot
 pos$simerrors
 
 # now the informed simulation
-frqnc      <- bimsim(ydata = predat, GT=GT, simOpt=simOpt, limitToRun=78, fval= 0.25, showPlot=TRUE, ylim=c(0,0.7))
+frqnc      <- bimsim(rawdat=dat, GT=GT, simOpt=simOpt, limitToRun=78, fval=100,
+                     deviation=0, minQuantity=0, seed=TRUE,
+                     showPlot=TRUE, ylim=c(0,0.45))
 frqnc$frq
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ydata = predat
+GT=GT
+simOpt=simOpt
+limitToRun=10
+seed=TRUE
+fval= 1
+showPlot=TRUE
+ylim=c(0,0.7)
+
+
+
+
+
+
+ydata = predat
+GT=GT
+simOpt=simOpt
+limitToRun=78
+fval= 0.25
+showPlot=TRUE
+ylim=c(0,0.7)
 
 # Wie einig sind sich die Probanden OHNE Simulation und wo überlappt es?
 # Dabei die n-Zahl berücksichtigen.
@@ -86,11 +140,13 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        intrans  = TRUE,
-                       showPlot = "est")
+                       showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, verbose=TRUE )
 w_errors
+
+
 
 
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LowValenceRange.txt")
@@ -102,12 +158,14 @@ predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
-                       intrans  = TRUE,
-                       showPlot = "est")
+                       intrans  = FALSE,
+                       showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth, GT=GT, simOpt=simOpt )
 w_errors
+
+
 
 
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LargeValanceRange.txt")
@@ -118,16 +176,41 @@ predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
-                       intrans  = TRUE,
+                       intrans  = FALSE,
                        randOP   = TRUE,
-                       showPlot = "est")
+                       showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth, GT=GT, simOpt=simOpt )
 w_errors
 
 
 
+
+
+
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/upload data GitHub/human_LowValenceRange.txt")
+
+simOpt     <- "Flowers"
+GT         <- c( "Grass",  "House",  "Sunset", "Food",   "Monkey", "Timber")
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = FALSE,
+                       randOP   = FALSE,
+                       showPlot = "worth")
+worth
+
+w_errors   <- bimeval(ydata=predat, worth= worth , GT=GT, simOpt=simOpt, showPlot=TRUE  )
+w_errors
+
+ydata=predat
+worth= worth
+GT=GT
+simOpt=simOpt
+showPlot=TRUE
 
 
 
@@ -163,7 +246,70 @@ w_errors
 
 
 
+# binary ------------------------------------------------------------------
 
+# bimeval does not work when side is included
+library(simsalRbim)
+
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Rhesus_oneLine_20201116DP.txt")
+
+simOpt     <- "water"
+GT         <- c("banana", "grape", "NaCl", "quinine")
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = TRUE ,
+                       showPlot = "worth")
+worth
+
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors
+
+
+ydata=predat
+worth= worth$worth
+GT=GT
+simOpt=simOpt
+
+
+
+
+# binary
+dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Mice_oneLineTest1_20201102DP.txt")
+
+simOpt     <- "water"
+GT         <- c("HCl","m5MSac",  "m10MSac", "NaCl"   )
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       intrans  = TRUE ,
+                       showPlot = "worth")
+worth
+
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+
+
+
+
+
+
+
+
+
+
+
+
+
+ydata=predat
+worth= worth$worth
+GT=GT
+simOpt=simOpt
 
 
 

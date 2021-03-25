@@ -7,6 +7,8 @@ author:
   
 output: 
     rmarkdown::html_vignette
+bibliography: simsalRbim_lib.bib
+csl: biomed-central.csl
 vignette: >
   %\VignetteIndexEntry{simsalRbim Examples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -32,7 +34,7 @@ library(kableExtra)
 For this Vignette, we will use the artificial ZickeZacke dataset, a perfectly 
 balanced set of paired choice preference tests, integrated in `simsalRbim`. In 
 this dataset every subject was tested with every possible items combination,
-but one (‘HoiHoiHoi’) that was tested with only X subjects. In addition, there
+but one (‘HoiHoiHoi’) that was tested with only 4 subjects. In addition, there
 are two item combinations with ‘HoiHoiHoi’ that resulted in equal responses (no
 preference, ties). Let’s see if we can evaluate the item’s position. For this 
 purpose, we will employ three different strategies which are covered by the
@@ -44,11 +46,11 @@ the `bimload` function to import data from a variety of formats.
 
 Define the item to be tested (`simOpt`) and a Ground Truth (GT) of items that it 
 is tested with. Any items that are not defined here, will not be used in the
-analysis. This may lead to incomplete conclusions. So be careful what you put
-
-`simOpt` and `GT` are then used in the `bimpre` function to preprocess the data
-into a unified format bimpre also identifies ties. As you can see from the 
-example below, the ties get marked in the ‘tie’ column. 
+analysis. This may lead to incomplete conclusions. So be careful with what you
+put in here. The `simOpt` and `GT` objects are then used in the `bimpre` 
+function to preprocess the data into a unified format `bimpre` also identifies 
+ties. As you can see from the example below, the ties get marked in the ‘tie’ 
+column. 
 
 
 ```{r}
@@ -63,7 +65,7 @@ predat     <- bimpre(dat=dat, GT=GT, simOpt=simOpt)
 
 In the next step, we calculate the worth values of all items specified in the 
 `simOpt` and the `GT` term. This uses a non-linear GNM model from the 
-`prefmod`[@prefmodcit] package to model the data and to transform the estimates
+prefmod[@prefmodcit] package to model the data and to transform the estimates
 into worth values. The `showPlot` object can be set to "worth" providing the
 worth values, or “coefs” providing the model coefficients in the output. 
 
@@ -77,7 +79,8 @@ worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
                        randOP   = FALSE,
-                       showPlot = "worth")
+                       showPlot = "worth",
+                       ylim     = c(0,0.8))
 ```
 
 In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and 
@@ -106,7 +109,8 @@ w_errors   <- bimeval(ydata     = predat,
                       GT        = GT, 
                       simOpt    = simOpt,
                       filtersim = FALSE,
-                      showPlot  = TRUE)
+                      showPlot  = TRUE,
+                      ylim      = c(0,0.8))
 ```
 
 The size of the bubble indicates the consensus error of each item. This means, 
@@ -161,7 +165,7 @@ cutoff     <- bimUninformed(ydata      = predat,
                             GT         = GT,
                             simOpt     = simOpt, 
                             limitToRun = 100, 
-                            ylim       = c(-1,2) )
+                            ylim       = c(-0.6,1.1) )
 cutoff$cutoff
 ```
 
@@ -196,22 +200,20 @@ separated.)
 ## Example 3 - informed item position simulation
 
 In the last example, we will perform an **informed**  simulation of the data,
-including incomplete binary comparisons. In an informed simulation intransitive 
-and transitive choices are considered. Intransitivity is defined as
-A<B and B<C, but A>C.
-
-By calculating the intransitivity of the item combinations, we can estimate
-which choices were inconsistent and include this in our evaluation. We use a 
-frequency distribution to decide on the most likely position of items.  
+including incomplete binary comparisons. In an informed simulation, intransitive 
+and transitive choices are considered. The intransitivity is expressed as the
+consensus error (CE) at each randomization step.
+This way, we can estimate which choices were inconsistent and include this in
+our evaluation. We use a frequency distribution to decide on the most likely 
+position of items.  
 
 ```{r}
-frqnc      <- bimsim(ydata       = predat,
-                     GT          = GT,
-                     simOpt      = simOpt, 
-                     limitToRun  = 78,
-                     fval        = 1, 
-                     showPlot    = TRUE, 
-                     ylim        = c(0,0.7))
+frqnc      <- bimsim(rawdat      = dat, 
+                     GT          = GT, 
+                     simOpt      = simOpt,
+                     limitToRun  = 78, 
+                     fval        = 100,
+                     ylim        = c(0,0.45))
 ```
 
 
@@ -221,10 +223,10 @@ frqnc$frq %>%
   kable_styling() 
 ```
 
-The table shows, that the items with a low intransitivity ratio (Iratio), i.e.,
+The table shows, that the items with a low consensus error, i.e.,
 a high transitivity,  are mostly in position 2. Therefore, for the ‘HoiHoiHoi’
 item, we can opt for position 2. 
 
-
+## References
 
 

@@ -110,9 +110,14 @@
 
 <p>Preference tests are a valuable tool to measure the “wants” of individuals and have been proven to be a valid method to rate different commodities. The number of commodities presented at the same time is, however, limited and in classical test settings usually, only two options are presented. In our paper, we evaluate the option of combining multiple binary choices to rank preferences among a larger number of commodities. The <strong>simsalRbim</strong> package offers the necessary tools to test selections of commodities and to obtain an estimate of new or incompletely tested items and their relative position.</p>
 <p><a href="https://talbotsr.com/simsalRbim/index.html">simsalRbim Website</a></p>
-<div id="dependencies" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dependencies" class="anchor"></a>Dependencies</h3>
+<div id="data-availability" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-availability" class="anchor"></a>Data availability</h2>
+<p>Besides the internal ZickeZacke data, we provide additional experimental data from six different preference tests. These data can be downloaded from a separate <a href="https://github.com/mytalbot/simsalRbim_data">GitHub</a> repository and can be used directly in this package (e.g., with the bimload function).</p>
+</div>
+<div id="dependencies" class="section level2">
+<h2 class="hasAnchor">
+<a href="#dependencies" class="anchor"></a>Dependencies</h2>
 <p><strong>simsalRbim</strong> was developed on R (v4.0.3). It depends on the following packages (in no particular order, excluding R base packages) and may have to be installed manually.</p>
 <p>dplyr<br>
 ggplot2<br>
@@ -125,7 +130,6 @@ viridis<br>
 ggrepel</p>
 <p>The following function can be used to install single packages - or just the missing ones from CRAN.</p>
 <pre class="{r"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("paste missing package name here")</a></code></pre>
-</div>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
@@ -133,6 +137,7 @@ ggrepel</p>
 <pre class="{r"><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html"># install.packages("devtools")
 devtools::install_github("mytalbot/simsalRbim")
 library(simsalRbim)</a></code></pre>
+</div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -147,7 +152,7 @@ library(simsalRbim)</a></code></pre>
 <span class="va">GT</span>         <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Zacke"</span>, <span class="st">"Huehner"</span>, <span class="st">"Kacke"</span>,  <span class="st">"Zicke"</span> <span class="op">)</span>
 
 <span class="va">predat</span>     <span class="op">&lt;-</span> <span class="fu"><a href="reference/bimpre.html">bimpre</a></span><span class="op">(</span>dat<span class="op">=</span><span class="va">dat</span>, GT<span class="op">=</span><span class="va">GT</span>, simOpt<span class="op">=</span><span class="va">simOpt</span><span class="op">)</span>
-<span class="co">#&gt; simsalRbim: ties were marked.</span>
+<span class="co">#&gt; simsalRbim: 1 tie(s) marked.</span>
 
 <span class="va">worth</span>      <span class="op">&lt;-</span> <span class="fu"><a href="reference/bimworth.html">bimworth</a></span><span class="op">(</span>ydata    <span class="op">=</span> <span class="va">predat</span>,
                        GT       <span class="op">=</span> <span class="va">GT</span>,

@@ -152,12 +152,14 @@ results that do not show transitivity.</p>
     </div>
 
     <pre class="usage"><span class='fu'>bimsim</span><span class='op'>(</span>
-  ydata <span class='op'>=</span> <span class='cn'>NULL</span>,
-  GT <span class='op'>=</span> <span class='cn'>NULL</span>,
-  simOpt <span class='op'>=</span> <span class='cn'>NULL</span>,
-  limitToRun <span class='op'>=</span> <span class='fl'>10</span>,
+  rawdat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  GT <span class='op'>=</span> <span class='va'>GT</span>,
+  simOpt <span class='op'>=</span> <span class='va'>simOpt</span>,
+  limitToRun <span class='op'>=</span> <span class='fl'>5</span>,
+  fval <span class='op'>=</span> <span class='fl'>100</span>,
+  deviation <span class='op'>=</span> <span class='fl'>0</span>,
+  minQuantity <span class='op'>=</span> <span class='fl'>0</span>,
   seed <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  fval <span class='op'>=</span> <span class='fl'>0.9</span>,
   showPlot <span class='op'>=</span> <span class='cn'>TRUE</span>,
   ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -166,8 +168,8 @@ results that do not show transitivity.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ydata</th>
-      <td><p>curated data.frame from the preprocessing function.</p></td>
+      <th>rawdat</th>
+      <td><p>rawdata from the bimload function</p></td>
     </tr>
     <tr>
       <th>GT</th>
@@ -184,19 +186,28 @@ one. Remove the item from GT if specified here!)</p></td>
 (default 5, you'll probably need more)</p></td>
     </tr>
     <tr>
+      <th>fval</th>
+      <td><p>filter value for consensus error (default = 100 for
+100% of all errors), the lower the value the more informed the
+positioning becomes</p></td>
+    </tr>
+    <tr>
+      <th>deviation</th>
+      <td><p>how much deviation is allowed for marking ties
+(default is 0 which translates to 50%)</p></td>
+    </tr>
+    <tr>
+      <th>minQuantity</th>
+      <td><p>minimum quantitiy to be recognized as difference
+(default is 0)</p></td>
+    </tr>
+    <tr>
       <th>seed</th>
       <td><p>use constant seeding for stable plot results (default=TRUE)</p></td>
     </tr>
     <tr>
-      <th>fval</th>
-      <td><p>filter value for informed transitivity checks (default = 0.9 for
-90% of all possible values), the lower the value the more informed the
-positioning becomes</p></td>
-    </tr>
-    <tr>
       <th>showPlot</th>
-      <td><p>show the bubble plot with the intransitivity value vs item
-position (bubble size=worth-value)</p></td>
+      <td><p>show simulation runs with consensus error bubbles</p></td>
     </tr>
     <tr>
       <th>ylim</th>

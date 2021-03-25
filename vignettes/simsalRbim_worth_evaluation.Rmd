@@ -1,6 +1,9 @@
 ---
 title: "simsalRbim - Worth Evaluation"
-author: Steven R. Talbot
+author: 
+  - Steven R. Talbot
+  - Dana Pfefferle
+  - Lars Lewejohann
 output:
   rmarkdown::html_vignette
 vignette: >
@@ -48,18 +51,18 @@ worth      <- bimworth(ydata    = predat,
 ## Worth Evaluation
 The `bimeval` function compares the preferences of each subject and calculates
 the mean consensus error. Because this can be a bit abstract, we provide an 
-example.
+example below.
 
 ### Example item: 'HoiHoiHoi'
-Let's say, we want to assess the consensus error of the 'HoiHoiHoi' item in the
-ZickeZacke data. 
+Let’s say, we want to assess the consensus error of the newly entered 
+‘HoiHoiHoi’ item in the ZickeZacke dataset. For this, we consider all item
+pairings that include ‘HoiHoiHoi’.
 
-First, we look at the distribution of all combinations with 'HoiHoiHoi'. From 
-the results column it is evident, how the subjects decided. A value of 1 means
-that they preferred option A, and with results = -1 they preferred option B. A
-value of 0 is a tie. Item combinations that were not provided in the data are
-filled as ties but are not regarded in this analysis (note, that the quantities
-are zero in these cases, while natural ties still show quantities). 
+The table below provides the quantities (e.g., amount drunk) for items A and B 
+if available, and the result of the preference in relation to quantity A, i.e.,
+1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that are not 
+provided in the data are filled in as ties (note, that the quantities are zero 
+in these cases, while natural ties still show quantities).
 
 ```{r echo=FALSE}
 predat_mod     <- predat#[predat$sim==FALSE, ]
@@ -70,97 +73,99 @@ predat_mod[predat_mod$optionB == "HoiHoiHoi", c("subjectID","optionA","optionB",
   kable_styling()
 ```
 
-Now, let's do an example and focus on the items 'Zacke' vs 'HoiHoiHoi'. The
-table above shows that from four subjects only one ('drei') has result = 1.
-The others are all -1. This can be converted to percentages, so that 25% of the 
-total subjects preferred option A and 75% option B.
+Example: ‘Zacke’ vs ‘HoiHoiHoi’. The table above shows that from four subjects 
+only one (‘drei’) preferred the item ‘Zacke’ over item ‘HoiHoiHoi’, result = 1.
+The other subjects prefered ‘HoiHoiHoi’ over ‘Zacke’, result = -1. This is
+converted into percentages, so that 25% of the total subjects preferred option A
+(‘Zacke’) and 75% option B (‘HoiHoiHoi’).
 
-This can be done for all items in the data, resulting in the following table.
+This calculation is applied to all item pairings in the dataset, resulting in 
+the following table.
 
 ```{r echo=FALSE}
- 
-  optionlist <- c(simOpt, GT)
+optionlist <- c(simOpt, GT)
 
-  
+# compute the decision matrix for all data combinations in the predat object
+# no side is present
+TT <- NULL
+for(i in 1:length(unique(predat$test))){
+  tt <- data.frame(test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"])),
+                   pct_first      = sum(predat[predat$test==unique(predat$test)[i], ]$result== 1) / length(unique(predat$subjectID))*100,
+                   pct_second     = ifelse(predat[predat$test==unique(predat$test)[i], ]$result ==0,
+                                     0,
+                                     100 - (sum(predat[predat$test==unique(predat$test)[i], ]$result== 1) / length(unique(predat$subjectID))*100)))
+      TT <- rbind(TT, tt)
+}
 
-  # compute the decision matrix for all data combinations in the predat object
-  TT <- NULL
-  for(i in 1:length(unique(predat_mod$test))){
-    tt <- data.frame(test   = as.character(unique(predat_mod[predat_mod$test==unique(predat_mod$test)[i], "test"])),
-                     pct_first      = sum(predat_mod[predat_mod$test==unique(predat_mod$test)[i], ]$result== 1) / length(unique(predat_mod$subjectID))*100,
-                     pct_second     = 100 - (sum(predat_mod[predat_mod$test==unique(predat_mod$test)[i], ]$result== 1) / length(unique(predat_mod$subjectID))*100))
+AA <- TT
+colnames(AA)<- c("test","option A (%)", "option B (%)")
 
-    TT <- rbind(TT, tt)
-  }
-  
-  AA <- TT
-  colnames(AA)<- c("test","option A (%)", "option B (%)")
-  
-  AA %>%
+AA %>%
   kbl() %>%
   kable_styling()
-  
+
 ```
 
-In the test Huehner vs Kacke, 100% of the subjects preferred option A (Huehner),
-etc.
+In the example ‘Huehner’ vs ‘Kacke’, 100% of the subjects preferred option A 
+(‘Huehner’), etc.
+
 
 ### Calculation of the Consensus Error
-While knowing the exact distribution of option A vs B is beneficial, we find it
-more intuitive to calculate the error of disagreement on any particular
-combination. Since this error is about a preference consensus, we propose the 
-name 'consensus error' (CE).
+The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference
+within a given item pairing.
 
-The threshold for deciding whether option A or B was chosen is set to 50%. In
-the worth functions, these thresholds can be changed. However, here, we 
-calculate the deviation of the smallest percentage to 50%.
+We set the threshold for deciding whether option A or B is preferred to 50% 
+(default setting) and calculate the deviation of the smallest percentage from 
+it (deviation = delta). (Note: the threshold can be changed in the `bimpre` 
+functions using the function objects `deviation` and/or `minQuantity`). 
 
-The closer the difference is to 50%, the more agreement there was 
-*between subjects* on any particular item.
-
-The following pseudocode illustrates how the deviations were calculated.
+The following pseudocode illustrates how the deviation delta was calculated.
 
 ```{r eval=FALSE, echo=TRUE}
 # Pseudococde - deviation calculation
 for(i in 1:itemlist){
   if( item[i, "option A" ] > item[i, "option B" ]  ){
-        delta  <- (50 - item[i, "option B" ])
-      }else{
-        delta  <- (50 - item[i, "option A" ])
-      }
- }
+    delta  <- (50 - item[i, "option B" ])
+  }else{
+    delta  <- (50 - item[i, "option A" ])
+  }
+}
 ```
 
-The deviations (delta) were then pooled and the mean calculated. This number is
-subtracted from 50% and standardized to 50% to calculate the consensus error 
-(CE) in percentage:
+The closer the resulting value is to 50, the more agreement there was between 
+subjects on any given item.
+
+The delta is then averaged, standardized, and subtracted from 50%, resulting
+in the consensus error (CE in %):
 
 \begin{align*}
 CE = 50-(\sum_{i=1}^n delta_i/n)/50*100\\
 \end{align*}
 
+The mean delta of all 'HoiHoiHoi' items is 39.06%:
+((50+50+50+50) + (25+25+25+50)+ (50+50+50+50) + (25+25+25+25))/16 = 625/16 = 
+39.06%.
 
-The example above shows that we have two-times 25% preference of option A over B
-for the items 'KackeHoiHoiHoi' and 'ZackeHoiHoiHoi'. Using the formula for CE
-we get 
+Then we calculate 50%-39.06%=10.94% deviation. This is standardized to 50,
+resulting in a CE of 10.94%/50*100=21.88% which is also shown in the following
+plot.
 
-\begin{align*}
-CE_{HoiHoiHoi} = (50-((25+25+0+0)/4))/50*100=25%\\
-\end{align*}
+Therefore, the item ‘HoiHoiHoi’ shows a 21.88% consensus error indicating that
+21.88% of test subjects disagreed on the positioning of the item. This is also 
+displayed in the corresponding plot of the `bimeval` function.
 
-The item 'HoiHoiHoi' shows a 25% consensus error. This can also be displayed in 
-the corresponsing plot of the `bimeval` function.
 
- 
 ```{r echo=FALSE}
 options(warn=-1)
-w_errors   <- bimeval(ydata=predat, worth= worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata     = predat, 
+                      worth     = worth, 
+                      GT        = GT,
+                      simOpt    = simOpt,
+                      filtersim = FALSE, 
+                      ylim      = c(0,0.8),
+                      showPlot  = TRUE )
 options(warn= 0)
 ```
-
- 
-
-
 
 
 

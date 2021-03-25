@@ -10,10 +10,12 @@ bimeval(
   GT = NULL,
   simOpt = NULL,
   coverage = 0.8,
-  showPlot = TRUE,
+  showPlot = FALSE,
   filtersim = FALSE,
   title = "Consensus Analysis",
-  subtitle = NULL
+  subtitle = NULL,
+  verbose = FALSE,
+  ylim = c(0, 1)
 )
 }
 \arguments{
@@ -34,6 +36,10 @@ bimeval(
 \item{title}{plot title (default: "Consensus Analysis")}
 
 \item{subtitle}{plot subtitle (if NULL, a default will be used)}
+
+\item{verbose}{show function results}
+
+\item{ylim}{y limits of the worth plot (default c(0,0.7))}
 }
 \value{
 either a data.frame with the consensus errors and/or a plot object

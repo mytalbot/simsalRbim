@@ -93,6 +93,15 @@ bimpos <- function(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5,
                                    ymax=upper.ci.W),
                                width   =.1,
                                color   = 'red')
+  psim <- psim +  theme(axis.line        = element_line(colour = "black"),
+                        strip.background = element_rect(fill   = "white",
+                                                        colour = "black",
+                                                        size = 0.8),
+                        strip.text       = element_text(size = 12),
+                        axis.text.x      = element_text(size = 12),
+                        axis.title.x     = element_text(size = 13),
+                        axis.text.y      = element_text(size = 13),
+                        axis.title.y     = element_text(size = 14))
 
 
   # show plot or not...

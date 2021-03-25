@@ -5,18 +5,20 @@
 \title{Preference Test Simulation with Variable Ground Truth}
 \usage{
 bimsim(
-  ydata = NULL,
-  GT = NULL,
-  simOpt = NULL,
-  limitToRun = 10,
+  rawdat = NULL,
+  GT = GT,
+  simOpt = simOpt,
+  limitToRun = 5,
+  fval = 100,
+  deviation = 0,
+  minQuantity = 0,
   seed = TRUE,
-  fval = 0.9,
   showPlot = TRUE,
   ylim = c(0, 0.7)
 )
 }
 \arguments{
-\item{ydata}{curated data.frame from the preprocessing function.}
+\item{rawdat}{rawdata from the bimload function}
 
 \item{GT}{item list with the ground truth (GT; letters are case sensitive!)}
 
@@ -26,14 +28,19 @@ one. Remove the item from GT if specified here!)}
 \item{limitToRun}{limit to this number of repetitions for the randomizations
 (default 5, you'll probably need more)}
 
-\item{seed}{use constant seeding for stable plot results (default=TRUE)}
-
-\item{fval}{filter value for informed transitivity checks (default = 0.9 for
-90\% of all possible values), the lower the value the more informed the
+\item{fval}{filter value for consensus error (default = 100 for
+100\% of all errors), the lower the value the more informed the
 positioning becomes}
 
-\item{showPlot}{show the bubble plot with the intransitivity value vs item
-position (bubble size=worth-value)}
+\item{deviation}{how much deviation is allowed for marking ties
+(default is 0 which translates to 50\%)}
+
+\item{minQuantity}{minimum quantitiy to be recognized as difference
+(default is 0)}
+
+\item{seed}{use constant seeding for stable plot results (default=TRUE)}
+
+\item{showPlot}{show simulation runs with consensus error bubbles}
 
 \item{ylim}{scale y axis of the worth plot (default: c(0,0.7))}
 }

@@ -12,7 +12,7 @@ bimworth(
   intrans = FALSE,
   showPlot = FALSE,
   ylim = c(0, 0.8),
-  size = 7,
+  size = 5,
   verbose = FALSE
 )
 }

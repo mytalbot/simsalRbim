@@ -35,11 +35,12 @@
 
 bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
                      randOP=FALSE, intrans=FALSE, showPlot=FALSE,
-                     ylim=c(0,0.8), size = 7, verbose=FALSE){
+                     ylim=c(0,0.8), size = 5, verbose=FALSE){
+
+  worth <- NULL
 
   # Decision Ratio (a quality estimatation)
   Dratio = sum(ydata$result==1)/sum(ydata$result==-1)
-
 
   # create the item list
   optionList <- c(GT, simOpt)
@@ -140,6 +141,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
     # ze own worthplot --------------------------------------------------------
 
     # color function (standard colors)
+    hcl <- NULL
     gg_color_hue <- function(n) {
       hues = seq(15, 375, length = n + 1)
       hcl(h = hues, l = 65, c = 100)[1:n]
