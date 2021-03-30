@@ -72,17 +72,24 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
       test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"]))
 
       # Side A
-      pct_first      = predat[predat$test==test, ]
+      seldat      = predat[predat$test==test, ]
+
       no_side <- NULL
       tt      <- NULL
-      for(j in 1:length(unique(pct_first$subjectID))){
-        AA            <- pct_first[pct_first$subjectID==unique(pct_first$subjectID[j]),][1,]
-        AA$quantityA  <- mean(pct_first[pct_first$subjectID==unique(pct_first$subjectID[j]), "quantityA" ])
-        AA$quantityB  <- mean(pct_first[pct_first$subjectID==unique(pct_first$subjectID[j]), "quantityB" ])
-        AA$qPercentA  <- AA$quantityA / (AA$quantityA +AA$quantityB) *100
-        AA$qPercentB  <- AA$quantityB / (AA$quantityA +AA$quantityB) *100
-        AA$result     <- ifelse(AA$quantityA > AA$quantityB, 1,-1)
-        no_side       <- rbind(no_side, AA)
+      AA      <- NULL
+      leer    <- NULL
+      for(j in 1:length(unique(seldat$subjectID))){
+        AA      <- NULL
+        leer    <- NULL
+        AA              <- seldat[seldat$subjectID %in% unique(seldat$subjectID)[j],]
+        leer            <- seldat[seldat$subjectID %in% unique(seldat$subjectID)[j],][1,]
+
+        leer$quantityA  <- mean(AA$quantityA, na.rm=TRUE)
+        leer$quantityB  <- mean(AA$quantityB, na.rm=TRUE)
+        leer$qPercentA  <- leer$quantityA / (leer$quantityA +leer$quantityB) *100
+        leer$qPercentB  <- leer$quantityB / (leer$quantityA +leer$quantityB) *100
+        leer$result     <- ifelse(leer$quantityA > leer$quantityB, 1,-1)
+        no_side         <- rbind(no_side, leer)
       }
       no_side[,"sideA"] <- NULL
 

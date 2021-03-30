@@ -278,6 +278,8 @@ simOpt=simOpt
 
 
 # binary
+library(simsalRbim)
+
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Mice_oneLineTest1_20201102DP.txt")
 
 simOpt     <- "water"
@@ -292,15 +294,16 @@ worth      <- bimworth(ydata    = predat,
                        showPlot = "worth")
 worth
 
-w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt )
+w_errors   <- bimeval(ydata=predat, worth= worth$worth, GT=GT, simOpt=simOpt, filtersim=FALSE, showPlot=TRUE )
+w_errors
 
 
-
-
-
-
-
-
+ydata=predat
+worth= worth$worth
+GT=GT
+simOpt=simOpt
+filtersim=FALSE
+showPlot=TRUE
 
 
 
