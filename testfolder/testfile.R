@@ -203,5 +203,10 @@ w_errors
 # sind sich die Subjects z.B. bei second_plane im Mittel sehr uneins
 # (50-12.5) = 37.5 .... 37.5/50*100= 75% Consensus Error.
 
-
+ydata     = predat
+worth     = worth$worth
+GT        = GT
+simOpt    = simOpt
+showPlot  = TRUE
+ylim     = c(0.1,0.3)
 
