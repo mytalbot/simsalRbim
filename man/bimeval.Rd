@@ -31,7 +31,7 @@ bimeval(
 
 \item{showPlot}{plot the worth plot as a bubble plot with consensus errors}
 
-\item{filtersim}{exclude the simulated items from the evaluation function (defaults to TRUE)}
+\item{filtersim}{exclude the simulated items from the evaluation function (defaults to FALSE)}
 
 \item{title}{plot title (default: "Consensus Analysis")}
 

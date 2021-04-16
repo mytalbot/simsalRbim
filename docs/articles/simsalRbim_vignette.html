@@ -94,8 +94,10 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>simsalRbim</h1>
                         <h4 class="author">Steven R. Talbot</h4>
+                        <h4 class="author">Dana Pfefferle</h4>
+                        <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2021-03-30</h4>
+            <h4 class="date">2021-04-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -107,16 +109,16 @@
 <div id="simsalrbim---a-package-for-preference-test-simulations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simsalrbim---a-package-for-preference-test-simulations" class="anchor"></a>simsalRbim - A package for preference test simulations</h2>
-<p>Preference tests are a valuable tool to measure the “wants” of individuals and have been proven to be a valid method to rate different commodities. The number of commodities presented at the same time is, however, limited and in classical test settings usually, only two options are presented. In our paper, we evaluate the option of combining multiple binary choices to rank preferences among a larger number of commodities. The <strong>simsalRbim</strong> package offers the necessary tools to test selections of commodities and to obtain an estimate of new or incompletely tested items and their relative position.</p>
+<p>Preference tests are a valuable tool to measure the “wants” of individuals and have been proven to be a valid method to rate different commodities. The number of commodities presented at the same time is, however, limited and in classical test settings usually, only two options are presented. In our paper (<strong>add reference</strong>), we evaluate the option of combining multiple binary choices to rank preferences among a larger number of commodities. In addition, we suggest how missing data can be replaced by simulations to minimize the number of individual tests needed. The <strong>simsalRbim</strong> package offers the necessary tools to test selections of commodities and to obtain an estimate of new or incompletely tested items and their relative position.</p>
 <div id="data-availability" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-availability" class="anchor"></a>Data availability</h3>
-<p>Besides the internal ZickeZacke data, we provide additional experimental data from six different preference tests. These data can be downloaded from a separate <a href="https://github.com/mytalbot/simsalRbim_data">GitHub</a> repository and can be used directly in this package (e.g., with the bimload function).</p>
+<p>The package contains an artificial set of data, ZickeZacke, which we use as an example to show the functionality of the package. In addition experimental data from six different preference tests can be downloaded from a separate <a href="https://github.com/mytalbot/simsalRbim_data">GitHub</a> repository and can be used directly in this package (e.g., with the <code>bimload</code> function).</p>
 </div>
 <div id="dependencies" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h3>
-<p><strong>simsalRbim</strong> was developed on R (v4.0.3). It depends on the following packages (in no particular order, excluding R base packages) and may have to be installed manually.</p>
+<p><strong>simsalRbim</strong> was developed on R (v4.0.3). It depends on the following packages (in no particular order, excluding R base packages) and some of them may have to be installed manually. (If you did not yet install the package devtools, remove the hashtag in the first line.)</p>
 <p>“dplyr”<span class="citation">[1]</span><br>
 “ggplot2”<span class="citation">[2]</span><br>
 “gnm”<span class="citation">[3]</span><br>
@@ -143,14 +145,15 @@ library(simsalRbim)</a></code></pre>
 <div id="general-concept-of-the-simsalrbim-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-concept-of-the-simsalrbim-package" class="anchor"></a>General concept of the simsalRbim package</h2>
-<p>Data from a preference test may be incomplete, may show ties or new item positions shall be tested without the need of testing ALL possible combinations. The simsalRbim package can address all three cases by using informed and uninformed simulations to find the optimal item positions in the data.</p>
-<p>Preference test data usually come in two formats: quantities or binary data. The bimload function in the package can load both formats, including the preferred side in a test as a variable. However, if a preference test is showing significant side dependencies, the simulated outcome will be biased. With the current package it is not possible to resolve side-dependent tests.</p>
-<p>In case of present ties, the binary response variable is randomized (by default, this happens at a 50% Likelihood for an equal commodity selection. However, the user may specify other thresholds or quantities). Missing item tests and combinations are filled as ties and then simulated in the two simulation functions. In the uninformed simulation, data are continuously randomized and analyzed. At a given number of degrees of freedom this will stabilize the 95% confidence intervals on the worth scale. Thus, item positions can be obtained. In the informed simulation, the item intransitivity is also calculated. By excluding “intransitive” selections from the results, the item of interest can be placed on the worth scale at much higher confidence.</p>
+<p>Data from a series of binary preference tests may be incomplete, may show ties or new item positions shall be tested without the need of testing ALL possible combinations. The simsalRbim package can address all three cases by using informed and uninformed simulations to find the optimal item positions in the data.</p>
+<p>Preference test data usually come in two formats: quantities (i.e., a subject consumes 200 ml of orange juice but only 17 ml of milk) or binary data (i.e., “I like Star Trek better than Star Wars”). The <code>bimload</code> function in the package can load both formats, including the preferred side in a test as a variable. However, if a preference test is showing significant side dependencies (i.e., milk is preferred over orange juice if it is presented in a bottle positioned on the left side but vice versa if it is presented in the right bottle), the simulated outcome will be biased. With the current package it is not possible to resolve side-dependent tests.</p>
+<p>In case of present ties, the binary response variable is randomized. By default, this happens at a 50% likelihood for an equal commodity selection. However, the user may specify other thresholds for considering a case as a tie, for example if a preference is only deemed to be meaningful if one item is chosen at &gt;65%.</p>
+<p>Missing item tests and combinations are filled as ties and then simulated in the two simulation functions. In the uninformed simulation, data are continuously randomized and analyzed. With each additional simulation, the number of degrees of freedom decreases and the rank position of the items will become more confident, At a given number of degrees of freedom this will stabilize the 95% confidence intervals on the worth scale. Thus, item positions can be obtained with a reasonable confidence without having to include tests on all possible item combinations. If you assume that the data is following the supposition of transitivity (i.e., if A&gt;B and B&gt;C then A&gt;C) them the informed simulation can help to derive a ranking with higher confidence. In the informed simulation, the number of intransitive relationships within the simulated rank order is also calculated. The number of intransitive relationships in the results can be limited to any percentage between 0% and 100%. Thereby the item of interest can be placed on the worth scale at much higher confidence.</p>
 </div>
 <div id="data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data" class="anchor"></a>Data</h2>
-<p>The package includes example data (ZickeZacke) that can be used to explore the packages functions and gives an example of how the input data must be formatted. Please note, that the item ‘HoiHoiHoi’ in the data introduces a tie and additional variance. Without it, this would be perfect data. Such data do not need a simulation. In such cases, the package will show the worth plot but will also give a warning.</p>
+<p>The package includes example data (ZickeZacke) that can be used to explore the packages functions and gives an example of how the input data must be formatted. Please note, that the item ‘HoiHoiHoi’ deliberately introduces variance in the data as it is incomplete, introduces a tie, and an intransitive relationship. Without this item it would be perfect data which do not need a simulation. In such cases, the package will show the worth plot but will also give a warning.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">simsalRbim</span><span class="fu">::</span><span class="va"><a href="../reference/ZickeZacke.html">ZickeZacke</a></span><span class="op">)</span>
 <span class="co">#&gt;   subjectID optionA optionB quantityA quantityB</span>
@@ -179,7 +182,7 @@ bimload(filename)</a></code></pre>
 <pre><code><a href="../reference/bimpre.html"># bimpre - will take care of the data preprocessing.
 bimpre(dat=NULL, GT=NULL, simOpt=NULL, deviation=0, minQuantity=0,
 verbose=TRUE)</a></code></pre>
-<p>The function takes the data object (<code>dat</code>) from <code>bimload</code>, a parameter defining the ground truth (<code>GT</code>) as well as the item that requires simulation (<code>simOpt</code>). The <code>deviation</code> and <code>minQuantity</code> arguments can be used to modify the threshold of the tie selection (e.g, 50% + deviation).</p>
+<p>The function takes the data object (<code>dat</code>) from <code>bimload</code>, a parameter defining the ground truth (<code>GT</code>) as well as the item that requires simulation (<code>simOpt</code>). The <code>deviation</code> and <code>minQuantity</code> arguments can be used to modify the threshold of the tie selection (e.g, 50% + deviation, with deviation as the amount of additional deviation in percent (i.e, 50% + 5% deviation = 55%)).</p>
 </div>
 <div id="bimworth" class="section level3">
 <h3 class="hasAnchor">
@@ -213,15 +216,15 @@ showPlot=TRUE, ylim=c(-0.5,1.5) )</a></code></pre>
 <a href="#bimpos" class="anchor"></a>bimpos</h3>
 <pre><code><a href="../reference/bimpos.html"># bimpos - calculates item positions at a discrete number of randomizations.
 bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)</a></code></pre>
-<p>This function is very similar to <code>bimUninformed</code> and uses the same input arguments. However, it will not explore randomization space but will rather use a distinct cutoff to show the items’ relative position. The query item (<code>simOpt</code>) is shown in “red” in the plot. All items will be shown on the worth scale, together with 95% confidence invervals. Any overlap will indicate potential ambiguity in item positioning.</p>
+<p>This function is very similar to <code>bimUninformed</code> and uses the same input arguments. However, it will not explore randomization space but will rather use a distinct cutoff to show the items’ relative position. The query item (<code>simOpt</code>) is shown in “red” in the plot. All items will be shown on the worth scale, together with 95% confidence intervals. Any overlap will indicate potential ambiguity in item positioning.</p>
 </div>
 <div id="bimsim" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bimsim" class="anchor"></a>bimsim</h3>
 <pre><code><a href="../reference/bimsim.html"># bimsim - informed position simulation
-bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, limitToRun=5, fval=100, deviation=0,
-minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
-<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>fval</code> argument sets the cutoff for showing the consensus error (%) of the results in the plot. fval=100 means that 100% of the CEs are shown. The more stringent (= lower fval) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>fval</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error.</p>
+bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE", limitToRun=5,
+tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
+<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>tcut</code> argument sets the cutoff for showing the consensus error (%, CE) of the results in the plot <strong>OR</strong> the intransitivity ratio (Iratio). The selection depends on the <code>filter.crit</code> paramter (“CE” or “Iratio”). In both cases tcut=0.9 means that 90% values above 90% are not shown. The more stringent (= lower tcut) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>tcut</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error.</p>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">

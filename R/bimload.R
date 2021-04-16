@@ -23,8 +23,13 @@ bimload <- function(filename) {
   # Helperfunction.
   printf <- function(...) cat(sprintf(...))
 
-  tdata <- read.table(file=filename, header=FALSE, sep="\t", fill=TRUE)
 
+  # check if a data.frame is provided (i.e., from a direct GitHub download)
+  # if(is.data.frame(filename)){
+  #   tdata <- filename
+  # }else{
+  #   tdata <- read.table(file=filename, header=FALSE, sep="\t", fill=TRUE)
+  # }
 
   # Reading the two line input format
   #
@@ -34,8 +39,6 @@ bimload <- function(filename) {
     if (!is.numeric(tdata$V3)) {
       printf('simsalRbim: Table header found.\n')
       # remove table header (and add it later with the correct names)
-      tdata <- read.table(file=filename, header=TRUE, sep="\t", fill=TRUE,
-                          stringsAsFactors=FALSE)
     }
 
     printf('simsalRbim: Read %d lines in total.\n', nrow(tdata))

@@ -1,7 +1,7 @@
 library(simsalRbim)
 
 #  Perfect use case with no randomized items ------------------------------
-dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
+dat        <- bimload(".../ZickeZackelinear.txt")
 simOpt     <- "Zicke"
 GT         <- c("Zacke", "Huehner", "Kacke")
 
@@ -87,7 +87,7 @@ frqnc$frq
 
 
 # Human Large Valence (Spring School) -------------------------------------
-dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
+dat        <- bimload(".../human_LagreValenceRange_SpringSchool.txt")
 simOpt     <- "Lake"
 GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire")
 
@@ -112,7 +112,7 @@ w_errors
 
 
 # Maus - Mice_oneLineTest1_20201102DP -------------------------------------
-dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Mice_oneLineTest1_20201102DP.txt")
+dat        <- bimload (".../Mice_oneLineTest1_20201102DP.txt")
 simOpt     <- "water"
 GT         <- c("HCl","m5MSac",  "m10MSac", "NaCl"   )
 
@@ -138,7 +138,7 @@ w_errors
 
 # Monkey ------------------------------------------------------------------
 # Note: Banana and Grape are equal when deviation = 0. Change deviation to 10! ;-)
-dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Rhesus_oneLine_20201116DP.txt")
+dat        <- bimload (".../Rhesus_oneLine_20201116DP.txt")
 simOpt     <- "water"
 GT         <- c("banana", "grape", "NaCl", "quinine")
 
@@ -166,7 +166,7 @@ w_errors
 # Vorgewese
 library(dplyr)
 library(tidyr)
-data = read.delim("./testfolder/Ute Test/place_preference_30daysL_active time.txt", header= T, sep = "\t", dec= ".")
+data = read.delim(".../place_preference_30daysL_active time.txt", header= T, sep = "\t", dec= ".")
 data = t(data)
 data = as.data.frame(data)
 data = mutate(data, compiled_studies = c( rep("structural",10), rep("active",10), rep("housing",10) ) ) #column with experiment (sructural, active, housing)

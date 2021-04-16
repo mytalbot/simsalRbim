@@ -31,14 +31,18 @@ library(kableExtra)
 ```
 
 ## Preference Tests
-For this Vignette, we will use the artificial ZickeZacke dataset, a perfectly 
-balanced set of paired choice preference tests, integrated in `simsalRbim`. In 
-this dataset every subject was tested with every possible items combination,
-but one (‘HoiHoiHoi’) that was tested with only 4 subjects. In addition, there
-are two item combinations with ‘HoiHoiHoi’ that resulted in equal responses (no
-preference, ties). Let’s see if we can evaluate the item’s position. For this 
-purpose, we will employ three different strategies which are covered by the
-following examples. 
+For this vignette, we will use the artificial dataset "ZickeZacke", a perfectly
+balanced set of paired-choices preference tests, integrated in `simsalRbim`.
+In this dataset, every subject was tested with every possible item combination,
+but one item ("HoiHoiHoi") was tested with only 3 subjects (eins, zwei & vier).
+
+In addition, there is one item combination with "HoiHoiHoi" that resulted in
+equal responses (no preference, ties: subjectID=vier, HoiHoiHoi vs Kacke). Thus,
+we have a ground truth dataset whereof we know the ranking 
+("Zicke" > "Zacke" > "Huehner"> "Kacke") and one item that we do not
+know the exact position within that ranking. Let’s see if we can evaluate the 
+item’s position by employing three different strategies which are covered by the
+following examples.
 
 ### Example 1 - The calculation of worth values
 First, the data are loaded. In this example, internal data are used. You can use
@@ -48,10 +52,9 @@ Define the item to be tested (`simOpt`) and a Ground Truth (GT) of items that it
 is tested with. Any items that are not defined here, will not be used in the
 analysis. This may lead to incomplete conclusions. So be careful with what you
 put in here. The `simOpt` and `GT` objects are then used in the `bimpre` 
-function to preprocess the data into a unified format `bimpre` also identifies 
-ties. As you can see from the example below, the ties get marked in the ‘tie’ 
-column. 
-
+function to preprocess the data into a unified format and `bimpre` also 
+identifies ties. As you can see from the example below, the ties get marked in 
+the ‘tie’ column. 
 
 ```{r}
 dat        <- ZickeZacke
@@ -67,9 +70,9 @@ In the next step, we calculate the worth values of all items specified in the
 `simOpt` and the `GT` term. This uses a non-linear GNM model from the 
 prefmod[@prefmodcit] package to model the data and to transform the estimates
 into worth values. The `showPlot` object can be set to "worth" providing the
-worth values, or “coefs” providing the model coefficients in the output. 
+worth values, or “coef” providing the model coefficients in the output. 
 
-Note, that when `randOP` is set to TRUE, the attribution of ties in terms of the
+Note, that if `randOP` is set to TRUE, the attribution of ties in terms of the
 dependent results variable in the GNM model will be random. This means that each
 time this function is executed, the worth values will change. This is an 
 integral part of this package and will be used in the simulations later.
@@ -84,67 +87,75 @@ worth      <- bimworth(ydata    = predat,
 ```
 
 In this plot, you see that the item “HoiHoiHoi” ranks between “Zicke” and 
-“Zacke” scaling closer to “Zacke”. 
+“Zacke” scaling closer to “Zacke”. However, this plot conceals the fact that the
+data for "HoiHoiHoi" are incomplete, and thus the ranking shown is also only 
+limited in its validity. In order to cope for such uncertain data, we introduce 
+the consensus error, i.e., the percentage of disagreement between the 
+individuals that ranked the specific item combinations.   
 
-Consensus scores will be displayed as a function of bubble size as well as 
-printed as numbers in the plot and an output table.
-
-Here, 
-we provide an [explanation on how the consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_worth_evaluation.html) 
+Here, we provide a detailed 
+[explanation on how the consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_worth_evaluation.html) 
 is calculated.
 
-The “ZickeZacke” dataset elicits two **warnings** The warnings indicate that the 
-number of subjects tested with the “HoiHoiHoi” item may be too low. The second
-warning shows the same for the number of items tested. To get more reliable 
-results, both should be increased.
+In order to calculate and plot the ranking including the consensus error, the
+function `bimeval` is used. The “ZickeZacke” dataset elicits two warnings. The 
+warnings indicate that the number of subjects tested with the “HoiHoiHoi” item 
+may be too low ("HoiHoiHoi" was only rated by 3 of the 4 subjects while all 
+other items were rated by all 4 subjects). 
 
-By setting filtersim=TRUE (default), the subjects warning can be removed. The
-command removes all missing item combinations for which ties were set. This will
-effectively reduce the number of subjects that are available for any test, 
-resulting in differently weighted mean in the consensus error calculation.
+The second warning shows that the number of other items tested against the 
+"HoiHoiHoi"-item may be too low. To get more reliable results, both values
+should be increased. For the sake of our example, we continue with the 
+incomplete set of data.
 
 ```{r}
 w_errors   <- bimeval(ydata     = predat, 
                       worth     = worth, 
                       GT        = GT, 
                       simOpt    = simOpt,
-                      filtersim = FALSE,
                       showPlot  = TRUE,
                       ylim      = c(0,0.8))
 ```
 
-The size of the bubble indicates the consensus error of each item. This means, 
+The size of the bubble indicates the consensus error of each item. This means,
 the smaller the bubble (or error) the more agreement there is between subjects
-regarding the positioning of the respective item. In the example of the item
+regarding the positioning of the respective item. In the example of the item 
 “Zicke”, the value of 0% indicates that all subjects that were presented with 
 item combinations including “Zicke” were in full agreement in terms of
-preference, i.e., no intransitivity was detected. The position of “Zicke” can, 
+preference for "Zicke" above all other items. The position of “Zicke” can, 
 hence, be assumed to be warranted.
 
-In contrast, the consensus error for item “HoiHoiHoi” was calculated with 25%. 
-Meaning that 25% of subjects indicated different preference in item combinations
-including “HoiHoiHoi” (i.e., in 25% of the item triplets an intransitivity was 
-detected). Taken this together with the displayed warnings for that item, the
-positioning of it is relatively insecure. 
+In contrast, the consensus error for item “HoiHoiHoi” was calculated with 
+9.38%. Meaning that ~10% of subjects indicated different preferences in item 
+combinations including “HoiHoiHoi”. Conversely, also the consensus errors for
+"Zacke" and "Kacke" are >0 owing to the fact that in this dataset the subjects 
+did not agree on whether "HoiHoiHoi" was rated higher or lower than these items.
+Taken this together with the displayed warnings (only 3 of 4 subjects rated 
+"HoiHoiHoi" and "HoiHoiHoi" was only compared to 3 of the 4 other items) for
+that item, the positioning of it is relatively insecure.
 
 ## Example 2 - uninformed item position simulation
-Once the rank and scale of a number of items is known (see example 1), one might
-want to sequentially extend it with additional items. For extending an existing 
-scale it might not be feasible to conduct all possible binary preference tests.
-In cases of incomplete binary comparisons, we propose a simulation approach, 
-allowing to rank items with a reasonable precision.
+Once the rank and scale of a number of items is known (i.e., the ground truth 
+data), one might want to sequentially extend it with additional items. For
+extending an existing scale it might not be feasible to conduct all possible
+binary preference tests. In cases of incomplete binary comparisons, we propose
+a simulation approach, allowing to rank items with a reasonable precision.
  
 Items that were not tested with all possible item combinations are attributed a
-tie. In the GNM model, results can assume the states c(-1,0,1). By randomizing
-this outcome, the degrees of freedom for the unknown combinations get 
-constrained so that the estimate of the item becomes more secure.This logic is 
-used in the `bimUninformed` function to simulate an **uninformed*’** worth 
-calculation for optimal item positioning. 
+tie. In the GNM model, results can assume the states c(-1,0,1) [=c(worse, equal,
+better)]. By randomizing this outcome, the degrees of freedom for the unknown 
+combinations get constrained so that the estimate of the item becomes more
+secure.This logic is used in the `bimUninformed` function to simulate an 
+**uninformed** worth calculation for optimal item positioning. 
 
 We differentiate between ‘uninformed’ (this example) and ‘informed’ 
-(see example 3) item positioning simulations. In uninformed item positioning, no 
-*a priori* knowledge about item transitivity is available. Hence, it is assumed 
-that all choices are transitive, i.e., if A<B and B<C, then A<C.
+(see example 3) item positioning simulations. In uninformed item positioning, no
+*a priori* knowledge about item transitivity (e.g., if A<B and B<C and A>C, the 
+triplet is considered as being intransitive) is available. Hence, in uniformed 
+simulations transitive as well as intransitive item combinations derived from 
+the randomization are included. In the informed version of the simulation a
+percentage (e.g., tcut=70) for the maximum number of accepted intransitivity can
+be set.
 
 The function `bimUninformed` allows the determination of the number of necessary
 randomization steps. Here, for any number of randomization steps, an ANOVA with
@@ -164,14 +175,21 @@ hits zero. For ambiguous data, this can mean a lot of required randomizations.
 cutoff     <- bimUninformed(ydata      = predat, 
                             GT         = GT,
                             simOpt     = simOpt, 
-                            limitToRun = 100, 
-                            ylim       = c(-0.6,1.1) )
+                            limitToRun = 50, 
+                            ylim       = c(-0.7,1.2) )
 cutoff$cutoff
 ```
 
-The simulation proposes `r cutoff$cutoff` randomizations. This result can be
-displayed with 95% confidence intervals using the `bimpos` function. Here,
-we will insert the number of required randomizations.
+**Note:** The simulation of adjusted p-values can include confidence intervals
+that exceed 1 and fall below 0, especially in the beginning of the 
+randomization. This is owed to the fact that in these cases the model is 
+statistically underpowered. After determining the cutoff value, the adjusted
+p-value +- confidence interval should be 0.
+
+The simulation proposes `r cutoff$cutoff` in order to reach a sufficient 
+distinction between the items. This result can be displayed with 95% confidence
+intervals using the `bimpos` function. Here, we will insert the number of
+required randomizations.
 
 ```{r}
 pos        <- bimpos(ydata      = predat, 
@@ -193,39 +211,64 @@ errors. The items’ positions are secured as there are no overlapping 95%
 confidence intervals. 
 
 Compared to results in example 1 where the confidence in the positioning of 
-“HoiHoiHoi” was low, we now we can be rather sure that it is in position 2. 
+“HoiHoiHoi” was low. Now we can be rather sure that it is in position 2. 
 (If in doubt, increase the number of randomizations until the items are 
 separated.) 
 
 ## Example 3 - informed item position simulation
 
-In the last example, we will perform an **informed**  simulation of the data,
-including incomplete binary comparisons. In an informed simulation, intransitive 
-and transitive choices are considered. The intransitivity is expressed as the
-consensus error (CE) at each randomization step.
-This way, we can estimate which choices were inconsistent and include this in
-our evaluation. We use a frequency distribution to decide on the most likely 
-position of items.  
+In the last example, we will perform an **informed** simulation of the data, 
+including incomplete binary comparisons. In an informed simulation, transitive 
+choices and a defined maximum of intransitive choices are considered. The user 
+can opt between two evaluation metrics and/or can make an informed decision 
+based on both. With `filter.crit` object, either the consensus error ("CE") or
+the standardized intransitivity ratio ("Iratio") is shown.
+This way, we can estimate which choices were inconsistent and include this
+in our evaluation. We use a frequency distribution to decide on the most likely
+position of items.
+ 
 
+### Example Simulation using the Consensus Error (CE)
 ```{r}
+
 frqnc      <- bimsim(rawdat      = dat, 
                      GT          = GT, 
                      simOpt      = simOpt,
-                     limitToRun  = 78, 
-                     fval        = 100,
+                     filter.crit = "CE",
+                     limitToRun  = 65, 
+                     tcut        = 0.9,
                      ylim        = c(0,0.45))
 ```
 
-
 ```{r echo=FALSE}
 frqnc$frq %>%
-  kbl() %>%
+  kbl(col.names = c("Position","Frequency")) %>%
   kable_styling() 
 ```
 
-The table shows, that the items with a low consensus error, i.e.,
-a high transitivity,  are mostly in position 2. Therefore, for the ‘HoiHoiHoi’
-item, we can opt for position 2. 
+
+### Example Simulation using the intransitivity ratio (Iratio)
+```{r}
+# Note: the calculation if Iratios takes longer!
+frqnc      <- bimsim(rawdat      = dat, 
+                     GT          = GT, 
+                     simOpt      = simOpt,
+                     filter.crit = "Iratio",
+                     limitToRun  = 65, 
+                     tcut        = 0.9,
+                     ylim        = c(0,0.45))
+```
+
+```{r echo=FALSE}
+frqnc$frq %>%
+  kbl(col.names = c("Position","Frequency")) %>%
+  kable_styling() 
+```
+
+Note, that even though the calculations are different in both approaches, the 
+final distributions are equal in this case. Position 2 shows the most frequent
+occurences for the simOpt item and may, therefore, be a reasonably well-placed
+position estimate.
 
 ## References
 

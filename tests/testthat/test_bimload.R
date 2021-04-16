@@ -2,7 +2,7 @@ library(simsalRbim)
 context("Testing ZickeZacke data")
 
 test_that("Checks if the ZickeZacke data can be loaded", {
-  expect_equal(dim(ZickeZacke)[1], 32)
+  expect_equal(dim(ZickeZacke)[1], 30)
   expect_equal(dim(ZickeZacke)[2], 5)
 })
 
@@ -36,7 +36,7 @@ test_that("Tests the preprocess function", {
   expect_equal(sum(bimpre (dat=ZickeZacke, GT=c("Zicke","Zacke","Huehner",
                                                 "Kacke" ),
                            simOpt="HoiHoiHoi", deviation=0, minQuantity=0,
-                           verbose=FALSE)$tie),  9)
+                           verbose=FALSE)$tie),  11)
 
   expect_equal(sum(bimpre (dat=ZickeZacke,
                            GT=c("Zicke","Zacke","Huehner","Kacke" ),

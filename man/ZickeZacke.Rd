@@ -5,7 +5,7 @@
 \alias{ZickeZacke}
 \title{ZickeZacke example data}
 \format{
-A data frame with 32 rows and 5 variables:
+A data frame with 30 rows and 5 variables:
 \describe{
 \item{subjectID}{animal or subject ID}
 \item{optionA}{First item presented to the subject}
@@ -23,6 +23,7 @@ ZickeZacke
 \description{
 An example data set with artificial preference test data.
 The 'HoiHoiHoi' item contains 1 tie to have variance for
-a simulation
+a simulation. Also, the 'HoiHoiHoi' item lacks two measurements for the
+subject 'drei'.
 }
 \keyword{datasets}

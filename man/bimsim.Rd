@@ -8,8 +8,9 @@ bimsim(
   rawdat = NULL,
   GT = GT,
   simOpt = simOpt,
+  filter.crit = "CE",
   limitToRun = 5,
-  fval = 100,
+  tcut = 0.9,
   deviation = 0,
   minQuantity = 0,
   seed = TRUE,
@@ -25,17 +26,21 @@ bimsim(
 \item{simOpt}{item to be checked (this can be an item from the GT or a new
 one. Remove the item from GT if specified here!)}
 
+\item{filter.crit}{the filter criterion for the plot (defaults to "CE":
+consensus error; alternatively the intransitivity ratio (Iratio) can be
+shown)}
+
 \item{limitToRun}{limit to this number of repetitions for the randomizations
 (default 5, you'll probably need more)}
 
-\item{fval}{filter value for consensus error (default = 100 for
-100\% of all errors), the lower the value the more informed the
+\item{tcut}{threshold cutoff for the filter.crit variable (default = 1 for
+100\% of all values), the lower the tcut value, the more informed the
 positioning becomes}
 
 \item{deviation}{how much deviation is allowed for marking ties
-(default is 0 which translates to 50\%)}
+(default is 0 which translates to 50\%; deviation =5 adds 5\% to 50\% = 55\%)}
 
-\item{minQuantity}{minimum quantitiy to be recognized as difference
+\item{minQuantity}{minimum quantity to be recognized as difference
 (default is 0)}
 
 \item{seed}{use constant seeding for stable plot results (default=TRUE)}

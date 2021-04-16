@@ -8,7 +8,7 @@
 #' @param simOpt item to be checked (this can be an item from the GT or a new
 #' @param coverage the threshold for the ratio of tested subjects per total subjects (default=0.8)
 #' @param worth the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!
-#' @param filtersim exclude the simulated items from the evaluation function (defaults to TRUE)
+#' @param filtersim exclude the simulated items from the evaluation function (defaults to FALSE)
 #' @param showPlot plot the worth plot as a bubble plot with consensus errors
 #' @param title plot title (default: "Consensus Analysis")
 #' @param subtitle plot subtitle (if NULL, a default will be used)
@@ -52,12 +52,60 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     TT <- NULL
     for(i in 1:length(unique(predat$test))){
       tt <- data.frame(test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"])),
-                       pct_first      = sum(predat[predat$test==unique(predat$test)[i], ]$result== 1) / length(unique(predat$subjectID))*100,
+                       pct_first      = ifelse(predat[predat$test==unique(predat$test)[i],    ]$result== 0,
+                                               0,
+                                               sum(predat[predat$test==unique(predat$test)[i],    ]$result== 1) / length(unique(predat$subjectID))*100),
                        pct_second     = ifelse(predat[predat$test==unique(predat$test)[i], ]$result ==0,
                                                0,
                                                100 - (sum(predat[predat$test==unique(predat$test)[i], ]$result== 1) / length(unique(predat$subjectID))*100)))
       TT <- rbind(TT, tt)
     }
+
+
+
+
+   # sum(predat[predat$test==unique(predat$test)[i],    ]$result== 1) / length(unique(predat$subjectID))*100,
+
+    # # per item & then per subject test
+    # TT <- NULL
+    # for(i in 1:length(unique(predat$test))){
+    #
+    #   set    <- predat[predat$test==unique(predat$test)[i],]
+    #   dimset <- dim(set)[1]
+    #
+    #
+    #   for(j in 1:length(unique(set$subjectID))){
+    #
+    #    if((set[set$subjectID == unique(set$subjectID[j]), "quantityA" ] +
+    #        set[set$subjectID == unique(set$subjectID[j]), "quantityB" ])==0){
+    #
+    #      pfirst  <- 0
+    #      psecond <- 0
+    #
+    #    }else{
+    #
+    #      if(set[set$subjectID == unique(set$subjectID[j]), "result" ]==1){
+    #
+    #        pfirst  <- sum(set[set$subjectID == unique(set$subjectID[j]), "result" ]== 1) /dimset
+    #        psecond <- 1-pfirst
+    #
+    #      }else{
+    #        psecond  <- sum(set[set$subjectID == unique(set$subjectID[j]), "result" ]==-1) /dimset
+    #        pfirst   <- 1-psecond
+    #      }
+    #    }
+    #
+    #     tt <- data.frame(test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"])),
+    #                      pct_first      = pfirst*100,
+    #                      pct_second     = psecond*100)
+    #     TT <- rbind(TT, tt)
+    #
+    #   }
+    #
+    # }
+    #
+
+
 
 
     # side is present
@@ -94,7 +142,9 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
       no_side[,"sideA"] <- NULL
 
       tt <- data.frame(test           = test,
-                       pct_first      = sum(no_side$result== 1) / length(unique(no_side$subjectID))*100,
+                       pct_first      = ifelse(no_side$result== 0,
+                                               0,
+                                               sum(no_side$result== 1) / length(unique(no_side$subjectID))*100),
                        pct_second     = ifelse(no_side[no_side$test %in% unique(no_side$test), ]$result ==0,
                                                0,
                                                100 - (sum(no_side[no_side$test %in% unique(no_side$test), ]$result== 1) / length(unique(no_side$subjectID))*100)))
@@ -103,33 +153,36 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     }
 
   }
+# sum(no_side$result== 1) / length(unique(no_side$subjectID))*100,
 
 
 
 
 
 
+
+  # 1. CE bestimmen und 2. wie viel weichen ab?
   # check subjects data coverage - results may be underrepresented!
-  BB        <- predat[grepl(simOpt,predat$test, fixed = TRUE),  ]
-  provided  <- length(unique(BB$subjectID[BB$tie == FALSE   ]))
-  simulated <- length(unique(BB$subjectID[BB$tie != FALSE   ]))
-  subjratio <- provided/(simulated + provided)
+  BB              <- predat[grepl(simOpt,predat$test, fixed = TRUE),  ]
+  provided        <- length(unique(BB$subjectID [BB$sim == FALSE   ]))
+  simulated       <- length( unique(BB$subjectID[BB$sim != FALSE   ]) )
+  subjratio       <- provided/ (simulated )
 
   # item coverage
   II              <- predat[grepl(simOpt, predat$test, fixed = TRUE),]
-  items_provided  <- length(unique(II$test [II$tie == FALSE   ]))
-  items_simulated <- length(unique(II$test [II$tie != FALSE   ]))
-  itemratio       <- items_provided/(items_simulated + items_provided)
-
-
+  items_provided  <- length(unique(II$test [II$sim == FALSE   ]))
+  items_simulated <- length(unique(II$test [II$sim != FALSE   ]))
+  itemratio       <- items_provided/(items_simulated)
 
 
   # warning: too few subjects
   if((subjratio)<coverage){
     warning(paste("simsalRbim: ","No. of SUBJECTS WARNING!
-                The number of subjects you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
+                The number of subjects you have provided for testing the
+                simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of subjects.
-                You are currently below ", coverage*100, "% data coverage for that item.
+                You are currently below ", coverage*100, "% data coverage for
+                that item.
                 The consensus error may be biased!
                 Your provided-to-simulated subjects ratio is at: ",
                   round(subjratio,4) * 100, "%.\n", sep=""))
@@ -139,9 +192,11 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
   # warning if too few item combinations
   if((itemratio)<coverage){
   warning(paste("simsalRbim: ","No. of ITEMS WARNING!
-                The number of item tests you have provided for testing the simOpt=", "'", simOpt,"'" ," item is probably insufficient!
+                The number of item tests you have provided for testing the
+                simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of item combinations.
-                You are currently below ", coverage*100, "% item coverage for that item.
+                You are currently below ", coverage*100, "% item coverage for
+                that item.
                 The consensus error may be biased!
                 Your provided-to-simulated items ratio is at: ",
                 round(itemratio,4) * 100, "%.\n", sep=""))
@@ -172,6 +227,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     upr        <- mean_delta + qt(0.975,df=length(liste$delta)-1)*sd  (liste$delta, na.rm = TRUE)/sqrt(length(liste$delta))
 
     weights    <- rbind(weights, data.frame(item       = optionlist[j],
+                                            n          = n_delta,
                                             mean_delta = mean_delta))#,
                                             #sd_delta   = sd_delta,
                                             #n          = n_delta,
@@ -232,10 +288,10 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     p <- p + theme(axis.text.x = element_blank())
     print(p)
 
-    return(list(errors=W[,-5],p=p))
+    return(list(errors=W,p=p))
 
   }else{
-    return(errors=W[,-5])
+    return(errors=W)
   }
 
 }
