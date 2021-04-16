@@ -23,6 +23,7 @@ bimload <- function(filename) {
   # Helperfunction.
   printf <- function(...) cat(sprintf(...))
 
+  tdata <- read.table(file=filename, header=FALSE, sep="\t", fill=TRUE)
 
   # check if a data.frame is provided (i.e., from a direct GitHub download)
   # if(is.data.frame(filename)){
