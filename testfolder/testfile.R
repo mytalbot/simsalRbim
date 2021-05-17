@@ -1,9 +1,13 @@
+
 library(simsalRbim)
+
+# Bubblesize umdrehen in certainty
+
 
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
 simOpt     <- "Zicke"
-GT         <- c("Zacke", "Huehner", "Kacke")
+GT         <- c("Huehner", "Kacke", "Zacke")
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt )
 
@@ -27,10 +31,11 @@ w_errors
 
 
 # ZickeZacke w/ HoiHoiHoi item  -------------------------------------------
+library(simsalRbim)
+
 dat        <- ZickeZacke
 simOpt     <- "HoiHoiHoi"
-GT         <- c("Huehner", "Kacke", "Zacke","Zicke")
-
+GT         <- c("Zicke","Zacke","Huehner", "Kacke")
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt)
 
 worth      <- bimworth(ydata    = predat,

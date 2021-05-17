@@ -40,7 +40,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   worth <- NULL
 
   # Decision Ratio (a quality estimatation)
-  Dratio = sum(ydata$result==1)/sum(ydata$result==-1)
+  #Dratio = sum(ydata$result==1)/sum(ydata$result==-1)
 
   # create the item list
   optionList <- c(GT, simOpt)
@@ -184,7 +184,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   }else{}
 
   if(intrans==TRUE){
-    return(list(worth=hworY, I=I, Dratio=Dratio))
+    return(list(worth=hworY, I=I))
   }else{
     return(worth=hworY)
   }

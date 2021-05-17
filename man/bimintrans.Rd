@@ -7,8 +7,8 @@
 bimintrans(
   dat = NULL,
   idcolumn = "subjectID",
-  I2 = "optionA",
-  I1 = "optionB",
+  I1 = "optionA",
+  I2 = "optionB",
   response = "result"
 )
 }
@@ -17,9 +17,9 @@ bimintrans(
 
 \item{idcolumn}{variable name for the ID column (default is subjectID)}
 
-\item{I2}{item 2 - optionA}
-
 \item{I1}{item 1 - optionB}
+
+\item{I2}{item 2 - optionA}
 
 \item{response}{response column}
 }

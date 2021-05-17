@@ -15,7 +15,7 @@
 
 
 # Intransitivity Function -------------------------------------------------
-bimintrans <- function(dat=NULL, idcolumn="subjectID", I2="optionA", I1="optionB", response="result"){
+bimintrans <- function(dat=NULL, idcolumn="subjectID",  I1="optionA",  I2="optionB", response="result"){
 
   # make global settings local
   vIMG1       <- which(names(dat)==I1)
@@ -42,6 +42,7 @@ bimintrans <- function(dat=NULL, idcolumn="subjectID", I2="optionA", I1="optionB
   intranscount<-0
   tripletcount<-0
 
+
   for(thisID in uIDs)
   {
     thisData   <- subset(dat, dat[names(dat)==idcolumn]==thisID)
@@ -60,45 +61,56 @@ bimintrans <- function(dat=NULL, idcolumn="subjectID", I2="optionA", I1="optionB
           for(count in 1:lenDataset)
           {
 
+            # ##find i1 vs i2
+            # if (thisData[count,vIMG1]==firstI & thisData[count, vIMG2]==secondI) {
+            # }else if (thisData[count, resVar]==1)  {
+            #   AoverB <- 1
+            # }else {AoverB<-0}
+            #
+            # if (thisData[count,vIMG1]==secondI & thisData[count, vIMG2]==firstI) {
+            # }else if (thisData[count, resVar]==0)  {
+            #   AoverB<-1
+            # }else {AoverB<-0}
+            #
+            # ##find i2 vs i3
+            # if (thisData[count,vIMG1]==secondI & thisData[count, vIMG2]==thirdI) {
+            # }else if (thisData[count, resVar]==1)  {
+            #   BoverC<-1
+            # }else {BoverC<-0}
+            #
+            # if (thisData[count,vIMG1]==thirdI & thisData[count, vIMG2]==secondI) {
+            # }else if (thisData[count, resVar]==0)  {
+            #   BoverC<-1
+            # }else {BoverC<-0}
+            #
+            # ##find i3 vs i1
+            # if (thisData[count,vIMG1]==thirdI & thisData[count, vIMG2]==firstI) {
+            # }else if (thisData[count, resVar]==1)  {
+            #   CoverA<-1
+            # }else {CoverA<-0}
+            #
+            # if (thisData[count,vIMG1]==firstI & thisData[count, vIMG2]==thirdI) {
+            # }else if (thisData[count, resVar]==0)  {
+            #   CoverA<-1
+            # }else {CoverA<-0}
+
+
             #find i1 vs i2
-            if (thisData[count,vIMG1]==firstI & thisData[count, vIMG2]==secondI) {
-            }else if (thisData[count, resVar]==1)  {
-              AoverB <- 1
-            }else {AoverB<-0}
-
-            if (thisData[count,vIMG1]==secondI & thisData[count, vIMG2]==firstI) {
-            }else if (thisData[count, resVar]==0)  {
-              AoverB<-1
-            }else {AoverB<-0}
-
+            if(thisData[count,vIMG1]==firstI  & thisData[count,vIMG2]==secondI) if(thisData[count,resVar]==1) AoverB=1 else AoverB=0 # A>B
+            if(thisData[count,vIMG1]==secondI & thisData[count,vIMG2]==firstI)  if(thisData[count,resVar]==-1) AoverB=1 else AoverB=0 # A>B
             #find i2 vs i3
-            if (thisData[count,vIMG1]==secondI & thisData[count, vIMG2]==thirdI) {
-            }else if (thisData[count, resVar]==1)  {
-              BoverC<-1
-            }else {BoverC<-0}
-
-            if (thisData[count,vIMG1]==thirdI & thisData[count, vIMG2]==secondI) {
-            }else if (thisData[count, resVar]==0)  {
-              BoverC<-1
-            }else {BoverC<-0}
-
+            if(thisData[count,vIMG1]==secondI & thisData[count,vIMG2]==thirdI)  if(thisData[count,resVar]==1) BoverC=1 else BoverC=0 # A>B
+            if(thisData[count,vIMG1]==thirdI  & thisData[count,vIMG2]==secondI) if(thisData[count,resVar]==-1) BoverC=1 else BoverC=0 # A>B
             #find i3 vs i1
-            if (thisData[count,vIMG1]==thirdI & thisData[count, vIMG2]==firstI) {
-            }else if (thisData[count, resVar]==1)  {
-              CoverA<-1
-            }else {CoverA<-0}
-
-            if (thisData[count,vIMG1]==firstI & thisData[count, vIMG2]==thirdI) {
-            }else if (thisData[count, resVar]==1)  {
-              CoverA<-1
-            }else {CoverA<-0}
+            if(thisData[count,vIMG1]==thirdI  & thisData[count,vIMG2]==firstI)  if(thisData[count,resVar]==1) CoverA=1 else CoverA=0 # A>B
+            if(thisData[count,vIMG1]==firstI  & thisData[count,vIMG2]==thirdI)  if(thisData[count,resVar]==-1) CoverA=1 else CoverA=0 # A>B
 
           }
 
           #Invalid cases (A>B)&(B>C)&(C>A) OR (B>A)&(C>B)&(A>C)
           if(AoverB & BoverC & CoverA)
           {
-            #print(paste(thisID,":",firstI,">",secondI,">",thirdI,">",firstI, "(clockwise A>B>C>A)"))
+           #print(paste(thisID,":",firstI,">",secondI,">",thirdI,">",firstI, "(clockwise A>B>C>A)"))
             intranscount<-intranscount+1
           }
           if(!AoverB & !BoverC & !CoverA)
@@ -112,7 +124,8 @@ bimintrans <- function(dat=NULL, idcolumn="subjectID", I2="optionA", I1="optionB
     }
   }
 
-  icount <- tripletcount -intranscount
+   icount <- intranscount# tripletcount- (tripletcount - intranscount)# tripletcount -intranscount
+
   # print(paste(intranscount, "intransitive triplets from ", tripletcount, "total triplets"))
   return(list(intranscount = icount,
               no_tripl     = tripletcount,
