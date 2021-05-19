@@ -63,6 +63,7 @@ devtools, remove the hashtag in the first line.)
 "stringr"[@stringrcite]  
 "viridis"[@viridiscite]  
 "ggrepel"[@ggrepelcite]   
+"testthat"[@testthatcite]  
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.  
@@ -248,13 +249,14 @@ The `bimsim` function performs an informed position simulation of variable
 preference test data. The `limitToRun` argument from the `bimUninformed` output 
 can be used as an estimate for the required number of randomizations. The 
 `tcut` argument sets the cutoff for showing the consensus error (%, CE) of the 
-results in the plot **OR** the intransitivity ratio (Iratio). The selection
-depends on the `filter.crit` paramter ("CE" or "Iratio"). In both cases tcut=0.9
-means that 90% values above 90% are not shown. The more
-stringent (= lower tcut) the criterion, the more informed the simulation
+results in the plot **OR** the transitivity ratio (1-Iratio). The selection
+depends on the `filter.crit` parameter ("CE" or "Iratio"), where tcut=0.95 
+results in a 95% cutoff. The more stringent (= higher tcut in case of 
+transitivity ratios) the criterion, the more informed the simulation
 becomes. The output is a frequency distribution of `simOpts` preferred position
 at the given `tcut`. The plot shows the worth value of the `simOpt` item as 
-a function of its position. The bubblesizes code for the consensus error.
+a function of its position. The bubblesizes code for the consensus error/
+transitivity ratio. 
 
 
 ## References

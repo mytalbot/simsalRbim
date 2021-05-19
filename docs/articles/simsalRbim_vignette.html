@@ -97,7 +97,7 @@
                         <h4 class="author">Dana Pfefferle</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2021-05-17</h4>
+            <h4 class="date">2021-05-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -127,7 +127,8 @@
 “rlang”<span class="citation">[6]</span><br>
 “stringr”<span class="citation">[7]</span><br>
 “viridis”<span class="citation">[8]</span><br>
-“ggrepel”<span class="citation">[9]</span></p>
+“ggrepel”<span class="citation">[9]</span><br>
+“testthat”<span class="citation">[10]</span></p>
 <p>The following function can be used to install single packages - or just the missing ones from CRAN.</p>
 <pre class="{r"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("paste missing package name here")
 </a></code></pre>
@@ -224,7 +225,7 @@ bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)</a></code>
 <pre><code><a href="../reference/bimsim.html"># bimsim - informed position simulation
 bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE", limitToRun=5,
 tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
-<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>tcut</code> argument sets the cutoff for showing the consensus error (%, CE) of the results in the plot <strong>OR</strong> the intransitivity ratio (Iratio). The selection depends on the <code>filter.crit</code> paramter (“CE” or “Iratio”). In both cases tcut=0.9 means that 90% values above 90% are not shown. The more stringent (= lower tcut) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>tcut</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error.</p>
+<p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>tcut</code> argument sets the cutoff for showing the consensus error (%, CE) of the results in the plot <strong>OR</strong> the transitivity ratio (1-Iratio). The selection depends on the <code>filter.crit</code> parameter (“CE” or “Iratio”), where tcut=0.95 results in a 95% cutoff. The more stringent (= higher tcut in case of transitivity ratios) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>tcut</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error/ transitivity ratio.</p>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
@@ -257,6 +258,9 @@ tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a
 </div>
 <div id="ref-ggrepelcite">
 <p>9. Slowikowski K: <em>Ggrepel: Automatically position non-overlapping text labels with ’ggplot2’</em>. 2021.</p>
+</div>
+<div id="ref-testthatcite">
+<p>10. Wickham H: <strong>Testthat: Get started with testing</strong>. <span class="csl-baseline"><em>The R Journal</em></span> 2011, <strong>3</strong>:5–10.</p>
 </div>
 </div>
 </div>

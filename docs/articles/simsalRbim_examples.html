@@ -360,7 +360,7 @@ Kacke
 <div id="example-3---informed-item-position-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-3---informed-item-position-simulation" class="anchor"></a>Example 3 - informed item position simulation</h2>
-<p>In the last example, we will perform an <strong>informed</strong> simulation of the data, including incomplete binary comparisons. In an informed simulation, transitive choices and a defined maximum of intransitive choices are considered. The user can opt between two evaluation metrics and/or can make an informed decision based on both. With <code>filter.crit</code> object, either the consensus error (“CE”) or the standardized intransitivity ratio (“Iratio”) is shown. This way, we can estimate which choices were inconsistent and include this in our evaluation. We use a frequency distribution to decide on the most likely position of items.</p>
+<p>In the last example, we will perform an <strong>informed</strong> simulation of the data, including incomplete binary comparisons. In an informed simulation, transitive choices and a defined maximum of intransitive choices are considered. The user can opt between two evaluation metrics and/or can make an informed decision based on both. With <code>filter.crit</code> object, either the consensus error (“CE”) or the standardized transitivity ratio (“1-Iratio”) is shown. This way, we can estimate which choices were inconsistent and include this in our evaluation. We use a frequency distribution to decide on the most likely position of the simulated item.</p>
 <div id="example-simulation-using-the-consensus-error-ce" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-simulation-using-the-consensus-error-ce" class="anchor"></a>Example Simulation using the Consensus Error (CE)</h3>
@@ -371,7 +371,7 @@ Kacke
                      simOpt      <span class="op">=</span> <span class="va">simOpt</span>,
                      filter.crit <span class="op">=</span> <span class="st">"CE"</span>,
                      limitToRun  <span class="op">=</span> <span class="fl">65</span>, 
-                     tcut        <span class="op">=</span> <span class="fl">0.9</span>,
+                     tcut        <span class="op">=</span> <span class="fl">0.6</span>,
                      ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
@@ -390,7 +390,7 @@ Frequency
 1
 </td>
 <td style="text-align:right;">
-0.0154
+0.0156
 </td>
 </tr>
 <tr>
@@ -398,7 +398,7 @@ Frequency
 2
 </td>
 <td style="text-align:right;">
-0.7385
+0.7344
 </td>
 </tr>
 <tr>
@@ -406,7 +406,7 @@ Frequency
 3
 </td>
 <td style="text-align:right;">
-0.2000
+0.2031
 </td>
 </tr>
 <tr>
@@ -414,7 +414,7 @@ Frequency
 4
 </td>
 <td style="text-align:right;">
-0.0462
+0.0469
 </td>
 </tr>
 </tbody>
@@ -430,7 +430,7 @@ Frequency
                      simOpt      <span class="op">=</span> <span class="va">simOpt</span>,
                      filter.crit <span class="op">=</span> <span class="st">"Iratio"</span>,
                      limitToRun  <span class="op">=</span> <span class="fl">65</span>, 
-                     tcut        <span class="op">=</span> <span class="fl">0.9</span>,
+                     tcut        <span class="op">=</span> <span class="fl">0.95</span>,
                      ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>

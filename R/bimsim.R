@@ -126,33 +126,62 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
   # adapt the legend label
   if (filter.crit == "CE") {
     legend.label  = "Consensus Error (CE)"
+
+    # plot CR
+    p  <- D %>%
+      filter(item %in% simOpt) %>%
+      filter(get(filter.crit)  <= tcut) %>%
+      ggplot(aes(x=factor(pos), y=worth)) +
+      geom_jitter( aes(size =  get(filter.crit), fill=get(filter.crit) ),
+                   shape = 21, alpha = 0.7, width=0.2) +
+      ylim(ylim) +
+      scale_fill_viridis_c(guide = "legend") +
+      scale_size_continuous(range = c(0, L+1  )) + # adjust this
+      xlab("Position") +
+      ylab("Mean Worth Value")   +
+      labs(title    = "Informed position simulation",
+           subtitle = paste("Item: ", simOpt, " at ", limitToRun,
+                            " randomizations (", filter.crit," cutoff=",
+                            tcut*100,"%).", sep="")) +
+      theme_bw() +
+      theme(axis.title.x = element_text(hjust= 0.5)) +
+      theme(axis.title.y = element_text(hjust= 0.5)) +
+      scale_x_discrete(limits = factor(1:L ))
+    p <- p +  theme(legend.position  = "top")
+    p <- p + labs(fill = legend.label, size=legend.label)
+
+
   } else if (filter.crit == "Iratio") {
-    legend.label  = "Intransitivity Ratio (Iratio)"
+    legend.label  = "Transitivity Ratio (1-Iratio)"
+
+    # plot IRatio
+    D <- D %>%
+      mutate(D, trRatio= 1-Iratio)
+
+    p  <- D %>%
+      filter(item %in% simOpt) %>%
+      filter(trRatio  >= tcut) %>%
+      ggplot(aes(x=factor(pos), y=worth)) +
+      geom_jitter( aes(size = trRatio, fill=trRatio ),
+                   shape = 21, alpha = 0.7, width=0.2) +
+      ylim(ylim) +
+
+      scale_fill_viridis_c(guide = "legend" ) +
+         scale_size_continuous(range = c(1, L +1 )) + # adjust this
+      xlab("Position") +
+      ylab("Mean Worth Value")   +
+      labs(title    = "Informed position simulation",
+           subtitle = paste("Item: ", simOpt, " at ", limitToRun,
+                            " randomizations (1-", filter.crit," cutoff=",
+                            tcut*100,"%).", sep="")) +
+      theme_bw() +
+      theme(axis.title.x = element_text(hjust= 0.5)) +
+      theme(axis.title.y = element_text(hjust= 0.5)) +
+      scale_x_discrete(limits = factor(1:L ))
+    p <- p +  theme(legend.position  = "top")
+    p <- p + labs(fill = legend.label, size=legend.label)
+
   }
-
-
-  # plot
-  p  <- D %>%
-    filter(item %in% simOpt) %>%
-    filter(get(filter.crit)  <= tcut) %>%
-    ggplot(aes(x=factor(pos), y=worth)) +
-    geom_jitter( aes(size =  get(filter.crit), fill=get(filter.crit) ),
-                 shape = 21, alpha = 0.7, width=0.2) +
-    ylim(ylim) +
-    scale_fill_viridis_c(guide = "legend") +
-    scale_size_continuous(range = c(0, L+1  )) + # adjust this
-    xlab("Position") +
-    ylab("Mean Worth Value")   +
-    labs(title    = "Informed position simulation",
-         subtitle = paste("Item: ", simOpt, " at ", limitToRun,
-                          " randomizations (", filter.crit," cutoff=",
-                          tcut*100,"%).", sep="")) +
-    theme_bw() +
-    theme(axis.title.x = element_text(hjust= 0.5)) +
-    theme(axis.title.y = element_text(hjust= 0.5)) +
-    scale_x_discrete(limits = factor(1:L ))
-  p <- p +  theme(legend.position  = "top")
-  p <- p + labs(fill = legend.label, size=legend.label)
 
 
   if(showPlot==TRUE){

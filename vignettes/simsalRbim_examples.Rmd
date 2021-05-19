@@ -222,10 +222,10 @@ including incomplete binary comparisons. In an informed simulation, transitive
 choices and a defined maximum of intransitive choices are considered. The user 
 can opt between two evaluation metrics and/or can make an informed decision 
 based on both. With `filter.crit` object, either the consensus error ("CE") or
-the standardized intransitivity ratio ("Iratio") is shown.
+the standardized transitivity ratio ("1-Iratio") is shown.
 This way, we can estimate which choices were inconsistent and include this
 in our evaluation. We use a frequency distribution to decide on the most likely
-position of items.
+position of the simulated item.
  
 
 ### Example Simulation using the Consensus Error (CE)
@@ -236,7 +236,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      simOpt      = simOpt,
                      filter.crit = "CE",
                      limitToRun  = 65, 
-                     tcut        = 0.9,
+                     tcut        = 0.6,
                      ylim        = c(0,0.45))
 ```
 
@@ -255,7 +255,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      simOpt      = simOpt,
                      filter.crit = "Iratio",
                      limitToRun  = 65, 
-                     tcut        = 0.9,
+                     tcut        = 0.95,
                      ylim        = c(0,0.45))
 ```
 

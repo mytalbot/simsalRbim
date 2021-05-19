@@ -45,7 +45,8 @@ reshape2
 rlang  
 stringr  
 viridis  
-ggrepel
+ggrepel  
+testthat (suggested)
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.

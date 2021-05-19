@@ -72,7 +72,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.9,
+                     tcut        = 0.95,
                      filter.crit ="Iratio",
                      ylim        = c(0,0.45))
 frqnc$frq
@@ -83,7 +83,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.9,
+                     tcut        = 0.6,
                      filter.crit ="CE",
                      ylim        = c(0,0.45))
 frqnc$frq
