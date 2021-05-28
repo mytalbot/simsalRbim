@@ -46,7 +46,7 @@ rlang
 stringr  
 viridis  
 ggrepel  
-testthat (suggested)
+testthat
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.
