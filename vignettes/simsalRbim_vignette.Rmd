@@ -249,10 +249,10 @@ The `bimsim` function performs an informed position simulation of variable
 preference test data. The `limitToRun` argument from the `bimUninformed` output 
 can be used as an estimate for the required number of randomizations. The 
 `tcut` argument sets the cutoff for showing the consensus error (%, CE) of the 
-results in the plot **OR** the transitivity ratio (1-Iratio). The selection
-depends on the `filter.crit` parameter ("CE" or "Iratio"), where tcut=0.95 
-results in a 95% cutoff. The more stringent (= higher tcut in case of 
-transitivity ratios) the criterion, the more informed the simulation
+simulated results in the plot **OR** the transitivity ratios (1-Iratio). 
+The selection depends on the `filter.crit` parameter ("CE" or "Iratio"), i.e.,
+tcut=0.95 results in a 95% cutoff. The more stringent (= higher tcut in
+case of transitivity ratios) the criterion, the more informed the simulation
 becomes. The output is a frequency distribution of `simOpts` preferred position
 at the given `tcut`. The plot shows the worth value of the `simOpt` item as 
 a function of its position. The bubblesizes code for the consensus error/

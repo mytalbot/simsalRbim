@@ -33,9 +33,10 @@ shown)}
 \item{limitToRun}{limit to this number of repetitions for the randomizations
 (default 5, you'll probably need more)}
 
-\item{tcut}{threshold cutoff for the filter.crit variable (default = 1 for
-100\% of all values), the lower the tcut value, the more informed the
-positioning becomes}
+\item{tcut}{threshold (cutoff) for the filter.crit variable (default = 1 for
+100\% of the values); i.e., when filter.crit="CE" and tcut=0.9, the plot will
+show 90\% of the consensus errors. When filter.crit="Iratio" and tcut =0.9,
+the plot will show items with transitivities > 90\%.}
 
 \item{deviation}{how much deviation is allowed for marking ties
 (default is 0 which translates to 50\%; deviation =5 adds 5\% to 50\% = 55\%)}
