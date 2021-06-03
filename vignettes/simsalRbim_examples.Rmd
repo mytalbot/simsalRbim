@@ -255,7 +255,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      simOpt      = simOpt,
                      filter.crit = "Iratio",
                      limitToRun  = 65, 
-                     tcut        = 0.95,
+                     tcut        = 0.80,
                      ylim        = c(0,0.45))
 ```
 

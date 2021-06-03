@@ -65,8 +65,7 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
     nosim   <- predat[predat$sim==FALSE, ]
     simdat  <- predat[predat$sim==TRUE,  ]
     simdat$result  <- sample(c(0,1,-1), replace=TRUE, length(simdat$result))
-    ydata   <- rbind(nosim, simdat)
-    #ydata
+    ydata          <- rbind(nosim, simdat)
 
     worth      <- bimworth(ydata    = ydata,
                            GT       = GT,
@@ -189,12 +188,26 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
     print(p)
   }else{}
 
+
+  # filter differently!
+  if (filter.crit == "CE") {
   fltrd <- D %>%
     filter(item %in% simOpt) %>%
     filter(CE <= tcut)
 
-  frq   <- round(table(fltrd$pos) / sum(table(fltrd$pos)),4)
+    frq   <-  table(fltrd$pos) / sum(table(fltrd$pos))
 
-  return(list(frq=frq, p=p))
+  }else{
+    fltrd <- D %>%
+      filter(item %in% simOpt) %>%
+      filter(trRatio >= tcut)
+
+    frq   <-  table(fltrd$pos) / sum(table(fltrd$pos))
+  }
+
+
+
+
+  return(list(D=D, frq=frq, p=p))
 }
 

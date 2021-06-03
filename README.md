@@ -62,7 +62,7 @@ GitHub with the following command.
 
 ``` {r
 # install.packages("devtools")
-devtools::install_github("mytalbot/simsalRbim")
+devtools::install_github("mytalbot/simsalRbim@main")
 library(simsalRbim)
 ```
 

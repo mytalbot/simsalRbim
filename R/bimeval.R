@@ -241,7 +241,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
 
   #W <- label <- NULL
   W$CE           <- round((50-W$mean_delta)/50*100,2) # consensus error!
-  W$label        <- paste(W$item," ", round((50-W$mean_delta)/50*100,2), "%",sep="")
+  W$label        <- paste(W$item," (CE=", round((50-W$mean_delta)/50*100,2), "%)",sep="")
 
 
 
@@ -250,7 +250,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
   if(showPlot==TRUE){
 
     # subtitle changes at user input
-    if(length(subtitle)==0){
+    if(length(subtitle)!=0){
       subtitle <- paste("Bubble sizes indicate uncertainty in item choice (total=",round(mean(W$CE),2),"%)",sep="")
     }else{
       subtitle <- subtitle

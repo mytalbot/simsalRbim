@@ -23,10 +23,31 @@ w_errors   <- bimeval(ydata     = predat,
                       worth     = worth$worth,
                       GT        = GT,
                       simOpt    = simOpt,
-                      showPlot  = TRUE  )
+                      showPlot  = TRUE,
+                      ylim      = c(0,0.45))
 
 # remember: we want mean_delta to be high (close to 50%)
 w_errors
+
+
+
+
+### Wishlist umsetzen
+p <- w_errors$p
+
+
+p <- p + theme(plot.title        = element_text(hjust = 0.5))
+p <- p +  theme(legend.position  = "bottom", legend.justification = c("left"))
+p <- p+ labs(title = "Very important title") +
+  theme(plot.title = element_text(hjust = 0.5) )
+p <- p + annotate("text", x = 0.6, y = 0.44, size=4.5,
+                  label = paste("Mean CE=",round(mean(w_errors$errors$CE),2),"% ",sep=""))
+p
+
+
+
+
+
 
 
 
@@ -50,8 +71,24 @@ w_errors   <- bimeval(ydata     = predat,
                       worth     = worth$worth,
                       GT        = GT,
                       simOpt    = simOpt,
-                      showPlot  = TRUE )
+                      showPlot  = TRUE ,
+                      subtitle  = NULL,
+                      ylim      = c(0,1))
 w_errors
+
+
+p <- w_errors$p
+
+
+p <- p + theme(plot.title        = element_text(hjust = 0.5))
+p <- p +  theme(legend.position  = "bottom", legend.justification = c("left"))
+p <- p+ labs(title = "Very important title") +
+  theme(plot.title = element_text(hjust = 0.5) )
+p <- p + annotate("text", x = 0.6, y = 0.44, size=4.5,
+                  label = paste("Mean CE=",round(mean(w_errors$errors$CE),2),"% ",sep=""))
+p
+
+
 
 
 # uninformed simulation  - cutoff determination
@@ -72,7 +109,7 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.95,
+                     tcut        = 0.8,
                      filter.crit ="Iratio",
                      ylim        = c(0,0.45))
 frqnc$frq
@@ -83,10 +120,12 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.6,
+                     tcut        = 0.5,
                      filter.crit ="CE",
                      ylim        = c(0,0.45))
 frqnc$frq
+
+
 
 
 
@@ -113,6 +152,16 @@ w_errors   <- bimeval(ydata     = predat,
                       ylim      = c(0, 0.45))
 w_errors
 
+p <- w_errors$p
+
+
+p <- p + theme(plot.title        = element_text(hjust = 0.5))
+p <- p +  theme(legend.position  = "bottom", legend.justification = c("left"))
+p <- p+ labs(title = "Very important title") +
+  theme(plot.title = element_text(hjust = 0.5) )
+p <- p + annotate("text", x = 0.6, y = 0.44, size=4.5,
+                  label = paste("Mean CE=",round(mean(w_errors$errors$CE),2),"% ",sep=""))
+p
 
 
 
