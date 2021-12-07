@@ -78,8 +78,6 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   h1Y        <- gnm(formula, data = modelY, family = poisson  )
   #NOTE: last entry of optionList is the intercept
 
-
-
   # Show the model estimates with 95% CIs in a separate plot
   if(showPlot=="coef"){
 
@@ -148,10 +146,17 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
     }
 
     n    = dim(hworY)[1]
-    cols = gg_color_hue(n)
+    cols =  factor(gg_color_hue(n), levels=gg_color_hue(n))
+
+    # press into order and attribute colors - otherwise messed up!
+    df <- data.frame(hworY)
+    df <- df[order(df$worth, decreasing = TRUE), ,drop=F ]
+    cbind(df, cols=cols)
+
+
 
     # plotting the worth values
-    p <- ggplot(data.frame(hworY), aes(x=rep(1,dim(hworY)[1]), y=worth) ) +
+    p <- ggplot(df, aes(x=rep(1,dim(hworY)[1]), y=worth) ) +
       geom_line() +
       geom_point(color="black", shape=21, size=size, fill= cols, stroke=1.2  ) +
       labs(title     = "Preferences") +
@@ -163,7 +168,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
     p <- p + theme(legend.position         = "none")
 
-    p <- p + geom_label_repel(aes(label     = rownames(data.frame(hworY))),
+    p <- p + geom_label_repel(aes(label     = rownames(df)),
                               size          = 4,
                               box.padding   = unit(1.2, "lines"),
                               point.padding = unit(1.2, "lines"),
@@ -181,13 +186,22 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
     p <- p + theme(axis.text.x = element_blank())
     print(p)
 
-  }else{}
 
-  if(intrans==TRUE){
-    return(list(worth=hworY, I=I))
+    if(intrans==TRUE){
+      return(list(worth=hworY, I=I, p=p))
+    }else{
+      return(list(worth=hworY, p=p))
+    }
+
   }else{
-    return(worth=hworY)
+    if(intrans==TRUE){
+      return(list(worth=hworY, I=I))
+    }else{
+      return(worth=hworY)
+    }
   }
+
+
 }
 
 

@@ -5,15 +5,12 @@
 #' marked and the data are prepared in the correct order (pairings) according
 #' to the ground truth.
 #'
-#' @param dat curated data.frame obtained from the import function
-#' (unified format)
+#' @param dat curated data.frame obtained from the import function (unified format)
 #' @param GT item list with the ground truth (GT; letters are case sensitive!)
 #' @param simOpt item to be checked (this can be an item from the GT or a new
 #' one. Remove the item from GT if specified here!)
-#' @param deviation how much deviation is allowed for marking ties
-#' (default is 0 which translates to 50%)
-#' @param minQuantity minimum quantitiy to be recognized as difference
-#' (default is 0)
+#' @param deviation how much deviation is allowed for marking ties (default is 0 which translates to 50%)
+#' @param minQuantity minimum quantitiy to be recognized as difference (default is 0)
 #' @param verbose show function results
 #'
 #' @import utils

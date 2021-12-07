@@ -140,12 +140,12 @@
 <p>The second warning shows that the number of other items tested against the “HoiHoiHoi”-item may be too low. To get more reliable results, both values should be increased. For the sake of our example, we continue with the incomplete set of data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">w_errors</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimeval.html">bimeval</a></span><span class="op">(</span>ydata     <span class="op">=</span> <span class="va">predat</span>, 
-                      worth     <span class="op">=</span> <span class="va">worth</span>, 
+                      worth     <span class="op">=</span> <span class="va">worth</span><span class="op">$</span><span class="va">worth</span>, 
                       GT        <span class="op">=</span> <span class="va">GT</span>, 
                       simOpt    <span class="op">=</span> <span class="va">simOpt</span>,
                       showPlot  <span class="op">=</span> <span class="cn">TRUE</span>,
                       ylim      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of SUBJECTS WARNING!</span>
+<span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth$worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of SUBJECTS WARNING!</span>
 <span class="co">#&gt;                 The number of subjects you have provided for testing the</span>
 <span class="co">#&gt;                 simOpt='HoiHoiHoi' item is probably insufficient!</span>
 <span class="co">#&gt;                 Try increasing the number of subjects.</span>
@@ -153,7 +153,7 @@
 <span class="co">#&gt;                 that item.</span>
 <span class="co">#&gt;                 The consensus error may be biased!</span>
 <span class="co">#&gt;                 Your provided-to-simulated subjects ratio is at: 75%.</span>
-<span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of ITEMS WARNING!</span>
+<span class="co">#&gt; Warning in bimeval(ydata = predat, worth = worth$worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of ITEMS WARNING!</span>
 <span class="co">#&gt;                 The number of item tests you have provided for testing the</span>
 <span class="co">#&gt;                 simOpt='HoiHoiHoi' item is probably insufficient!</span>
 <span class="co">#&gt;                 Try increasing the number of item combinations.</span>
@@ -372,8 +372,7 @@ Kacke
                      filter.crit <span class="op">=</span> <span class="st">"CE"</span>,
                      limitToRun  <span class="op">=</span> <span class="fl">65</span>, 
                      tcut        <span class="op">=</span> <span class="fl">0.6</span>,
-                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_point).</span></code></pre></div>
+                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 <table class="table table">
 <thead><tr>
@@ -390,7 +389,7 @@ Frequency
 1
 </td>
 <td style="text-align:right;">
-0.015625
+0.0217391
 </td>
 </tr>
 <tr>
@@ -398,7 +397,7 @@ Frequency
 2
 </td>
 <td style="text-align:right;">
-0.734375
+0.7391304
 </td>
 </tr>
 <tr>
@@ -406,7 +405,7 @@ Frequency
 3
 </td>
 <td style="text-align:right;">
-0.203125
+0.1956522
 </td>
 </tr>
 <tr>
@@ -414,7 +413,7 @@ Frequency
 4
 </td>
 <td style="text-align:right;">
-0.046875
+0.0434783
 </td>
 </tr>
 </tbody>
@@ -431,8 +430,7 @@ Frequency
                      filter.crit <span class="op">=</span> <span class="st">"Iratio"</span>,
                      limitToRun  <span class="op">=</span> <span class="fl">65</span>, 
                      tcut        <span class="op">=</span> <span class="fl">0.80</span>,
-                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_point).</span></code></pre></div>
+                     ylim        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.45</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="simsalRbim_examples_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 <table class="table table">
 <thead><tr>
@@ -449,7 +447,7 @@ Frequency
 1
 </td>
 <td style="text-align:right;">
-0.0153846
+0.0163934
 </td>
 </tr>
 <tr>
@@ -457,7 +455,7 @@ Frequency
 2
 </td>
 <td style="text-align:right;">
-0.7384615
+0.6557377
 </td>
 </tr>
 <tr>
@@ -465,7 +463,7 @@ Frequency
 3
 </td>
 <td style="text-align:right;">
-0.2000000
+0.2950820
 </td>
 </tr>
 <tr>
@@ -473,7 +471,7 @@ Frequency
 4
 </td>
 <td style="text-align:right;">
-0.0461538
+0.0327869
 </td>
 </tr>
 </tbody>

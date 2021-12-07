@@ -1,30 +1,41 @@
 
 library(simsalRbim)
+library(ggplot2)
 
 # Bubblesize umdrehen in certainty
 
 
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
-simOpt     <- "Zicke"
-GT         <- c("Huehner", "Kacke", "Zacke")
+
+simOpt     <- "Zacke"
+GT         <- c("Zicke", "Kacke", "Huehner")
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt )
+
 
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
-                       intrans  = TRUE,
-                       verbose  = TRUE,
-                       showPlot = "worth") # or "coef"
-worth
+                       randOP   = FALSE,
+                       showPlot = "worth",
+                       ylim     = c(0,0.8))
+
 
 w_errors   <- bimeval(ydata     = predat,
                       worth     = worth$worth,
                       GT        = GT,
                       simOpt    = simOpt,
                       showPlot  = TRUE,
-                      ylim      = c(0,0.45))
+                      ylim      = c(0,1))
+
+w_errors   <- bimeval(ydata     = predat,
+                      worth     = worth,
+                      GT        = GT,
+                      simOpt    = simOpt,
+                      showPlot  = TRUE,
+                      ylim      = c(0,0.8))
+
 
 # remember: we want mean_delta to be high (close to 50%)
 w_errors
@@ -86,8 +97,11 @@ p <- p+ labs(title = "Very important title") +
   theme(plot.title = element_text(hjust = 0.5) )
 p <- p + annotate("text", x = 0.6, y = 0.44, size=4.5,
                   label = paste("Mean CE=",round(mean(w_errors$errors$CE),2),"% ",sep=""))
+# p <- p + scale_size_continuous(name = "Consensus error (%)",
+#                             breaks  = c(0,5,15,20),
+#                             limits  = c(0, 20),
+#                             range   = c(0, 2) )
 p
-
 
 
 
@@ -109,9 +123,9 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.8,
+                     tcut        = 0.90,
                      filter.crit ="Iratio",
-                     ylim        = c(0,0.45))
+                     ylim        = c(0,0.6))
 frqnc$frq
 
 
@@ -120,10 +134,15 @@ frqnc      <- bimsim(rawdat      = dat,
                      GT          = GT,
                      simOpt      = simOpt,
                      limitToRun  = 50,
-                     tcut        = 0.5,
+                     tcut        = 0.95,
                      filter.crit ="CE",
                      ylim        = c(0,0.45))
 frqnc$frq
+
+
+
+dat[dat$optionA %in% "Lake" & dat$optionB %in% "Fire", ]
+dat[dat$optionA %in% "Fire" & dat$optionB %in% "Lake", ]
 
 
 
@@ -132,6 +151,8 @@ frqnc$frq
 
 # Human Large Valence (Spring School) -------------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_LagreValenceRange_SpringSchool.txt")
+bimbalance(dat)
+
 simOpt     <- "Lake"
 GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire")
 
@@ -167,6 +188,8 @@ p
 
 # Maus - Mice_oneLineTest1_20201102DP -------------------------------------
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Mice_oneLineTest1_20201102DP.txt")
+bimbalance(dat)
+
 simOpt     <- "water"
 GT         <- c("HCl","m5MSac",  "m10MSac", "NaCl"   )
 
@@ -193,6 +216,8 @@ w_errors
 # Monkey ------------------------------------------------------------------
 # Note: Banana and Grape are equal when deviation = 0. Change deviation to 10! ;-)
 dat        <- bimload ("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/Rhesus_oneLine_20201116DP.txt")
+bimbalance(dat)
+
 simOpt     <- "water"
 GT         <- c("banana", "grape", "NaCl", "quinine")
 

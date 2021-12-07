@@ -41,6 +41,7 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
                    limitToRun=5, tcut=0.9, deviation=0, minQuantity=0,
                    seed=TRUE, showPlot=TRUE,ylim=c(0,0.7)){
 
+
   # Helperfunction
   printf <- function(...) cat(sprintf(...))
 
@@ -48,7 +49,6 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
   if(seed==TRUE){
     set.seed(123)
   }else{}
-
 
   # do the simulation
   reps    <- limitToRun
@@ -64,8 +64,13 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
     # Randomize open pairs
     nosim   <- predat[predat$sim==FALSE, ]
     simdat  <- predat[predat$sim==TRUE,  ]
-    simdat$result  <- sample(c(0,1,-1), replace=TRUE, length(simdat$result))
+    simdat$result  <- sample(c(1,-1), replace=TRUE, length(simdat$result)) # keine NULLEN!
     ydata          <- rbind(nosim, simdat)
+
+    #print(paste("Simulated items: ", length(simdat$result),sep="" ))
+    #print(simdat)
+
+
 
     worth      <- bimworth(ydata    = ydata,
                            GT       = GT,
@@ -156,7 +161,7 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
 
     # plot IRatio
     D <- D %>%
-      mutate(D, trRatio= 1-Iratio)
+      mutate(D, trRatio= round(1-Iratio,4))
 
     p  <- D %>%
       filter(item %in% simOpt) %>%
@@ -173,7 +178,7 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
       labs(title    = "Informed position simulation",
            subtitle = paste("Item: ", simOpt, " at ", limitToRun,
                             " randomizations (1-", filter.crit," cutoff=",
-                            tcut*100,"%).", sep="")) +
+                            round(tcut*100,4),"%).", sep="")) +
       theme_bw() +
       theme(axis.title.x = element_text(hjust= 0.5)) +
       theme(axis.title.y = element_text(hjust= 0.5)) +
@@ -208,6 +213,6 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
 
 
 
-  return(list(D=D, frq=frq, p=p))
+  return(list(D=D, frq=frq, p=p, simulations=dim(simdat)[1]))
 }
 

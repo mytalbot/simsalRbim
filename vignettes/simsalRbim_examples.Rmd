@@ -110,7 +110,7 @@ incomplete set of data.
 
 ```{r}
 w_errors   <- bimeval(ydata     = predat, 
-                      worth     = worth, 
+                      worth     = worth$worth, 
                       GT        = GT, 
                       simOpt    = simOpt,
                       showPlot  = TRUE,

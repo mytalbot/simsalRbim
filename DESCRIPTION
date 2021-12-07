@@ -41,8 +41,7 @@ Imports:
     stringr,
     utils,
     viridis,
-    ggrepel,
-    testthat (>= 3.0.0)
+    ggrepel
 Suggests: 
     knitr,
     rmarkdown,

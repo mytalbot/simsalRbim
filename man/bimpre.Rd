@@ -14,19 +14,16 @@ bimpre(
 )
 }
 \arguments{
-\item{dat}{curated data.frame obtained from the import function
-(unified format)}
+\item{dat}{curated data.frame obtained from the import function (unified format)}
 
 \item{GT}{item list with the ground truth (GT; letters are case sensitive!)}
 
 \item{simOpt}{item to be checked (this can be an item from the GT or a new
 one. Remove the item from GT if specified here!)}
 
-\item{deviation}{how much deviation is allowed for marking ties
-(default is 0 which translates to 50\%)}
+\item{deviation}{how much deviation is allowed for marking ties (default is 0 which translates to 50\%)}
 
-\item{minQuantity}{minimum quantitiy to be recognized as difference
-(default is 0)}
+\item{minQuantity}{minimum quantitiy to be recognized as difference (default is 0)}
 
 \item{verbose}{show function results}
 }

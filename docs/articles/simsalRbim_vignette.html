@@ -97,7 +97,7 @@
                         <h4 class="author">Dana Pfefferle</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2021-06-03</h4>
+            <h4 class="date">2021-12-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -127,8 +127,7 @@
 “rlang”<span class="citation">[6]</span><br>
 “stringr”<span class="citation">[7]</span><br>
 “viridis”<span class="citation">[8]</span><br>
-“ggrepel”<span class="citation">[9]</span><br>
-“testthat”<span class="citation">[10]</span></p>
+“ggrepel”<span class="citation">[9]</span></p>
 <p>The following function can be used to install single packages - or just the missing ones from CRAN.</p>
 <pre class="{r"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("paste missing package name here")
 </a></code></pre>
@@ -137,7 +136,7 @@
 <h3 class="hasAnchor">
 <a href="#simsalrbim" class="anchor"></a>simsalRbim</h3>
 <p>The development version of the simsalRbim package can be downloaded from GitHub with the following command.</p>
-<pre class="{r"><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html"># install.packages("devtools")
+<pre class="{r"><code><a href="https://devtools.r-lib.org/reference/remote-reexports.html"># install.packages("devtools")
 devtools::install_github("mytalbot/simsalRbim@main")
 library(simsalRbim)</a></code></pre>
 <p>A CRAN version may be available soon.</p>
@@ -227,6 +226,20 @@ bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE", limitToRun=5,
 tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
 <p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>tcut</code> argument sets the cutoff for showing the consensus error (%, CE) of the simulated results in the plot <strong>OR</strong> the transitivity ratios (1-Iratio). The selection depends on the <code>filter.crit</code> parameter (“CE” or “Iratio”), i.e., tcut=0.95 results in a 95% cutoff. The more stringent (= higher tcut in case of transitivity ratios) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>tcut</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error/ transitivity ratio.</p>
 </div>
+<div id="bimristics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bimristics" class="anchor"></a>bimristics</h3>
+<pre><code><a href="../reference/bimristics.html"># bimristics - data characteristics
+bimristics(predat=NULL, simOpt=NULL)</a></code></pre>
+<p>The <code>bimristics</code> functions gives an overview about conditional data characteristics. The <code>simOpt</code> object determines the subgroup for which the conditions are checked (e.g., the number of tested subjects, the number of natural ties, the number of simulated items, etc.)</p>
+</div>
+<div id="bimbalance" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bimbalance" class="anchor"></a>bimbalance</h3>
+<pre><code><a href="../reference/bimbalance.html"># bimbalance - data characteristics
+bimbalance(dat=NULL, sidevar="sideA")</a></code></pre>
+<p>The <code>bimbalance</code> determines how balanced the items were tested in terms of side. Items can be presented left (L) or right (R) - or in some other binary logic. If the data are somehow tested in an imbalanced way, this may introduce bias. For each (included!) item combination, the output shows the number of counts on the right (R) and left (L) side. Also, there is a ratio output which is obtained by dividing the counts(R) by counts(L).</p>
+</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
@@ -258,9 +271,6 @@ tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a
 </div>
 <div id="ref-ggrepelcite">
 <p>9. Slowikowski K: <em>Ggrepel: Automatically position non-overlapping text labels with ’ggplot2’</em>. 2021.</p>
-</div>
-<div id="ref-testthatcite">
-<p>10. Wickham H: <strong>Testthat: Get started with testing</strong>. <span class="csl-baseline"><em>The R Journal</em></span> 2011, <strong>3</strong>:5–10.</p>
 </div>
 </div>
 </div>

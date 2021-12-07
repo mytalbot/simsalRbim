@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • simsalRbim</title>
+<title>bimristics - data characteristics — bimristics • simsalRbim</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="bimristics - data characteristics — bimristics" />
+<meta property="og:description" content="The bimristics function shows general data characteristics like the
+number of natural ties, total number of tests, etc. It requires curated data
+from the bimpre function and has to be checked for each test item
+individually (simOpt)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -66,7 +70,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -131,108 +135,40 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>bimristics - data characteristics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mytalbot/simsalRbim/blob/master/R/bimristics.R'><code>R/bimristics.R</code></a></small>
+    <div class="hidden name"><code>bimristics.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>The <code>bimristics</code> function shows general data characteristics like the
+number of natural ties, total number of tests, etc. It requires curated data
+from the <code>bimpre</code> function and has to be checked for each test item
+individually (simOpt).</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>bimristics</span><span class='op'>(</span>predat <span class='op'>=</span> <span class='cn'>NULL</span>, simOpt <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="bimbalance.html">bimbalance()</a></code> </p>
-        </td>
-        <td><p>bimbalance - balanced item analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimeval.html">bimeval()</a></code> </p>
-        </td>
-        <td><p>Worth Values Evaluation Function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimintrans.html">bimintrans()</a></code> </p>
-        </td>
-        <td><p>Intransitivity Calculation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimload.html">bimload()</a></code> </p>
-        </td>
-        <td><p>Import Function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimpos.html">bimpos()</a></code> </p>
-        </td>
-        <td><p>Cutoff Determination</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimposim.html">bimposim()</a></code> </p>
-        </td>
-        <td><p>Integrated Position Simulation Function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimpre.html">bimpre()</a></code> </p>
-        </td>
-        <td><p>Data Preprocessing Function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimristics.html">bimristics()</a></code> </p>
-        </td>
-        <td><p>bimristics - data characteristics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimsim.html">bimsim()</a></code> </p>
-        </td>
-        <td><p>Preference Test Simulation with Variable Ground Truth</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimUninformed.html">bimUninformed()</a></code> </p>
-        </td>
-        <td><p>Uninformed positioning and cutoff determination</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="bimworth.html">bimworth()</a></code> </p>
-        </td>
-        <td><p>Worth Calculation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ZickeZacke.html">ZickeZacke</a></code> </p>
-        </td>
-        <td><p>ZickeZacke example data</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>predat</th>
+      <td><p>curated data.frame obtained from the <code>bimpre</code> function</p></td>
+    </tr>
+    <tr>
+      <th>simOpt</th>
+      <td><p>item to be checked</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>data.frame with study characteristics</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

@@ -63,7 +63,6 @@ devtools, remove the hashtag in the first line.)
 "stringr"[@stringrcite]  
 "viridis"[@viridiscite]  
 "ggrepel"[@ggrepelcite]   
-"testthat"[@testthatcite]  
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.  
@@ -258,6 +257,31 @@ at the given `tcut`. The plot shows the worth value of the `simOpt` item as
 a function of its position. The bubblesizes code for the consensus error/
 transitivity ratio. 
 
+
+### bimristics 
+```
+# bimristics - data characteristics
+bimristics(predat=NULL, simOpt=NULL)
+```
+
+The `bimristics` functions gives an overview about conditional data 
+characteristics. The `simOpt` object determines the subgroup for which the 
+conditions are checked (e.g., the number of tested subjects, the number of 
+natural ties, the number of simulated items, etc.)
+
+
+### bimbalance
+```
+# bimbalance - data characteristics
+bimbalance(dat=NULL, sidevar="sideA")
+```
+
+The `bimbalance` determines how balanced the items were tested in terms of side.
+Items can be presented left (L) or right (R) - or in some other binary logic. 
+If the data are somehow tested in an imbalanced way, this may introduce bias. 
+For each (included!) item combination, the output shows the number of counts on
+the right (R) and left (L) side. Also, there is a ratio output which is obtained
+by dividing the counts(R) by counts(L).
 
 ## References
 
