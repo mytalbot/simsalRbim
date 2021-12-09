@@ -45,7 +45,7 @@ reshape2
 rlang  
 stringr  
 viridis  
-ggrepel  
+ggrepel
 
 The following function can be used to install single packages - or just
 the missing ones from CRAN.
@@ -64,6 +64,11 @@ GitHub with the following command.
 devtools::install_github("mytalbot/simsalRbim@main")
 library(simsalRbim)
 ```
+
+#### Manual installation
+
+The source/binary files are also available
+[here:](https://github.com/mytalbot/simsalRbim_binaries)
 
 ## Example
 

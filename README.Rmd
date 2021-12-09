@@ -72,6 +72,11 @@ with the following command.
 devtools::install_github("mytalbot/simsalRbim@main")
 library(simsalRbim)
 ```
+
+#### Manual installation
+The source/binary files are also available [here:](
+https://github.com/mytalbot/simsalRbim_binaries)
+
  
 ## Example
 

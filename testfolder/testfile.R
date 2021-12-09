@@ -29,13 +29,6 @@ w_errors   <- bimeval(ydata     = predat,
                       showPlot  = TRUE,
                       ylim      = c(0,1))
 
-w_errors   <- bimeval(ydata     = predat,
-                      worth     = worth,
-                      GT        = GT,
-                      simOpt    = simOpt,
-                      showPlot  = TRUE,
-                      ylim      = c(0,0.8))
-
 
 # remember: we want mean_delta to be high (close to 50%)
 w_errors
