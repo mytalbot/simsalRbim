@@ -1,5 +1,5 @@
 ---
-title: "simsalRbim - Worth Evaluation"
+title: "simsalRbim - Quality measure for worth evaluation"
 author: 
   - Steven R. Talbot
   - Dana Pfefferle
@@ -7,7 +7,7 @@ author:
 output:
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{simsalRbim - Worth Evaluation}
+  %\VignetteIndexEntry{simsalRbim - Quality measure for worth evaluation}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -54,21 +54,23 @@ the mean consensus error. Because this can be a bit abstract, we provide an
 example below.
 
 ### Example item: 'HoiHoiHoi'
-In our dataset 4 individuals have ranked all items except "HoiHoiHoi". Moreover,
-those that have rated "HoiHoiHoi" were not in total agreement whether or not it 
-is preferred in binary comparisons to other items. The amount of disagreement is
-termed consensus error, with a consensus error of 0% meaning all individuals
-agree on a rank position and a consensus error of 100% meaning all individuals
-disagree. Let’s say, we want to assess the consensus error of the newly entered
-‘HoiHoiHoi’ item in the ZickeZacke dataset. For this, we consider all item 
-pairings that include ‘HoiHoiHoi’.
+In our ZickeZacke dataset, four individuals have rated all items, except 
+'HoiHoiHoi', which was rated by only 3 individuals (“eins", “zwei”, “vier”). 
+Moreover, those individuals that have rated 'HoiHoiHoi' were not in total
+agreement whether or not 'HoiHoiHoi' was preferred in binary comparisons over
+other items. The amount of disagreement is termed consensus error, with a 
+consensus error of 0% meaning all individuals agree on a rank position and a
+consensus error of 100% meaning all individuals disagree. Let’s say, we want to
+assess the consensus error of the newly entered ‘HoiHoiHoi’ item in the 
+ZickeZacke dataset. For this, we consider all item pairings that include 
+‘HoiHoiHoi’.
 
-The table below provides the quantities (e.g., amount drunk) for items A and B
-if available, and the result of the preference in relation to quantity A, i.e., 
-1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that are not
-provided in the data are filled in as ties (note, that the quantities are zero 
-in these cases, while those ties that already occurred in the original data 
-still show quantities).
+The table below provides the quantities (e.g., amount drunk) for items (options)
+A and B if available, and the result of the preference in relation to quantity 
+A, i.e., 1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that
+are not provided in the data are filled in as ties (note, that the quantities 
+are zero in these cases, while those ties that already occurred in the original 
+data still show quantities).
 
 ```{r echo=FALSE}
 predat_mod     <- predat#[predat$sim==FALSE, ]
@@ -79,11 +81,12 @@ predat_mod[predat_mod$optionB == "HoiHoiHoi", c("subjectID","optionA","optionB",
   kable_styling()
 ```
 
-For example, in the comparison ‘Zacke’ vs ‘HoiHoiHoi’ the table above shows that
-from four subjects only one (‘vier’) preferred the item ‘Zacke’ over the item 
-‘HoiHoiHoi’, result = 1. The other subjects prefered ‘HoiHoiHoi’ over ‘Zacke’,
-result = -1. This is converted into percentages, so that 25% of the total 
-subjects preferred option A (‘Zacke’) and 75% option B (‘HoiHoiHoi’).
+After filling in missing item combinations, for “Zacke” vs “HoiHoiHoi” our 
+example above shows that from the four subjects only one (‘vier’) preferred the
+item ‘Zacke’ over the item ‘HoiHoiHoi’, indicated by result = 1. The other 
+subjects preferred ‘HoiHoiHoi’ over ‘Zacke’, result = -1. This is converted into
+percentages, so that 25% of the total subjects preferred option A (‘Zacke’) and
+75% option B (‘HoiHoiHoi’).
 
 This calculation is applied to all item pairings in the dataset, resulting in 
 the following table. With the ‘HoiHoiHoi’ item all item combinations are tested,
