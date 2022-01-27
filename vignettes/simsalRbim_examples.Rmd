@@ -141,16 +141,16 @@ extending an existing scale it might not be feasible to conduct all possible
 binary preference tests. In cases of incomplete binary comparisons, we propose
 a simulation approach, allowing to rank items with a reasonable precision.
  
-Items that were not tested with all possible item combinations are attributed a
-tie. In the GNM model, results can assume the states c(-1,0,1) [=c(worse, equal,
-better)]. By randomizing this outcome, the degrees of freedom for the unknown 
-combinations get constrained so that the estimate of the item becomes more
-secure.This logic is used in the `bimUninformed` function to simulate an 
-**uninformed** worth calculation for optimal item positioning. 
+Not tested item combinations are attributed a tie. In the GNM model, results can
+assume the states c(-1,0,1) [=c(worse, equal, better)]. By randomizing this 
+outcome, the degrees of freedom for the unknown combinations get constrained so 
+that the estimate of the item becomes moresecure.This logic is used in the 
+`bimUninformed` function to simulate an **uninformed** worth calculation for 
+optimal item positioning. 
 
 We differentiate between ‘uninformed’ (this example) and ‘informed’ 
 (see example 3) item positioning simulations. In uninformed item positioning, no
-*a priori* knowledge about item transitivity (e.g., if A<B and B<C and A>C, the 
+*a priori* knowledge about item transitivity (e.g., if A<B and B<C but A>C, the 
 triplet is considered as being intransitive) is available. Hence, in uniformed 
 simulations transitive as well as intransitive item combinations derived from 
 the randomization are included. In the informed version of the simulation a
@@ -186,10 +186,10 @@ randomization. This is owed to the fact that in these cases the model is
 statistically underpowered. After determining the cutoff value, the adjusted
 p-value +- confidence interval should be 0.
 
-The simulation proposes `r cutoff$cutoff` in order to reach a sufficient 
-distinction between the items. This result can be displayed with 95% confidence
-intervals using the `bimpos` function. Here, we will insert the number of
-required randomizations.
+The simulation proposes `r cutoff$cutoff` randomization runs in order to reach 
+a sufficient distinction between the items. This result can be displayed with
+95% confidence intervals using the `bimpos` function. Here, we will insert the 
+number of required randomizations.
 
 ```{r}
 pos        <- bimpos(ydata      = predat, 
@@ -207,13 +207,13 @@ pos$simerrors %>%
 ```
 
 The table shows the ordered estimated mean worth values for each item with 
-errors. The items’ positions are secured as there are no overlapping 95% 
-confidence intervals. 
+errors. In the presented example, the items’ positions are secured as there are
+no overlapping 95% confidence intervals. 
 
-Compared to results in example 1 where the confidence in the positioning of 
-“HoiHoiHoi” was low. Now we can be rather sure that it is in position 2. 
-(If in doubt, increase the number of randomizations until the items are 
-separated.) 
+Here, and in comparison to the results in example 1 (low confidence in the
+position of “HoiHoiHoi”), we can be rather confident that “HoiHoiHoi” is in 
+position 2 (if in doubt, increase the number of randomizations for more 
+precision until the items are separated).
 
 ## Example 3 - informed item position simulation
 

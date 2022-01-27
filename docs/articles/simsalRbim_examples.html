@@ -170,8 +170,8 @@
 <h2 class="hasAnchor">
 <a href="#example-2---uninformed-item-position-simulation" class="anchor"></a>Example 2 - uninformed item position simulation</h2>
 <p>Once the rank and scale of a number of items is known (i.e., the ground truth data), one might want to sequentially extend it with additional items. For extending an existing scale it might not be feasible to conduct all possible binary preference tests. In cases of incomplete binary comparisons, we propose a simulation approach, allowing to rank items with a reasonable precision.</p>
-<p>Items that were not tested with all possible item combinations are attributed a tie. In the GNM model, results can assume the states c(-1,0,1) [=c(worse, equal, better)]. By randomizing this outcome, the degrees of freedom for the unknown combinations get constrained so that the estimate of the item becomes more secure.This logic is used in the <code>bimUninformed</code> function to simulate an <strong>uninformed</strong> worth calculation for optimal item positioning.</p>
-<p>We differentiate between ‘uninformed’ (this example) and ‘informed’ (see example 3) item positioning simulations. In uninformed item positioning, no <em>a priori</em> knowledge about item transitivity (e.g., if A&lt;B and B<c and a>C, the triplet is considered as being intransitive) is available. Hence, in uniformed simulations transitive as well as intransitive item combinations derived from the randomization are included. In the informed version of the simulation a percentage (e.g., tcut=70) for the maximum number of accepted intransitivity can be set.</c></p>
+<p>Not tested item combinations are attributed a tie. In the GNM model, results can assume the states c(-1,0,1) [=c(worse, equal, better)]. By randomizing this outcome, the degrees of freedom for the unknown combinations get constrained so that the estimate of the item becomes moresecure.This logic is used in the <code>bimUninformed</code> function to simulate an <strong>uninformed</strong> worth calculation for optimal item positioning.</p>
+<p>We differentiate between ‘uninformed’ (this example) and ‘informed’ (see example 3) item positioning simulations. In uninformed item positioning, no <em>a priori</em> knowledge about item transitivity (e.g., if A&lt;B and B<c but a>C, the triplet is considered as being intransitive) is available. Hence, in uniformed simulations transitive as well as intransitive item combinations derived from the randomization are included. In the informed version of the simulation a percentage (e.g., tcut=70) for the maximum number of accepted intransitivity can be set.</c></p>
 <p>The function <code>bimUninformed</code> allows the determination of the number of necessary randomization steps. Here, for any number of randomization steps, an ANOVA with a correction for multiple comparisons (MCP) is used to compare the worth values within a simulation run. As long as the calculated worth values are not significantly different, the items’ position is not secured.</p>
 <p>Each increase in the number of randomizations will decrease the number of degrees of freedom. Eventually, this will lead to a saturation of the mean adjusted p-values in the MCP tests and a decrease in errors. We define the number of required randomizations as the point at which the adjusted p-value hits zero. For ambiguous data, this can mean a lot of required randomizations. <strong>This is a heuristic!</strong> So, be prepared to try this out manually for your data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -186,7 +186,7 @@
 <code class="sourceCode R"><span class="va">cutoff</span><span class="op">$</span><span class="va">cutoff</span>
 <span class="co">#&gt; [1] 33</span></code></pre></div>
 <p><strong>Note:</strong> The simulation of adjusted p-values can include confidence intervals that exceed 1 and fall below 0, especially in the beginning of the randomization. This is owed to the fact that in these cases the model is statistically underpowered. After determining the cutoff value, the adjusted p-value +- confidence interval should be 0.</p>
-<p>The simulation proposes 33 in order to reach a sufficient distinction between the items. This result can be displayed with 95% confidence intervals using the <code>bimpos</code> function. Here, we will insert the number of required randomizations.</p>
+<p>The simulation proposes 33 randomization runs in order to reach a sufficient distinction between the items. This result can be displayed with 95% confidence intervals using the <code>bimpos</code> function. Here, we will insert the number of required randomizations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pos</span>        <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bimpos.html">bimpos</a></span><span class="op">(</span>ydata      <span class="op">=</span> <span class="va">predat</span>, 
                      GT         <span class="op">=</span> <span class="va">GT</span>, 
@@ -354,8 +354,8 @@ Kacke
 </tr>
 </tbody>
 </table>
-<p>The table shows the ordered estimated mean worth values for each item with errors. The items’ positions are secured as there are no overlapping 95% confidence intervals.</p>
-<p>Compared to results in example 1 where the confidence in the positioning of “HoiHoiHoi” was low. Now we can be rather sure that it is in position 2. (If in doubt, increase the number of randomizations until the items are separated.)</p>
+<p>The table shows the ordered estimated mean worth values for each item with errors. In the presented example, the items’ positions are secured as there are no overlapping 95% confidence intervals.</p>
+<p>Here, and in comparison to the results in example 1 (low confidence in the position of “HoiHoiHoi”), we can be rather confident that “HoiHoiHoi” is in position 2 (if in doubt, increase the number of randomizations for more precision until the items are separated).</p>
 </div>
 <div id="example-3---informed-item-position-simulation" class="section level2">
 <h2 class="hasAnchor">
