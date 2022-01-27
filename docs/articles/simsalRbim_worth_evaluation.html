@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>simsalRbim - Quality measure for worth evaluation • simsalRbim</title>
+<title>simsalRbim - Quality measures for worth evaluation • simsalRbim</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="simsalRbim - Quality measure for worth evaluation">
+<script src="../pkgdown.js"></script><meta property="og:title" content="simsalRbim - Quality measures for worth evaluation">
 <meta property="og:description" content="simsalRbim">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -67,7 +67,7 @@
       <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
     <li>
-      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Quality measure for worth evaluation</a>
+      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Quality measures for worth evaluation</a>
     </li>
   </ul>
 </li>
@@ -93,9 +93,10 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>simsalRbim - Quality measure for worth evaluation</h1>
+      <h1 data-toc-skip>simsalRbim - Quality measures for worth evaluation</h1>
                         <h4 class="author">Steven R. Talbot</h4>
                         <h4 class="author">Dana Pfefferle</h4>
+                        <h4 class="author">Ralf Brockhausen</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
       
@@ -106,9 +107,14 @@
 
     
     
-<div id="worth-evaluation" class="section level2">
+<div id="why-do-we-need-quality-measures" class="section level1">
+<h1 class="hasAnchor">
+<a href="#why-do-we-need-quality-measures" class="anchor"></a>Why do we need quality measures?</h1>
+<p>When simulating raninkgs and ratings with unknown values it is vital to estimate measores of fit. We provide two measures for doing this: the consensus error and the intrasnsitivy ratio.</p>
+<div id="consensus-error-ce" class="section level2">
 <h2 class="hasAnchor">
-<a href="#worth-evaluation" class="anchor"></a>Worth Evaluation</h2>
+<a href="#consensus-error-ce" class="anchor"></a>Consensus Error (CE)</h2>
+<p>The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference within a given item pairing between individuals. If all indivuduals agree on a given item, the CE is zero. If individuals disagree, there is no consensus. Therefore, we provide a measure for the amount of disagreement.</p>
 <p>The <code>bimeval</code> function compares the preferences of each subject and calculates the mean consensus error. Because this can be a bit abstract, we provide an example below.</p>
 <div id="example-item-hoihoihoi" class="section level3">
 <h3 class="hasAnchor">
@@ -728,6 +734,7 @@ CE = 50-(\sum_{i=1}^n delta_i/n)/50*100\\
 <p>Then we calculate 50%-45.31%=4.69% deviation. This is standardized to 50, resulting in a CE of 4.69%/50*100=9.38% which is also shown in the following plot.</p>
 <p>Therefore, the item ‘HoiHoiHoi’ shows a consensus error of 9.38% indicating that 9.38% of test subjects disagreed on the positioning of the item. This is also displayed in the corresponding plot of the <code>bimeval</code> function.</p>
 <p><img src="simsalRbim_worth_evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+</div>
 </div>
 </div>
   </div>

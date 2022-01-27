@@ -1,13 +1,14 @@
 ---
-title: "simsalRbim - Quality measure for worth evaluation"
+title: "simsalRbim - Quality measures for worth evaluation"
 author: 
   - Steven R. Talbot
   - Dana Pfefferle
+  - Ralf Brockhausen
   - Lars Lewejohann
 output:
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{simsalRbim - Quality measure for worth evaluation}
+  %\VignetteIndexEntry{simsalRbim - Quality measures for worth evaluation}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -47,11 +48,21 @@ worth      <- bimworth(ydata    = predat,
 ```
 
 
+# Why do we need quality measures?
+When simulating raninkgs and ratings with unknown values it is vital to estimate
+measores of fit. We provide two measures for doing this: the consensus error and the
+intrasnsitivy ratio. 
 
-## Worth Evaluation
-The `bimeval` function compares the preferences of each subject and calculates
-the mean consensus error. Because this can be a bit abstract, we provide an 
-example below.
+## Consensus Error (CE)
+The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference
+within a given item pairing between individuals. If all indivuduals agree on a
+given item, the CE is zero. If individuals disagree, there is no consensus. Therefore,
+we provide a measure for the amount of disagreement. 
+
+The `bimeval` function compares the preferences of
+each subject and calculates the mean consensus error. Because this can be a bit
+abstract, we provide an example below.
+
 
 ### Example item: 'HoiHoiHoi'
 In our ZickeZacke dataset, four individuals have rated all items, except 

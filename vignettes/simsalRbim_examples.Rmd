@@ -3,6 +3,7 @@ title: "simsalRbim Examples"
 author: 
   - Steven R. Talbot
   - Dana Pfefferle
+  - Ralf Brockhausen
   - Lars Lewejohann
   
 output: 
