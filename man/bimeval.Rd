@@ -6,26 +6,25 @@
 \usage{
 bimeval(
   ydata = NULL,
-  worth = NULL,
   GT = NULL,
   simOpt = NULL,
+  worth = NULL,
   coverage = 0.8,
   showPlot = FALSE,
   filtersim = FALSE,
   title = "Consensus Analysis",
   subtitle = NULL,
-  verbose = FALSE,
   ylim = c(0, 1)
 )
 }
 \arguments{
 \item{ydata}{curated data.frame from the preprocessing function.}
 
-\item{worth}{the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!}
-
 \item{GT}{item list with the ground truth (GT; letters are case sensitive!)}
 
 \item{simOpt}{item to be checked (this can be an item from the GT or a new}
+
+\item{worth}{the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!}
 
 \item{coverage}{the threshold for the ratio of tested subjects per total subjects (default=0.8)}
 
@@ -36,8 +35,6 @@ bimeval(
 \item{title}{plot title (default: "Consensus Analysis")}
 
 \item{subtitle}{plot subtitle (if NULL, a default will be used)}
-
-\item{verbose}{show function results}
 
 \item{ylim}{y limits of the worth plot (default c(0,0.7))}
 }

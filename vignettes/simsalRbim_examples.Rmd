@@ -5,7 +5,6 @@ author:
   - Dana Pfefferle
   - Ralf Brockhausen
   - Lars Lewejohann
-  
 output: 
     rmarkdown::html_vignette
 bibliography: simsalRbim_lib.bib
@@ -95,11 +94,13 @@ the consensus error, i.e., the percentage of disagreement between the
 individuals that ranked the specific item combinations.   
 
 Here, we provide a detailed 
-[explanation on how the consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_worth_evaluation.html) 
+[explanation on how the consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures.html) 
 is calculated.
 
 In order to calculate and plot the ranking including the consensus error, the
-function `bimeval` is used. The “ZickeZacke” dataset elicits two warnings. The 
+function `bimeval` is used.
+
+The “ZickeZacke” dataset elicits two warnings. The 
 warnings indicate that the number of subjects tested with the “HoiHoiHoi” item 
 may be too low ("HoiHoiHoi" was only rated by 3 of the 4 subjects while all 
 other items were rated by all 4 subjects). 
@@ -121,15 +122,14 @@ w_errors   <- bimeval(ydata     = predat,
 The size of the bubble indicates the consensus error of each item. This means,
 the smaller the bubble (or error) the more agreement there is between subjects
 regarding the positioning of the respective item. In the example of the item 
-“Zicke”, the value of 0% indicates that all subjects that were presented with 
-item combinations including “Zicke” were in full agreement in terms of
-preference for "Zicke" above all other items. The position of “Zicke” can, 
-hence, be assumed to be warranted.
+“Zicke”, the value of 25% indicates that all subjects that were presented with 
+item combinations including “Zicke” showed 25% disagreement. The position of 
+“Zicke” can, therefore, not be warranted.
 
 In contrast, the consensus error for item “HoiHoiHoi” was calculated with 
-9.38%. Meaning that ~10% of subjects indicated different preferences in item 
+81.25%. Meaning that ~81% of subjects indicated different preferences in item 
 combinations including “HoiHoiHoi”. Conversely, also the consensus errors for
-"Zacke" and "Kacke" are >0 owing to the fact that in this dataset the subjects 
+"Zacke" and "Kacke" are >0 owing to the fact that in these data the subjects 
 did not agree on whether "HoiHoiHoi" was rated higher or lower than these items.
 Taken this together with the displayed warnings (only 3 of 4 subjects rated 
 "HoiHoiHoi" and "HoiHoiHoi" was only compared to 3 of the 4 other items) for
@@ -145,7 +145,7 @@ a simulation approach, allowing to rank items with a reasonable precision.
 Not tested item combinations are attributed a tie. In the GNM model, results can
 assume the states c(-1,0,1) [=c(worse, equal, better)]. By randomizing this 
 outcome, the degrees of freedom for the unknown combinations get constrained so 
-that the estimate of the item becomes moresecure.This logic is used in the 
+that the estimate of the item becomes more secure. This logic is used in the 
 `bimUninformed` function to simulate an **uninformed** worth calculation for 
 optimal item positioning. 
 
@@ -153,8 +153,8 @@ We differentiate between ‘uninformed’ (this example) and ‘informed’
 (see example 3) item positioning simulations. In uninformed item positioning, no
 *a priori* knowledge about item transitivity (e.g., if A<B and B<C but A>C, the 
 triplet is considered as being intransitive) is available. Hence, in uniformed 
-simulations transitive as well as intransitive item combinations derived from 
-the randomization are included. In the informed version of the simulation a
+simulations, transitive as well as intransitive item combinations derived from 
+the randomization are included. In the informed version of the simulation, a
 percentage (e.g., tcut=70) for the maximum number of accepted intransitivity can
 be set.
 
@@ -183,8 +183,8 @@ cutoff$cutoff
 
 **Note:** The simulation of adjusted p-values can include confidence intervals
 that exceed 1 and fall below 0, especially in the beginning of the 
-randomization. This is owed to the fact that in these cases the model is 
-statistically underpowered. After determining the cutoff value, the adjusted
+randomization process. This is owed to the fact that in these cases, the model
+is statistically underpowered. After determining the cutoff value, the adjusted
 p-value +- confidence interval should be 0.
 
 The simulation proposes `r cutoff$cutoff` randomization runs in order to reach 
@@ -222,8 +222,8 @@ In the last example, we will perform an **informed** simulation of the data,
 including incomplete binary comparisons. In an informed simulation, transitive 
 choices and a defined maximum of intransitive choices are considered. The user 
 can opt between two evaluation metrics and/or can make an informed decision 
-based on both. With `filter.crit` object, either the consensus error ("CE") or
-the standardized transitivity ratio ("1-Iratio") is shown.
+based on both. With the `filter.crit` object, either the consensus error ("CE") 
+or the standardized transitivity ratio ("1-Iratio") is shown.
 This way, we can estimate which choices were inconsistent and include this
 in our evaluation. We use a frequency distribution to decide on the most likely
 position of the simulated item.
@@ -231,13 +231,12 @@ position of the simulated item.
 
 ### Example Simulation using the Consensus Error (CE)
 ```{r}
-
 frqnc      <- bimsim(rawdat      = dat, 
                      GT          = GT, 
                      simOpt      = simOpt,
                      filter.crit = "CE",
-                     limitToRun  = 65, 
-                     tcut        = 0.6,
+                     limitToRun  = 50, 
+                     tcut        = 0.85,
                      ylim        = c(0,0.45))
 ```
 

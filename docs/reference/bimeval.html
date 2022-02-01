@@ -107,10 +107,10 @@ on the error of uncertainty (consensus error (CE) in the unsimulated data." />
       <a href="../articles/simsalRbim_examples.html">simsalRbim Examples</a>
     </li>
     <li>
-      <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
+      <a href="../articles/simsalRbim_quality_measures.html">simsalRbim - Quality measures for worth evaluation</a>
     </li>
     <li>
-      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Quality measures for worth evaluation</a>
+      <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
   </ul>
 </li>
@@ -147,15 +147,14 @@ on the error of uncertainty (consensus error (CE) in the unsimulated data.</p>
 
     <pre class="usage"><span class='fu'>bimeval</span><span class='op'>(</span>
   ydata <span class='op'>=</span> <span class='cn'>NULL</span>,
-  worth <span class='op'>=</span> <span class='cn'>NULL</span>,
   GT <span class='op'>=</span> <span class='cn'>NULL</span>,
   simOpt <span class='op'>=</span> <span class='cn'>NULL</span>,
+  worth <span class='op'>=</span> <span class='cn'>NULL</span>,
   coverage <span class='op'>=</span> <span class='fl'>0.8</span>,
   showPlot <span class='op'>=</span> <span class='cn'>FALSE</span>,
   filtersim <span class='op'>=</span> <span class='cn'>FALSE</span>,
   title <span class='op'>=</span> <span class='st'>"Consensus Analysis"</span>,
   subtitle <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
@@ -167,16 +166,16 @@ on the error of uncertainty (consensus error (CE) in the unsimulated data.</p>
       <td><p>curated data.frame from the preprocessing function.</p></td>
     </tr>
     <tr>
-      <th>worth</th>
-      <td><p>the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!</p></td>
-    </tr>
-    <tr>
       <th>GT</th>
       <td><p>item list with the ground truth (GT; letters are case sensitive!)</p></td>
     </tr>
     <tr>
       <th>simOpt</th>
       <td><p>item to be checked (this can be an item from the GT or a new</p></td>
+    </tr>
+    <tr>
+      <th>worth</th>
+      <td><p>the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!</p></td>
     </tr>
     <tr>
       <th>coverage</th>
@@ -197,10 +196,6 @@ on the error of uncertainty (consensus error (CE) in the unsimulated data.</p>
     <tr>
       <th>subtitle</th>
       <td><p>plot subtitle (if NULL, a default will be used)</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>show function results</p></td>
     </tr>
     <tr>
       <th>ylim</th>

@@ -3,6 +3,7 @@ title: "simsalRbim"
 author: 
   - Steven R. Talbot
   - Dana Pfefferle
+  - Ralf Brockhausen
   - Lars Lewejohann
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -187,9 +188,9 @@ argument controls whether the intransitivity of the items shall be computed.
 ### bimeval
 ```
 # bimeval evaluates the consensus error in the worth calculations
-bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8, 
-showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis", subtitle=NULL, 
-verbose=FALSE, ylim=c(0,1))
+bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8,
+showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis",subtitle=NULL, 
+ylim=c(0,1))
 ```
 The first three input objects are the same as in `bimworth`. Additionally, the
 function requires the output from `bimworth` for the evaluation. Be aware that

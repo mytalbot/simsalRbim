@@ -1,0 +1,255 @@
+---
+title: "simsalRbim - Quality measures for worth evaluation"
+author:
+  - Steven R. Talbot
+  - Dana Pfefferle
+  - Ralf Brockhausen
+  - Lars Lewejohann
+output:
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{simsalRbim - Quality measures for worth evaluation}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6,
+  fig.height = 5.5
+)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(simsalRbim)
+library(knitr)
+library(dplyr)
+library(kableExtra)
+```
+
+
+
+```{r include=FALSE}
+dat        <- ZickeZacke
+
+simOpt     <- "HoiHoiHoi"
+GT         <- c( "Huehner", "Kacke",  "Zicke","Zacke" )
+
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0, minQuantity=0)
+
+worth      <- bimworth(ydata    = predat,
+                       GT       = GT,
+                       simOpt   = simOpt,
+                       randOP   = FALSE,
+                       intrans  = FALSE,
+                       showPlot = FALSE)
+```
+
+
+### Why do we need quality measures?
+When simulating scaled rankings with unknown values, it is important to 
+estimate measures of fit. We provide two measures for doing this: the 
+*consensus error* (CE) and the *intransitivity ratio* (Iratio). 
+
+## Consensus Error (CE)
+The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference
+within a given item pairing between individuals. If all individuals agree on a
+given item, the CE is zero. If individuals disagree, there is no consensus. The
+range of disagreement is between one and half of the individuals who differ in
+their preference for a given set of two items. The `bimeval` function compares 
+the preferences of each subject and calculates the mean consensus error. 
+Because this can be a bit abstract, we provide an example below.
+
+
+### Example item: 'HoiHoiHoi'
+In our ZickeZacke dataset, four individuals have rated all items, except 
+'HoiHoiHoi', which was rated by only 3 individuals (“eins", “zwei”, “vier”). 
+Moreover, those individuals that have rated 'HoiHoiHoi' were not in total
+agreement whether or not 'HoiHoiHoi' was preferred in binary comparisons over
+other items. The amount of disagreement is termed consensus error, with a 
+consensus error of 0% meaning all individuals agree on a position, and a
+consensus error of 100% means all individuals disagree. Let’s say, we want to
+assess the consensus error of the newly entered ‘HoiHoiHoi’ item in the 
+ZickeZacke dataset. For this, we consider all item pairings that include 
+‘HoiHoiHoi’.
+
+The table below provides the quantities (e.g., amount drunk) for items (options)
+A and B if available, and the result of the preference in relation to quantity 
+A, i.e., 1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that
+are not provided in the data are filled in as ties (note, that the quantities 
+are zero in these cases, while those ties that already occurred in the original 
+data still show quantities).
+
+As an example, the combinations of "Kacke" with the "HoiHoiHoi" item are
+highlighted. Note that subjectID "drei" has no quantities and was therefore 
+added as a tie.
+
+```{r echo=FALSE}
+w_errors   <- bimeval(ydata     = predat,
+                      worth     = worth,
+                      GT        = GT,
+                      simOpt    = simOpt,
+                      showPlot  = FALSE ,
+                      subtitle  = NULL,
+                      ylim      = c(0,1))
+AA <- w_errors$predat[, c("subjectID", "optionA", "optionB", "quantityA",
+                          "quantityB", "test", "result", "tie")]
+rownames(AA) <- NULL
+
+color.me     <- which(AA$test == "KackeHoiHoiHoi")
+
+AA %>%
+  kbl() %>%
+  kable_styling() %>%
+  row_spec(color.me, bold = F, color = "white", background = "red")
+
+
+
+```
+
+For the next step in the CE calculation, the function counts how many cases of 
+A, B and ties there were and multiplies this with 1/No. of subjects.  
+
+In the example of the highlighted case above, this would be  
+No. B x 1/4 No. of subjects = 2 x B x 0.25 = 0.5
+
+Ties were attributed equally on options A and B to avoid distribution bias. The
+most simple solution requires adding half of the count values to A AND B. This 
+will be:  
+
+(No. of B x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) =
+(2 x 0.5) + ((2x0.25)/2) = 0.75.
+
+*AND*  
+
+(No. of A x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) =
+0 + ((2x0.25)/2) = 0.25.
+
+This is repeated with all item combinations, resulting in raw deviations
+for options A and B (CE_A and CE_B). The following table shows the calculations
+weighted by the number of subjects as the raw consensus errors.
+
+
+```{r echo=FALSE}
+
+BB <- w_errors$preCE[, c("test","n","no_of_ties", "CE_A", "CE_B")]
+
+BB %>%
+  kbl() %>%
+  kable_styling() 
+```
+
+### Calculation of the Consensus Error
+The ‘consensus error’ (CE) indicates the percent of (dis)agreement in preference
+within a given item pairing.
+
+We set the threshold for deciding whether option A or B is preferred to 50% 
+(default setting) and calculate the deviation of the smallest percentage from 
+it (deviation = delta). (Note: the threshold can be changed in the `bimpre` 
+functions using the function objects `deviation` and/or `minQuantity`). 
+
+The following pseudocode illustrates how the deviation delta was calculated.
+
+```{r eval=FALSE, echo=TRUE}
+# Pseudococde - deviation calculation
+for(i in 1:item_combinations){ # e.g., ZackeHoiHoiHoi
+  if( item[i, "CE_A" ] > item[i, "CE_B" ] ){
+    delta  <- (50 - item[i, "CE_B" ])
+  }else{
+    delta  <- (50 - item[i, "CE_A" ])
+  }
+}
+```
+
+With the resulting delta value, the deviation from 50% can be calcualted. A 
+delta value of 50 means perfect consensus. Therefore: CE_raw(A,B) = 50 - delta.
+
+This is the *un*standardized Consensus Error.
+
+The unstandardized error may be unintuitive. Therefore, it is standardized to 
+percent range by  
+  
+CE = (50-delta)/50 x 100  
+
+This is repeated with all items, resulting in the following detailed error 
+table.  
+
+```{r echo=FALSE}
+
+CC <- w_errors$detailed
+
+CC %>%
+  kbl() %>%
+  kable_styling() 
+```
+
+The detailed error table is summarized for each item in the test by reporting 
+the average CE together with the worth value. The final error table is  
+
+```{r echo=FALSE}
+
+DD <- w_errors$errors
+
+DD %>%
+  kbl() %>%
+  kable_styling() 
+```
+
+Finally, the total CE is calculated as the average of the averaged item CEs.
+
+**Total CE** = (25 + 31.25 + 25 + 25 + 81.25) /5 = **37.5%**
+
+The `bimeval` function plots this result as a bubble plot in which the CE 
+determines the bubble sizes.  
+
+
+```{r echo=FALSE}
+w_errors   <- bimeval(ydata     = predat,
+                      worth     = worth,
+                      GT        = GT,
+                      simOpt    = simOpt,
+                      showPlot  = TRUE ,
+                      subtitle  = NULL,
+                      ylim      = c(0,0.65))
+```
+
+
+## Intransitivity
+The combination of multiple bimodal choices is usually based on the assumption 
+of transitivity: If one item, A, is preferred over another item, B, and B is 
+preferred over item C, then A should also be preferred when directly compared to
+C. However, in real-life data, intransitive decisions occur on the individual as
+well as on the group level. Therefore, the amount of intransitivity in the 
+derived ranking can be used as a proxy for the quality of the ranking.
+
+The transitivity is always checked for the whole data. The number of 
+intransitive triplets is counted and standardized to the total number of
+triplets.
+
+Let's say, there are 40 triplets in total and 3 triplets showed intransitive
+patterns. Then, the intransitivity ratio would be **Iratio = 3/40 = 0.075**.
+
+Including simulated ties can introduce intransitivity or help with improving 
+already present intransitive pairs. Therefore, running the simulation longer 
+will increase the chances of obtaining transitive pairs for new item 
+combinations. Usually, the best choice for a new item will be the one with the
+highest achieved transitivity.
+
+This method is used in the informed simulation of the `bimsim` function. 
+The results are shown in bubbleplots with the transitivity ratio as size 
+parameter.
+
+```{r echo=FALSE}
+frqnc      <- bimsim(rawdat      = dat,
+                     GT          = GT,
+                     simOpt      = simOpt,
+                     limitToRun  = 50,
+                     tcut        = 0.90,
+                     filter.crit ="Iratio",
+                     ylim        = c(0,0.45))
+```
+
+ 
+

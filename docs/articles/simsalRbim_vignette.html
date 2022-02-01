@@ -64,10 +64,10 @@
       <a href="../articles/simsalRbim_examples.html">simsalRbim Examples</a>
     </li>
     <li>
-      <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
+      <a href="../articles/simsalRbim_quality_measures.html">simsalRbim - Quality measures for worth evaluation</a>
     </li>
     <li>
-      <a href="../articles/simsalRbim_worth_evaluation.html">simsalRbim - Quality measures for worth evaluation</a>
+      <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
   </ul>
 </li>
@@ -95,9 +95,10 @@
       <h1 data-toc-skip>simsalRbim</h1>
                         <h4 class="author">Steven R. Talbot</h4>
                         <h4 class="author">Dana Pfefferle</h4>
+                        <h4 class="author">Ralf Brockhausen</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2022-01-27</h4>
+            <h4 class="date">2022-02-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -196,9 +197,9 @@ showPlot=FALSE, ylim=c(0,0.8), size = 5, verbose=FALSE)</a></code></pre>
 <h3 class="hasAnchor">
 <a href="#bimeval" class="anchor"></a>bimeval</h3>
 <pre><code><a href="../reference/bimeval.html"># bimeval evaluates the consensus error in the worth calculations
-bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8, 
-showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis", subtitle=NULL, 
-verbose=FALSE, ylim=c(0,1))</a></code></pre>
+bimeval(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8,
+showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis",subtitle=NULL, 
+ylim=c(0,1))</a></code></pre>
 <p>The first three input objects are the same as in <code>bimworth</code>. Additionally, the function requires the output from <code>bimworth</code> for the evaluation. Be aware that the <code>bimworth</code> output can be a list when <code>intrans=TRUE</code>. The <code>coverage</code> object defines an arbitrary threshold for data coverage warnings. There can be two warnings: number of subjects and number of items warnings. The graphical output can be controlled with the <code>showPlot</code> object.</p>
 </div>
 <div id="bimuninformed" class="section level3">

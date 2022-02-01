@@ -102,8 +102,8 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
       options(warn=0)
 
       # add the intransitivity ratio
-      w_errors$Iratio <- NULL
-      w_errors$Iratio <- worth$I$Iratio
+      w_errors$errors$Iratio <- NULL
+      w_errors$errors$Iratio <- worth$I$Iratio
 
     }
 
@@ -112,7 +112,7 @@ bimsim <- function(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE",
 
 
     # arrange all
-    d <- w_errors %>%
+    d <- w_errors$errors %>%
       arrange(desc(worth)) %>%
       mutate(pos = 1:n()) %>%
       as.data.frame()

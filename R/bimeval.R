@@ -6,13 +6,12 @@
 #' @param ydata curated data.frame from the preprocessing function.
 #' @param GT item list with the ground truth (GT; letters are case sensitive!)
 #' @param simOpt item to be checked (this can be an item from the GT or a new
-#' @param coverage the threshold for the ratio of tested subjects per total subjects (default=0.8)
 #' @param worth the worth matrix from the bimworth function. Note, that this can be a list when the intransitivity is calculated!
-#' @param filtersim exclude the simulated items from the evaluation function (defaults to FALSE)
+#' @param coverage the threshold for the ratio of tested subjects per total subjects (default=0.8)
 #' @param showPlot plot the worth plot as a bubble plot with consensus errors
+#' @param filtersim exclude the simulated items from the evaluation function (defaults to FALSE)
 #' @param title plot title (default: "Consensus Analysis")
 #' @param subtitle plot subtitle (if NULL, a default will be used)
-#' @param verbose show function results
 #' @param ylim y limits of the worth plot (default c(0,0.7))
 #'
 #' @import ggplot2
@@ -24,14 +23,9 @@
 #' @export
 #'
 #'
-bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
-                     coverage=0.8, showPlot=FALSE, filtersim=FALSE,
-                     title="Consensus Analysis", subtitle=NULL, verbose=FALSE,
-                     ylim=c(0,1)){
-
-  # Helper function
-  printf     <- function(...) cat(sprintf(...))
-
+bimeval <- function(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8,
+                    showPlot=FALSE, filtersim=FALSE, title="Consensus Analysis",
+                    subtitle=NULL, ylim=c(0,1)){
 
   predat     <- ydata
   optionlist <- c(simOpt, GT)
@@ -42,127 +36,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
   }else{}
 
 
-  # compute the decision matrix for all data combinations in the predat object
-  # this has to be adapted when "side" is present in the data!
-
-  # check if side is present
-  if(sum(names(predat)=="sideA")==0){
-
-    # no side is present
-    TT <- NULL
-    for(i in 1:length(unique(predat$test))){
-      tt <- data.frame(test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"])),
-                       pct_first      = ifelse(predat[predat$test==unique(predat$test)[i],    ]$result== 0,
-                                               0,
-                                               sum(predat[predat$test==unique(predat$test)[i],    ]$result== 1) / length(unique(predat$subjectID))*100),
-                       pct_second     = ifelse(predat[predat$test==unique(predat$test)[i], ]$result ==0,
-                                               0,
-                                               100 - (sum(predat[predat$test==unique(predat$test)[i], ]$result== 1) / length(unique(predat$subjectID))*100)))
-      TT <- rbind(TT, tt)
-    }
-
-
-
-
-   # sum(predat[predat$test==unique(predat$test)[i],    ]$result== 1) / length(unique(predat$subjectID))*100,
-
-    # # per item & then per subject test
-    # TT <- NULL
-    # for(i in 1:length(unique(predat$test))){
-    #
-    #   set    <- predat[predat$test==unique(predat$test)[i],]
-    #   dimset <- dim(set)[1]
-    #
-    #
-    #   for(j in 1:length(unique(set$subjectID))){
-    #
-    #    if((set[set$subjectID == unique(set$subjectID[j]), "quantityA" ] +
-    #        set[set$subjectID == unique(set$subjectID[j]), "quantityB" ])==0){
-    #
-    #      pfirst  <- 0
-    #      psecond <- 0
-    #
-    #    }else{
-    #
-    #      if(set[set$subjectID == unique(set$subjectID[j]), "result" ]==1){
-    #
-    #        pfirst  <- sum(set[set$subjectID == unique(set$subjectID[j]), "result" ]== 1) /dimset
-    #        psecond <- 1-pfirst
-    #
-    #      }else{
-    #        psecond  <- sum(set[set$subjectID == unique(set$subjectID[j]), "result" ]==-1) /dimset
-    #        pfirst   <- 1-psecond
-    #      }
-    #    }
-    #
-    #     tt <- data.frame(test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"])),
-    #                      pct_first      = pfirst*100,
-    #                      pct_second     = psecond*100)
-    #     TT <- rbind(TT, tt)
-    #
-    #   }
-    #
-    # }
-    #
-
-
-
-
-    # side is present
-  }else{
-
-    if(verbose==TRUE){
-      printf ( "simsalRbim: sideA outcomes were averaged\n")
-    }else{}
-
-    TT <- NULL
-    for (i in 1:length(unique(predat$test))){
-      test           = as.character(unique(predat[predat$test==unique(predat$test)[i], "test"]))
-
-      # Side A
-      seldat      = predat[predat$test==test, ]
-
-      no_side <- NULL
-      tt      <- NULL
-      AA      <- NULL
-      leer    <- NULL
-      for(j in 1:length(unique(seldat$subjectID))){
-        AA      <- NULL
-        leer    <- NULL
-        AA              <- seldat[seldat$subjectID %in% unique(seldat$subjectID)[j],]
-        leer            <- seldat[seldat$subjectID %in% unique(seldat$subjectID)[j],][1,]
-
-        leer$quantityA  <- mean(AA$quantityA, na.rm=TRUE)
-        leer$quantityB  <- mean(AA$quantityB, na.rm=TRUE)
-        leer$qPercentA  <- leer$quantityA / (leer$quantityA +leer$quantityB) *100
-        leer$qPercentB  <- leer$quantityB / (leer$quantityA +leer$quantityB) *100
-        leer$result     <- ifelse(leer$quantityA > leer$quantityB, 1,-1)
-        no_side         <- rbind(no_side, leer)
-      }
-      no_side[,"sideA"] <- NULL
-
-      tt <- data.frame(test           = test,
-                       pct_first      = ifelse(no_side$result== 0,
-                                               0,
-                                               sum(no_side$result== 1) / length(unique(no_side$subjectID))*100),
-                       pct_second     = ifelse(no_side[no_side$test %in% unique(no_side$test), ]$result ==0,
-                                               0,
-                                               100 - (sum(no_side[no_side$test %in% unique(no_side$test), ]$result== 1) / length(unique(no_side$subjectID))*100)))
-
-      TT <- rbind(TT, tt)
-    }
-
-  }
-# sum(no_side$result== 1) / length(unique(no_side$subjectID))*100,
-
-
-
-
-
-
-
-  # 1. CE bestimmen und 2. wie viel weichen ab?
-  # check subjects data coverage - results may be underrepresented!
+  #### warnings #### -----------------------------------------------------------
   BB              <- predat[grepl(simOpt,predat$test, fixed = TRUE),  ]
   provided        <- length(unique(BB$subjectID [BB$sim == FALSE   ]))
   simulated       <- length( unique(BB$subjectID[BB$sim != FALSE   ]) )
@@ -173,7 +47,6 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
   items_provided  <- length(unique(II$test [II$sim == FALSE   ]))
   items_simulated <- length(unique(II$test [II$sim != FALSE   ]))
   itemratio       <- items_provided/(items_simulated)
-
 
   # warning: too few subjects
   if((subjratio)<coverage){
@@ -191,7 +64,7 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
 
   # warning if too few item combinations
   if((itemratio)<coverage){
-  warning(paste("simsalRbim: ","No. of ITEMS WARNING!
+    warning(paste("simsalRbim: ","No. of ITEMS WARNING!
                 The number of item tests you have provided for testing the
                 simOpt=", "'", simOpt,"'" ," item is probably insufficient!
                 Try increasing the number of item combinations.
@@ -199,50 +72,100 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                 that item.
                 The consensus error may be biased!
                 Your provided-to-simulated items ratio is at: ",
-                round(itemratio,4) * 100, "%.\n", sep=""))
+                  round(itemratio,4) * 100, "%.\n", sep=""))
   }else{}
+  #### warnings end #### -------------------------------------------------------
 
 
 
-  # calculate the mean deviation weights
-  weights        <- NULL
- # no_of_subjects <- max( length( unique(predat$subjectID)), na.rm=TRUE ) # max!
-  for(j in 1:length(optionlist)){
 
-    item  <- TT[grepl(optionlist[j], TT$test, fixed = TRUE),]
-    liste <- NULL
-    for(i in 1:dim(item)[1]){
-      if( item[i, "pct_first" ] > item[i, "pct_second" ]  ){
-        delta  <- (50 - item[i, "pct_second" ])
-      }else{
-        delta  <- (50 - item[i, "pct_first" ])
-      }
-      liste    <- rbind(liste, data.frame(item =optionlist[j], delta = delta))
+
+  # new CE loop
+  items    <- unique(predat$test)
+  preCE    <- NULL
+  for(i in 1:length(items)){
+
+    # select a unique testcombo
+    seldat <- predat[predat$test %in% items[i], ]
+
+    # how many subjects?
+    # worth of each factor = 1/no of subjects
+    wfact  <- 1/dim(seldat)[1] *100
+
+    # Check if there are more subject entries than there should be
+    if(length(unique(seldat$subjectID)) == dim(seldat)[1]){
+    }else{
+      warning("There are multiple subject-entries per item. Revise the subject
+              names! The result will be wrong!")
     }
 
-    mean_delta <- mean(liste$delta) # describes the consensus (50 is best!)
-    sd_delta   <- sd  (liste$delta, na.rm = TRUE)
-    n_delta    <- length(liste$delta)
-    lwr        <- mean_delta - qt(0.975,df=length(liste$delta)-1)*sd  (liste$delta, na.rm = TRUE)/sqrt(length(liste$delta))
-    upr        <- mean_delta + qt(0.975,df=length(liste$delta)-1)*sd  (liste$delta, na.rm = TRUE)/sqrt(length(liste$delta))
+    B     <- sum(seldat$result == -1)
+    A     <- sum(seldat$result ==  1)
+    Tie   <- sum(seldat$result ==  0)
 
-    weights    <- rbind(weights, data.frame(item       = optionlist[j],
-                                            n          = n_delta,
-                                            mean_delta = mean_delta))#,
-                                            #sd_delta   = sd_delta,
-                                            #n          = n_delta,
-                                            #lwr        = lwr,
-                                            #upr        = upr ))
+    ceA   <- (A*wfact  + (Tie*wfact/2))
+    ceB   <- (B*wfact  + (Tie*wfact/2))
+
+    preCE <- rbind(preCE, data.frame(test       = unique(seldat$test),
+                                     n          = length(seldat$subjectID),
+                                     no_of_ties = Tie,
+                                     CE_A       = ceA,
+                                     CE_B       = ceB))
+
   }
 
-  weights.sorted <- weights[order(rownames(weights)),]
-  W              <- cbind(weights.sorted ,
-                          worth = worth[match(weights.sorted$item, rownames(worth)),])
 
-  #W <- label <- NULL
-  W$CE           <- round((50-W$mean_delta)/50*100,2) # consensus error!
-  W$label        <- paste(W$item," (CE=", round((50-W$mean_delta)/50*100,2), "%)",sep="")
+  # calculate the consensus error
+  liste <- NULL
+  for(i in 1:length(preCE$test  )){
+    if( preCE[i, "CE_A" ] > preCE[i, "CE_B" ]  ){
+      delta  <- (50 - preCE[i, "CE_B" ])
+    }else{
+      delta  <- (50 - preCE[i, "CE_A" ])
+    }
+    liste    <- rbind(liste, data.frame(item       = preCE$test[i],
+                                        n          = preCE[i, "n"],
+                                        no_of_ties = preCE[i, "no_of_ties"],
+                                        CE_A       = preCE[i, "CE_A"],
+                                        CE_B       = preCE[i, "CE_B"],
+                                        delta      = delta,
+                                        CEraw      = 50-delta,
+                                        CE         = (50-delta)/50*100))
 
+  }
+
+
+
+  # calculate the mean performance for each of the items in the worth list
+  querydat <- NULL
+  inter    <- NULL
+  errors   <- NULL
+  for( j in 1:length(optionlist)){
+    querydat <- liste[grep(optionlist[j], liste$item),]
+    meanCE   <- mean(querydat$CE, na.rm=TRUE)
+
+    inter    <-  data.frame(item   = optionlist[j],
+                            n      = dim(querydat)[1],
+                            meanCE = meanCE,
+                            SD     = sd  (querydat$CE, na.rm=TRUE) )
+    #lwr    = meanCE - qt(0.975, df= length(querydat)-1) * sd(querydat$CE, na.rm = TRUE)/sqrt(length(querydat$CE)),
+    #upr    = meanCE + qt(0.975, df= length(querydat)-1) * sd(querydat$CE, na.rm = TRUE)/sqrt(length(querydat$CE)))
+
+    errors   <- rbind(errors, data.frame(item    = optionlist[j],
+                                         n       = inter$n,
+                                         worth   = worth[grep(optionlist[j],  rownames(worth) ) ],
+                                         CE      = round(inter$meanCE,2)))
+    #lwr     = round(inter$lwr,2),
+    #upr     = round(inter$upr,2)))
+
+
+
+  }
+
+
+  # order like the worth value & label the data
+  W <- errors[match( rownames(worth), errors$item),]
+  W$label        <- paste(W$item," (CE=",  W$CE , "%)",sep="")
 
 
 
@@ -251,7 +174,8 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
 
     # subtitle changes at user input
     if(length(subtitle)!=0){
-      subtitle <- paste("Bubble sizes indicate uncertainty in item choice (total=",round(mean(W$CE),2),"%)",sep="")
+      subtitle <- paste("Bubble sizes indicate uncertainty in item choice
+                        (total=",round(mean(W$CE),2),"%)",sep="")
     }else{
       subtitle <- subtitle
     }
@@ -260,8 +184,11 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     cols <- viridis_pal(option = "D")(length(W$item))
 
     p <- ggplot(W, aes(x=rep(1,dim(W)[1]), y=worth) ) +
-      geom_point( aes(size = (50-mean_delta)/50*100), color="black", shape=21, fill=cols ) +
+      geom_point(W,mapping=aes(size = CE), color="black",
+                 shape=21, fill=cols )  +
       geom_line() +
+
+
       labs(title     = title,
            subtitle  = subtitle,
            size      = "Consensus error (%)") +
@@ -279,7 +206,8 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
                               show.legend   = FALSE )
 
     p <- p +  theme(axis.line        = element_line(colour = "black"),
-                    strip.background = element_rect(fill = "white", colour = "black", size = 0.8),
+                    strip.background = element_rect(fill = "white",
+                                                    colour = "black",size=0.8),
                     strip.text       = element_text(size = 12),
                     axis.text.x      = element_text(size = 12),
                     axis.title.x     = element_text(size = 13),
@@ -288,10 +216,11 @@ bimeval  <- function(ydata=NULL, worth= NULL, GT=NULL, simOpt=NULL,
     p <- p + theme(axis.text.x = element_blank())
     print(p)
 
-    return(list(errors=W,p=p))
+    return(list(predat=predat, preCE=preCE, detailed=liste, errors=W, p=p))
 
   }else{
-    return(errors=W)
+    return(list(predat=predat, preCE=preCE, detailed=liste, errors=W ))
   }
 
 }
+

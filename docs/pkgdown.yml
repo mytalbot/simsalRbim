@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   simsalRbim_examples: simsalRbim_examples.html
+  simsalRbim_quality_measures: simsalRbim_quality_measures.html
   simsalRbim_vignette: simsalRbim_vignette.html
-  simsalRbim_worth_evaluation: simsalRbim_worth_evaluation.html
-last_built: 2022-01-27T09:29Z
+last_built: 2022-02-01T15:09Z
 
