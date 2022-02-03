@@ -110,27 +110,26 @@ AA %>%
 ```
 
 For the next step in the CE calculation, the function counts how many cases of 
-A, B and ties there were and multiplies this with 1/No. of subjects.  
+preference for A or B and how many ties were found. This number is multiplied
+with  1/No. of subjects.  
 
 In the example of the highlighted case above, this would be  
-No. B x 1/4 No. of subjects = 2 x B x 0.25 = 0.5
+No. A x 1/No. of subjects = 0 x 0.25 = 0
 
-Ties were attributed equally on options A and B to avoid distribution bias. The
-most simple solution requires adding half of the count values to A AND B. This 
-will be:  
+No. B x 1/No. of subjects = 2 x 0.25 = 0.5  
 
-(No. of B x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) =
-(2 x 0.5) + ((2x0.25)/2) = 0.75.
+To avoid distribution bias, ties are attributed equally to options A and B, 
+e.g., in the data above there are 2 ties, so the calculation is:  
+
+(No. of A x 1/No. of subjects) + ((No. ties x 1/No. of subjects)/No. of ties =
+(0 x 0.25) + ((2x0.25)/2) = 0.25.
 
 *AND*  
 
-(No. of A x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) =
-0 + ((2x0.25)/2) = 0.25.
+(No. of B x 1/No. of subjects) + ((No. ties x 1/No. of subjects)/No. of ties) =
+(2 x 0.25) + ((2x0.25)/2) = 0.75.
 
-This is repeated with all item combinations, resulting in raw deviations
-for options A and B (CE_A and CE_B). The following table shows the calculations
-weighted by the number of subjects as the raw consensus errors.
-
+This is repeated with all item combinations, resulting in the following table:
 
 ```{r echo=FALSE}
 
@@ -156,22 +155,22 @@ The following pseudocode illustrates how the deviation delta was calculated.
 # Pseudococde - deviation calculation
 for(i in 1:item_combinations){ # e.g., ZackeHoiHoiHoi
   if( item[i, "CE_A" ] > item[i, "CE_B" ] ){
-    delta  <- (50 - item[i, "CE_B" ])
+    delta[i]  <- (50 - item[i, "CE_B" ])
   }else{
-    delta  <- (50 - item[i, "CE_A" ])
+    delta[i]  <- (50 - item[i, "CE_A" ])
   }
+  CE_raw      <- 50-delta
+  CE          <- (50-delta)/50 * 100
 }
 ```
 
-With the resulting delta value, the deviation from 50% can be calcualted. A 
+With the resulting delta value, the deviation from 50% can be calculated. A 
 delta value of 50 means perfect consensus. Therefore: CE_raw(A,B) = 50 - delta.
 
 This is the *un*standardized Consensus Error.
 
 The unstandardized error may be unintuitive. Therefore, it is standardized to 
-percent range by  
-  
-CE = (50-delta)/50 x 100  
+percent range by: CE = (50-delta)/50 x 100  
 
 This is repeated with all items, resulting in the following detailed error 
 table.  
@@ -185,8 +184,8 @@ CC %>%
   kable_styling() 
 ```
 
-The detailed error table is summarized for each item in the test by reporting 
-the average CE together with the worth value. The final error table is  
+The detailed error table is summarized for each item by reporting the average CE
+together with the worth value. The final error table is, therefore:
 
 ```{r echo=FALSE}
 
@@ -197,13 +196,13 @@ DD %>%
   kable_styling() 
 ```
 
-Finally, the total CE is calculated as the average of the averaged item CEs.
+Finally, the total CE is calculated as the average of the averaged item CEs (
+here: 5 items).
 
-**Total CE** = (25 + 31.25 + 25 + 25 + 81.25) /5 = **37.5%**
+**Total CE** = (25 + 31.25 + 25 + 25 + 81.25) / 5 = **37.5%**
 
 The `bimeval` function plots this result as a bubble plot in which the CE 
 determines the bubble sizes.  
-
 
 ```{r echo=FALSE}
 w_errors   <- bimeval(ydata     = predat,
@@ -218,24 +217,24 @@ w_errors   <- bimeval(ydata     = predat,
 
 ## Intransitivity
 The combination of multiple bimodal choices is usually based on the assumption 
-of transitivity: If one item, A, is preferred over another item, B, and B is 
-preferred over item C, then A should also be preferred when directly compared to
+of transitivity: If item A is preferred over B, and B is 
+preferred over C, then A should also be preferred when directly compared to
 C. However, in real-life data, intransitive decisions occur on the individual as
 well as on the group level. Therefore, the amount of intransitivity in the 
 derived ranking can be used as a proxy for the quality of the ranking.
 
 The transitivity is always checked for the whole data. The number of 
 intransitive triplets is counted and standardized to the total number of
-triplets.
+triplets. For example:
 
-Let's say, there are 40 triplets in total and 3 triplets showed intransitive
+Let's say, there are 40 triplets in total and 3 triplets show intransitive
 patterns. Then, the intransitivity ratio would be **Iratio = 3/40 = 0.075**.
 
-Including simulated ties can introduce intransitivity or help with improving 
+Introducing simulated ties can lead to intransitivity or help with improving 
 already present intransitive pairs. Therefore, running the simulation longer 
 will increase the chances of obtaining transitive pairs for new item 
-combinations. Usually, the best choice for a new item will be the one with the
-highest achieved transitivity.
+combinations, which we select for in the informed simulation. Usually, the best 
+choice for a new item will be the one with the highest achieved transitivity.
 
 This method is used in the informed simulation of the `bimsim` function. 
 The results are shown in bubbleplots with the transitivity ratio as size 

@@ -1208,14 +1208,15 @@ TRUE
 </tr>
 </tbody>
 </table>
-<p>For the next step in the CE calculation, the function counts how many cases of A, B and ties there were and multiplies this with 1/No. of subjects.</p>
+<p>For the next step in the CE calculation, the function counts how many cases of preference for A or B and how many ties were found. This number is multiplied with 1/No. of subjects.</p>
 <p>In the example of the highlighted case above, this would be<br>
-No. B x 1/4 No. of subjects = 2 x B x 0.25 = 0.5</p>
-<p>Ties were attributed equally on options A and B to avoid distribution bias. The most simple solution requires adding half of the count values to A AND B. This will be:</p>
-<p>(No. of B x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) = (2 x 0.5) + ((2x0.25)/2) = 0.75.</p>
+No. A x 1/No. of subjects = 0 x 0.25 = 0</p>
+<p>No. B x 1/No. of subjects = 2 x 0.25 = 0.5</p>
+<p>To avoid distribution bias, ties are attributed equally to options A and B, e.g., in the data above there are 2 ties, so the calculation is:</p>
+<p>(No. of A x 1/No. of subjects) + ((No. ties x 1/No. of subjects)/No. of ties = (0 x 0.25) + ((2x0.25)/2) = 0.25.</p>
 <p><em>AND</em></p>
-<p>(No. of A x 1/4 No. of subjects) + ((No. Ties x 1/4 No. of subjects)/2) = 0 + ((2x0.25)/2) = 0.25.</p>
-<p>This is repeated with all item combinations, resulting in raw deviations for options A and B (CE_A and CE_B). The following table shows the calculations weighted by the number of subjects as the raw consensus errors.</p>
+<p>(No. of B x 1/No. of subjects) + ((No. ties x 1/No. of subjects)/No. of ties) = (2 x 0.25) + ((2x0.25)/2) = 0.75.</p>
+<p>This is repeated with all item combinations, resulting in the following table:</p>
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">
@@ -1418,15 +1419,16 @@ ZackeHoiHoiHoi
 <code class="sourceCode R"><span class="co"># Pseudococde - deviation calculation</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">item_combinations</span><span class="op">)</span><span class="op">{</span> <span class="co"># e.g., ZackeHoiHoiHoi</span>
   <span class="kw">if</span><span class="op">(</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_A"</span> <span class="op">]</span> <span class="op">&gt;</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_B"</span> <span class="op">]</span> <span class="op">)</span><span class="op">{</span>
-    <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_B"</span> <span class="op">]</span><span class="op">)</span>
+    <span class="va">delta</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_B"</span> <span class="op">]</span><span class="op">)</span>
   <span class="op">}</span><span class="kw">else</span><span class="op">{</span>
-    <span class="va">delta</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_A"</span> <span class="op">]</span><span class="op">)</span>
+    <span class="va">delta</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span> <span class="op">-</span> <span class="va">item</span><span class="op">[</span><span class="va">i</span>, <span class="st">"CE_A"</span> <span class="op">]</span><span class="op">)</span>
   <span class="op">}</span>
+  <span class="va">CE_raw</span>      <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">-</span><span class="va">delta</span>
+  <span class="va">CE</span>          <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">50</span><span class="op">-</span><span class="va">delta</span><span class="op">)</span><span class="op">/</span><span class="fl">50</span> <span class="op">*</span> <span class="fl">100</span>
 <span class="op">}</span></code></pre></div>
-<p>With the resulting delta value, the deviation from 50% can be calcualted. A delta value of 50 means perfect consensus. Therefore: CE_raw(A,B) = 50 - delta.</p>
+<p>With the resulting delta value, the deviation from 50% can be calculated. A delta value of 50 means perfect consensus. Therefore: CE_raw(A,B) = 50 - delta.</p>
 <p>This is the <em>un</em>standardized Consensus Error.</p>
-<p>The unstandardized error may be unintuitive. Therefore, it is standardized to percent range by</p>
-<p>CE = (50-delta)/50 x 100</p>
+<p>The unstandardized error may be unintuitive. Therefore, it is standardized to percent range by: CE = (50-delta)/50 x 100</p>
 <p>This is repeated with all items, resulting in the following detailed error table.</p>
 <table class="table table">
 <thead><tr>
@@ -1718,7 +1720,7 @@ ZackeHoiHoiHoi
 </tr>
 </tbody>
 </table>
-<p>The detailed error table is summarized for each item in the test by reporting the average CE together with the worth value. The final error table is</p>
+<p>The detailed error table is summarized for each item by reporting the average CE together with the worth value. The final error table is, therefore:</p>
 <table class="table table">
 <thead><tr>
 <th style="text-align:left;">
@@ -1842,8 +1844,8 @@ HoiHoiHoi (CE=81.25%)
 </tr>
 </tbody>
 </table>
-<p>Finally, the total CE is calculated as the average of the averaged item CEs.</p>
-<p><strong>Total CE</strong> = (25 + 31.25 + 25 + 25 + 81.25) /5 = <strong>37.5%</strong></p>
+<p>Finally, the total CE is calculated as the average of the averaged item CEs ( here: 5 items).</p>
+<p><strong>Total CE</strong> = (25 + 31.25 + 25 + 25 + 81.25) / 5 = <strong>37.5%</strong></p>
 <p>The <code>bimeval</code> function plots this result as a bubble plot in which the CE determines the bubble sizes.</p>
 <pre><code>#&gt; Warning in bimeval(ydata = predat, worth = worth, GT = GT, simOpt = simOpt, : simsalRbim: No. of SUBJECTS WARNING!
 #&gt;                 The number of subjects you have provided for testing the
@@ -1867,10 +1869,10 @@ HoiHoiHoi (CE=81.25%)
 <div id="intransitivity" class="section level2">
 <h2 class="hasAnchor">
 <a href="#intransitivity" class="anchor"></a>Intransitivity</h2>
-<p>The combination of multiple bimodal choices is usually based on the assumption of transitivity: If one item, A, is preferred over another item, B, and B is preferred over item C, then A should also be preferred when directly compared to C. However, in real-life data, intransitive decisions occur on the individual as well as on the group level. Therefore, the amount of intransitivity in the derived ranking can be used as a proxy for the quality of the ranking.</p>
-<p>The transitivity is always checked for the whole data. The number of intransitive triplets is counted and standardized to the total number of triplets.</p>
-<p>Let’s say, there are 40 triplets in total and 3 triplets showed intransitive patterns. Then, the intransitivity ratio would be <strong>Iratio = 3/40 = 0.075</strong>.</p>
-<p>Including simulated ties can introduce intransitivity or help with improving already present intransitive pairs. Therefore, running the simulation longer will increase the chances of obtaining transitive pairs for new item combinations. Usually, the best choice for a new item will be the one with the highest achieved transitivity.</p>
+<p>The combination of multiple bimodal choices is usually based on the assumption of transitivity: If item A is preferred over B, and B is preferred over C, then A should also be preferred when directly compared to C. However, in real-life data, intransitive decisions occur on the individual as well as on the group level. Therefore, the amount of intransitivity in the derived ranking can be used as a proxy for the quality of the ranking.</p>
+<p>The transitivity is always checked for the whole data. The number of intransitive triplets is counted and standardized to the total number of triplets. For example:</p>
+<p>Let’s say, there are 40 triplets in total and 3 triplets show intransitive patterns. Then, the intransitivity ratio would be <strong>Iratio = 3/40 = 0.075</strong>.</p>
+<p>Introducing simulated ties can lead to intransitivity or help with improving already present intransitive pairs. Therefore, running the simulation longer will increase the chances of obtaining transitive pairs for new item combinations, which we select for in the informed simulation. Usually, the best choice for a new item will be the one with the highest achieved transitivity.</p>
 <p>This method is used in the informed simulation of the <code>bimsim</code> function. The results are shown in bubbleplots with the transitivity ratio as size parameter.</p>
 <p><img src="simsalRbim_quality_measures_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
 </div>
