@@ -77,10 +77,10 @@ ZickeZacke dataset. For this, we consider all item pairings that include
 
 The table below provides the quantities (e.g., amount drunk) for items (options)
 A and B if available, and the result of the preference in relation to quantity 
-A, i.e., 1 (preferred item A), 0 (tie), -1 (prefered item B). Item pairings that
-are not provided in the data are filled in as ties (note, that the quantities 
-are zero in these cases, while those ties that already occurred in the original 
-data still show quantities).
+A, i.e., 1 (preferred item A), 0 (tie), -1 (preferred item B). Item pairings 
+that are not provided in the data are filled in as ties (note, that the 
+quantities are zero in these cases, while those ties that already occurred in 
+the original data still show quantities).
 
 As an example, the combinations of "Kacke" with the "HoiHoiHoi" item are
 highlighted. Note that subjectID "drei" has no quantities and was therefore 
@@ -217,11 +217,12 @@ w_errors   <- bimeval(ydata     = predat,
 
 ## Intransitivity
 The combination of multiple bimodal choices is usually based on the assumption 
-of transitivity: If item A is preferred over B, and B is 
-preferred over C, then A should also be preferred when directly compared to
-C. However, in real-life data, intransitive decisions occur on the individual as
-well as on the group level. Therefore, the amount of intransitivity in the 
-derived ranking can be used as a proxy for the quality of the ranking.
+of transitivity: If, in a comparison of three items (triplet), item A is 
+preferred over B, and B is preferred over C, then A should also be preferred 
+when directly compared to C. However, in real-life data, intransitive decisions
+occur on the individual aswell as on the group level. Therefore, the amount of 
+intransitivity in the derived ranking can be used as a proxy for the quality of
+the ranking.
 
 The transitivity is always checked for the whole data. The number of 
 intransitive triplets is counted and standardized to the total number of
@@ -230,11 +231,14 @@ triplets. For example:
 Let's say, there are 40 triplets in total and 3 triplets show intransitive
 patterns. Then, the intransitivity ratio would be **Iratio = 3/40 = 0.075**.
 
-Introducing simulated ties can lead to intransitivity or help with improving 
-already present intransitive pairs. Therefore, running the simulation longer 
-will increase the chances of obtaining transitive pairs for new item 
-combinations, which we select for in the informed simulation. Usually, the best 
-choice for a new item will be the one with the highest achieved transitivity.
+Introducing simulated items can lead to ties which might increase 
+intransitivity. However, if the data are already confounded by intransitivity,
+the introduction of simulated items may reduce the overall amount of 
+intransitivity by selecting for transitive combinations (informed simulation). 
+Therefore, running the simulation longer will increase the chances of obtaining 
+transitive pairs for new item combinations, which we select for in the informed 
+simulation. Usually, the best choice for a new item will be the one with the 
+highest achieved transitivity.
 
 This method is used in the informed simulation of the `bimsim` function. 
 The results are shown in bubbleplots with the transitivity ratio as size 

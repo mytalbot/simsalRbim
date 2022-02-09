@@ -35,11 +35,10 @@ have been proven to be a valid method to rate different commodities. The number
 of commodities presented at the same time is, however, limited and in classical
 test settings usually, only two options are presented. In our paper 
 (**add reference**), we evaluate the option of combining multiple binary choices
-to rank preferences among a larger number of commodities. In addition, we 
-suggest how missing data can be replaced by simulations to minimize the number
-of individual tests needed. The **simsalRbim** package offers the necessary
-tools to test selections of commodities and to obtain an estimate of new or
-incompletely tested items and their relative position.
+to rank preferences among a larger number of commodities. The **simsalRbim** 
+package offers the necessarytools to test selections of commodities and to 
+obtain an estimate of new or incompletely tested items and their relative 
+position.
 
 ### Data availability
 The package contains an artificial set of data, ZickeZacke, which we use as an 
@@ -93,22 +92,26 @@ Data from a series of binary preference tests may be incomplete, may show ties
 or new item positions shall be tested without the need of testing ALL possible 
 combinations. The simsalRbim package can address all three cases by using
 informed and uninformed simulations to find the optimal item positions in the 
-data.
+data. Uninformed or informed simulations refer to whether there is knowledge
+about intransitivity in the ranking. For details see the
+[simsalRbim Examples Vignette](https://talbotsr.com/simsalRbim/articles/simsalRbim_examples).
 
 Preference test data usually come in two formats: quantities (i.e., a subject 
 consumes 200 ml of orange juice but only 17 ml of milk) or binary data (i.e., 
 "I like Star Trek better than Star Wars"). The `bimload` function in the package
-can load both formats, including the preferred side in a test as a variable.
-However, if a preference test is showing significant side dependencies (i.e.,
-milk is preferred over orange juice if it is presented in a bottle positioned on
-the left side but vice versa if it is presented in the right bottle), the 
-simulated outcome will be biased. With the current package it is not possible to
-resolve side-dependent tests.
+can load both formats, including the side the item is presented  at as a test 
+variable. The side information can be examined with the `bimbalance` function. 
+However, if a preference test is showing significant side dependencies (i.e., 
+milk is preferred over orange juice if it is presented in a bottle positioned on 
+the left side but not if it is presented in the right bottle), the simulated 
+outcome will be biased. The current package can highlight such experimental
+imbalances, which should be addressed using a different experimental design.
 
-In case of present ties, the binary response variable is randomized. By default,
-this happens at a 50% likelihood for an equal commodity selection. However, the
-user may specify other thresholds for considering a case as a tie, for example 
-if a preference is only deemed to be meaningful if one item is chosen at >65%. 
+In case of present ties (A = B), the binary response variable is randomized. By 
+default this happens at a 50% likelihood for an equal commodity selection. 
+However, the user may specify other thresholds for considering a case as a tie, 
+for example, a preference can only be deemed meaningful if one item is 
+chosen at >65%. 
 
 Missing item tests and combinations are filled as ties and then simulated in the
 two simulation functions. In the uninformed simulation, data are continuously 
@@ -118,11 +121,11 @@ confident, At a given number of degrees of freedom this will stabilize the 95%
 confidence intervals on the worth scale. Thus, item positions can be obtained 
 with a reasonable confidence without having to include tests on all possible 
 item combinations. If you assume that the data is following the supposition of 
-transitivity (i.e., if A>B and B>C then A>C) them the informed simulation can 
+transitivity (i.e., if A>B and B>C then A>C) then the informed simulation can 
 help to derive a ranking with higher confidence. In the informed simulation, the
 number of intransitive relationships within the simulated rank order is also 
 calculated. The number of intransitive relationships in the results can be 
-limited to any percentage between 0% and 100%. Thereby the item of interest can 
+limited to any percentage between 0% and 100%. Thereby, the item of interest can 
 be placed on the worth scale at much higher confidence. 
 
 ## Data
@@ -130,9 +133,9 @@ be placed on the worth scale at much higher confidence.
 The package includes example data (ZickeZacke) that can be used to explore the 
 packages functions and gives an example of how the input data must be formatted.
 Please note, that the item ‘HoiHoiHoi’ deliberately introduces variance in the 
-data as it is incomplete, introduces a tie, and an intransitive relationship. 
-Without this item it would be perfect data which do not need a simulation. In 
-such cases, the package will show the worth plot but will also give a warning.
+data as it is (i) incomplete, (ii) introduces a tie, and (iii) introduces an 
+intransitive relationship. Without this item it would be perfectly balanced and
+complete data which do not need a simulation. 
 
 ```{r echo=TRUE}
 head(simsalRbim::ZickeZacke)
@@ -168,9 +171,9 @@ verbose=TRUE)
 The function takes the data object (`dat`) from `bimload`, a parameter defining
 the ground truth (`GT`) as well as the item that requires simulation (`simOpt`).
 The `deviation` and `minQuantity` arguments can be used to modify the threshold
-of the tie selection (e.g, 50% + deviation, with deviation as the amount of
-additional deviation in percent (i.e, 50% + 5% deviation = 55%)). 
-
+of the tie selection [e.g, 50% + deviation; with deviation =  amount of
+additional deviation in percent (i.e, 50% + 5% deviation = 55%)]. 
+ 
 
 ### bimworth
 ```
@@ -181,8 +184,9 @@ showPlot=FALSE, ylim=c(0,0.8), size = 5, verbose=FALSE)
 The `ydata` object takes the output from the preprocessing function (`bimpre`) 
 as well as the ground truth (`GT`) and the simulated item (`simOpt`). With the 
 `randOP` argument the randomization process can be controlled. If randOP=TRUE 
-(present!) ties are randomized each time the function is executed. The `intrans`
-argument controls whether the intransitivity of the items shall be computed. 
+(default; if FALSE, the random seed will be fixed) ties are randomized each time
+the function is executed. The `intrans` argument controls whether the 
+intransitivity of the items shall be computed. 
 
 
 ### bimeval
@@ -195,9 +199,10 @@ ylim=c(0,1))
 The first three input objects are the same as in `bimworth`. Additionally, the
 function requires the output from `bimworth` for the evaluation. Be aware that
 the `bimworth` output can be a list when `intrans=TRUE`. The `coverage` object
-defines an arbitrary threshold for data coverage warnings. There can be two 
-warnings: number of subjects and number of items warnings. The graphical output
-can be controlled with the `showPlot` object. 
+defines an arbitrary threshold (default=0.8, ratio of tested subjects/total 
+subjects) for data coverage warnings. There can be two warnings: number of 
+subjects and number of items warnings. The graphical output can be controlled 
+with the `showPlot` object. 
 
 
 ### bimUninformed
@@ -231,11 +236,11 @@ bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)
 ```
 
 This function is very similar to `bimUninformed` and uses the same input 
-arguments. However, it will not explore randomization space but will rather use
-a distinct cutoff to show the items' relative position. The query item 
-(`simOpt`) is shown in "red" in the plot. All items will be shown on the worth
-scale, together with 95% confidence intervals. Any overlap will indicate
-potential ambiguity in item positioning.
+arguments. Contrary to `bimUninformed`, however, it will not explore 
+randomization space but rather uses a distinct cutoff to show the items' 
+relative position. The query item (`simOpt`) is shown in "red" in the plot. All 
+items will be shown on the worth scale, together with 95% confidence intervals. 
+Any overlap indicates potential ambiguity in item positioning.
 
 
 ### bimsim 
@@ -248,15 +253,17 @@ tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))
 The `bimsim` function performs an informed position simulation of variable
 preference test data. The `limitToRun` argument from the `bimUninformed` output 
 can be used as an estimate for the required number of randomizations. The 
-`tcut` argument sets the cutoff for showing the consensus error (%, CE) of the 
-simulated results in the plot **OR** the transitivity ratios (1-Iratio). 
-The selection depends on the `filter.crit` parameter ("CE" or "Iratio"), i.e.,
-tcut=0.95 results in a 95% cutoff. The more stringent (= higher tcut in
-case of transitivity ratios) the criterion, the more informed the simulation
-becomes. The output is a frequency distribution of `simOpts` preferred position
-at the given `tcut`. The plot shows the worth value of the `simOpt` item as 
-a function of its position. The bubblesizes code for the consensus error/
-transitivity ratio. 
+`tcut` argument sets the cutoff for showing the 
+[consensus error](https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures) 
+(%, CE) of the simulated results in the plot **OR** the transitivity ratios
+(1-Iratio; with Iratio indicating the number of intransitive triplets per total
+number of triplets). The selection depends on the `filter.crit` parameter 
+("CE" or "Iratio"), i.e., tcut=0.95 results in a 95% cutoff. The more stringent 
+(= higher tcut in case of transitivity ratios) the criterion, the more informed
+the simulation becomes. The output is a frequency distribution of `simOpts` 
+preferred position at the given `tcut`. The plot shows the worth value of the
+`simOpt` item as a function of its position. The bubblesizes code for the 
+consensus error/transitivity ratio. 
 
 
 ### bimristics 
