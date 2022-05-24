@@ -1,0 +1,144 @@
+---
+title: "simsalRbim - Simulating new items"
+author:
+  - Steven R. Talbot
+  - Dana Pfefferle
+  - Ralf Brockhausen
+  - Lars Lewejohann
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: simsalRbim_lib.bib
+csl: biomed-central.csl
+vignette: >
+  %\VignetteIndexEntry{simsalRbim - Simulating new items}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+  ```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(include = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+library(simsalRbim)
+```
+ 
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(simsalRbim)
+library(knitr)
+library(dplyr)
+library(kableExtra)
+```
+
+
+## Preference tests
+Preference tests are a way of testing the “wants” of individuals and can be used
+in various experimental setups. Especially in the animal sciences, these methods
+are used in many applications. Usually, scientists will have to “do” the 
+experiments to determine the “wants” of subjects. Unfortunately, these
+experiments cost time and money or require intricate gadgets to say that animal
+N.N. prefers substance “A” over “B”. In addition, experiments that include a 
+lot of test item combinations can quickly become a drain on resources. 
+Therefore, we propose the simsalRbim package in which we present numerous 
+functions to estimate, evaluate and simulate preference tests with complete and 
+missing data. In addition, we make intensive use of the prefmod [@prefmodcit] 
+package that uses a log-linear Bradley-Terry model (LLBT) to calculate “worth
+values” from the equation coefficients so that items can be ranked.
+
+So, how does this help us save resources?  
+-- we'll simulate items that we haven't tested!
+
+But, there is...
+
+
+## A problem with the “unknown”
+The simulation of an item of which one has limited knowledge is a good starting 
+point for estimating its putative position on the worth scale. However, this means,
+e.g., that only limited item combination tests have been experimentally tested, 
+and others not. This leaves us with “open” positions on the item combinations 
+for which no worth value can be calculated. The simsalRbim package takes 
+advantage of how the prefmod package works and fills open 
+positions randomly with the discrete results of the underlying model. These
+values can assume the numbers -1 (B > A), 0 (tie, A=B), and 1 (A < B) for each 
+open item combination. By repeating the simulations *i*-times with the items
+from the Ground Truth, the model eventually runs into saturation due to the 
+limited degrees of freedom that the item combinations provide.
+
+To provide the user with a measure to evaluate the outcome of these simulations,
+we suggest two criteria: a) the Consensus Error (CE) and b) the intransitivity 
+Ratio (Iratio), which will help identify “good” simulation results. In the case 
+of “sufficiently” long simulation runs and more tested item combinations, the 
+Iratio eventually gets smaller (e.g., Iratio=0 means zero intransitivity). 
+Unfortunately, the number of required simulation runs is a heuristic (highly
+data-dependent). However, together with the CE, the Iratio provides a decision 
+criterion for accepting the simulated position of a new item. For more 
+information, see the 
+[explanation of the two measures](https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures.html).
+
+## Example simulation: HoiHoiHoi
+The ZickeZacke data within the simsalRbim package contains the "HoiHoiHoi" item,
+that has only been rated by 3 individuals (“eins”, “zwei”, “vier”) in the 
+"Kacke" item 
+([see](https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures.html)).
+No other item has been tested with "HoiHoiHoi".
+
+The worth analysis with the "HoiHoiHoi" item shows that it ranks on position
+No. 2 ([see](https://talbotsr.com/simsalRbim/articles/simsalRbim_examples.html)). 
+Let's test this by simulating "HoiHoiHoi" in 100 runs using the `simsim` 
+function.
+ 
+**Please note:** The user can specify a true position (`truepos`, here=2) if a
+specific position is known or should be tested. If `truepos`=NULL, no such 
+evaluation takes place. This would be the default option when testing a new 
+item. When the `path` is specified, the results will be saved
+to that location as a *.txt file. The `runs` object specifies the number of 
+simulations that are run.
+
+```{r echo=TRUE}
+# Does the simulation of HoiHoiHoi at the given Ground Truth (GT)
+data       <- ZickeZacke
+hoihoihoi  <- simsim(data      = data,
+                      simOpt   = "HoiHoiHoi",
+                      GT       = c("Zicke","Zacke","Huehner", "Kacke"),
+                      runs     = 100,
+                      truepos  = 2,
+                      seeding  = TRUE,
+                      path     = NULL)
+```
+
+### Simulation result 
+```{r echo=FALSE}
+hoihoihoi %>%
+  kbl() %>%
+  kable_styling() 
+
+```
+ 
+**pos:**     the simulated item position (based on Iratio and CE)  
+**worth:**   the average worth value obtained from the simulation  
+**Irato:**   the Iratio (the lower, the better)  
+**CE:**      the Consensus Error (the lower, the better)  
+**tp_frq:**  the frequency of true positive results (gets lower with more items)  
+**tp:**      the absolute tp counts in the simulation  
+**total:**   the number of simulation runs  
+**against:** the items that simOpt was tested against  
+
+Note that the simulations did a decent job in finding pos=2 for the "HoiHoiHoi"
+item - given the fact, that it was only tested with 1 other item and 3 subjects.
+The CE error remains relatively large and the Iratio is low from the beginning.
+The fraction of true positives should improve when more actual data/tests are
+provided.
+
+## References
+
+
+
+
+
+

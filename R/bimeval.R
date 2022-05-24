@@ -201,8 +201,8 @@ bimeval <- function(ydata=NULL, GT=NULL, simOpt=NULL, worth= NULL, coverage=0.8,
     p <- p +  theme(legend.position         = "top")
     p <- p + geom_label_repel(aes(label     = label),
                               size          = 4,
-                              box.padding   = unit(0.6, "lines"),
-                              point.padding = unit(0.6, "lines"),
+                              box.padding   = unit(0.7, "lines"),
+                              point.padding = unit(0.7, "lines"),
                               show.legend   = FALSE )
 
     p <- p +  theme(axis.line        = element_line(colour = "black"),

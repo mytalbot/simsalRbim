@@ -67,6 +67,9 @@
       <a href="../articles/simsalRbim_quality_measures.html">simsalRbim - Quality measures for worth evaluation</a>
     </li>
     <li>
+      <a href="../articles/simsalRbim_sim_new_items.html">simsalRbim - Simulating new items</a>
+    </li>
+    <li>
       <a href="../articles/simsalRbim_vignette.html">simsalRbim</a>
     </li>
   </ul>
@@ -98,7 +101,7 @@
                         <h4 class="author">Ralf Brockhausen</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2022-02-09</h4>
+            <h4 class="date">2022-05-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_vignette.Rmd"><code>vignettes/simsalRbim_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_vignette.Rmd</code></div>
@@ -226,6 +229,13 @@ bimpos(ydata=NULL, GT=NULL, simOpt=NULL, limitToRun=5, showPlot=TRUE)</a></code>
 bimsim(rawdat=NULL, GT=GT, simOpt=simOpt, filter.crit="CE", limitToRun=5,
 tcut=0.9, deviation=0, minQuantity=0, seed=TRUE, showPlot=TRUE,ylim=c(0,0.7))</a></code></pre>
 <p>The <code>bimsim</code> function performs an informed position simulation of variable preference test data. The <code>limitToRun</code> argument from the <code>bimUninformed</code> output can be used as an estimate for the required number of randomizations. The <code>tcut</code> argument sets the cutoff for showing the <a href="https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures">consensus error</a> (%, CE) of the simulated results in the plot <strong>OR</strong> the transitivity ratios (1-Iratio; with Iratio indicating the number of intransitive triplets per total number of triplets). The selection depends on the <code>filter.crit</code> parameter (“CE” or “Iratio”), i.e., tcut=0.95 results in a 95% cutoff. The more stringent (= higher tcut in case of transitivity ratios) the criterion, the more informed the simulation becomes. The output is a frequency distribution of <code>simOpts</code> preferred position at the given <code>tcut</code>. The plot shows the worth value of the <code>simOpt</code> item as a function of its position. The bubblesizes code for the consensus error/transitivity ratio.</p>
+</div>
+<div id="simsim" class="section level3">
+<h3 class="hasAnchor">
+<a href="#simsim" class="anchor"></a>simsim</h3>
+<pre><code># simsim(data = NULL, simOpt = NULL, GT = NULL, seeding = TRUE, runs = NULL,
+truepos = NULL, verbose = FALSE, path = NULL)</code></pre>
+<p>The <code>simsim</code> function will simulate an item (<code>simOpt</code>) against any combinations given in the Ground Truth (<code>GT</code>). A constant seeding ensures that the results remain stable. The number of simulation runs can be set with the <code>runs</code> object. However, this number is data-dependent and, therefore, a heuristic. When the true position of the simulated item is known (or shall be tested), the <code>truepos</code> object is used to indicate that position. The <code>verbose</code> object silences outputs from the <code>bimpre</code> function. When the <code>path</code> is given, the resulting table from the simulation will be stored as a *.txt file.</p>
 </div>
 <div id="bimristics" class="section level3">
 <h3 class="hasAnchor">

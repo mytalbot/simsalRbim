@@ -68,7 +68,9 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
   modData    <- dcast(ydata, formula = subjectID ~ test,
                       fun.aggregate = sum, value.var = 'result')
   modData$subjectID <- NULL
-  modelY     <- llbt.design(modData, nitems = length(optionList),
+
+  modelY     <- llbt.design(modData,
+                            nitems   = length(optionList) ,
                             objnames = optionList   )
 
   formula    <- as.formula(paste("y~",

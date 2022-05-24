@@ -5,6 +5,10 @@ library(ggplot2)
 # Bubblesize umdrehen in certainty
 
 
+# tabelle mit allen items simulieren ALLE Combis!
+# ROC Analyse
+
+
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
 
@@ -147,7 +151,7 @@ dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/human_La
 bimbalance(dat)
 
 simOpt     <- "Lake"
-GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire")
+GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire" )
 
 predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt)
 
@@ -176,6 +180,16 @@ p <- p+ labs(title = "Very important title") +
 p <- p + annotate("text", x = 0.6, y = 0.44, size=4.5,
                   label = paste("Mean CE=",round(mean(w_errors$errors$CE),2),"% ",sep=""))
 p
+
+
+
+cutoff     <- bimUninformed(ydat       = predat,
+                            GT         = GT,
+                            simOpt     = simOpt,
+                            limitToRun = 50,
+                            ylim       = c(-1,2) )
+cutoff$cutoff
+
 
 
 
