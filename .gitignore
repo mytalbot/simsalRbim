@@ -1,6 +1,6 @@
 .Rproj.user
 inst/doc
-/testfolder/
+testfolder/
 .Rhistory
 .Rdata
 .httr-oauth
