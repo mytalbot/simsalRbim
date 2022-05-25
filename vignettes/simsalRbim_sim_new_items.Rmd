@@ -36,7 +36,6 @@ library(dplyr)
 library(kableExtra)
 ```
 
-
 ## Preference tests
 Preference tests are a way of testing the “wants” of individuals and can be used
 in various experimental setups. Especially in the animal sciences, these methods
@@ -56,7 +55,6 @@ So, how does this help us save resources?
 
 But, there is...
 
-
 ## A problem with the “unknown”
 The simulation of an item of which one has limited knowledge is a good starting 
 point for estimating its putative position on the worth scale. However, this means,
@@ -65,7 +63,7 @@ and others not. This leaves us with “open” positions on the item combination
 for which no worth value can be calculated. The simsalRbim package takes 
 advantage of how the prefmod package works and fills open 
 positions randomly with the discrete results of the underlying model. These
-values can assume the numbers -1 (B > A), 0 (tie, A=B), and 1 (A < B) for each 
+values can assume the numbers -1 (A > B), 0 (tie, A=B), and 1 (A < B) for each 
 open item combination. By repeating the simulations *i*-times with the items
 from the Ground Truth, the model eventually runs into saturation due to the 
 limited degrees of freedom that the item combinations provide.
@@ -80,6 +78,33 @@ data-dependent). However, together with the CE, the Iratio provides a decision
 criterion for accepting the simulated position of a new item. For more 
 information, see the 
 [explanation of the two measures](https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures.html).
+
+# Ways to simulate
+For the simulation, some experimental data are needed (at least tested vs. one 
+existing item from the Ground Truth). Please note that the less information is 
+provided, the higher the uncertainty.
+
+### a) confirm a calculated position  
+Experimental data yields a ranking on the worth scale. However, this scale 
+might include uncertainties. The user can exclude an item and reintroduce it in 
+combinations with the remaining GT items. This can be done by specifying the
+calculated position of the item on the worth scale (`truepos`). The simulation 
+yields the best-achieved estimate using the Iratio and the CE on the simulated
+item’s rank. 
+
+###	b) best guess (with *a priori* information)  
+If the item was not tested against all other items, but the user has a good 
+idea about its position, the position can be simulated using the `truepos` 
+argument as the most likely outcome. The simulation yields the best position
+estimate based on the `Iratio` and `CE`, along with the number of absolute counts 
+that matched the predictions indicated in the `truepos` argument. 
+
+### c) no idea (without any prior position information)  
+When there is no information (or guesstimate) on an item’s position, the
+simulation can be run without specifying the `truepos` argument. The resulting 
+table will be without the absolute counts and frequency information on the
+`truepos` outcomes in such a case. Nevertheless, the position will still be 
+estimated based using the `Iratio` and `CE` as in a) and b).  
 
 ## Example simulation: HoiHoiHoi
 The ZickeZacke data within the simsalRbim package contains the "HoiHoiHoi" item,
@@ -103,13 +128,13 @@ simulations that are run.
 ```{r echo=TRUE}
 # Does the simulation of HoiHoiHoi at the given Ground Truth (GT)
 data       <- ZickeZacke
-hoihoihoi  <- simsim(data      = data,
-                      simOpt   = "HoiHoiHoi",
-                      GT       = c("Zicke","Zacke","Huehner", "Kacke"),
-                      runs     = 100,
-                      truepos  = 2,
-                      seeding  = TRUE,
-                      path     = NULL)
+hoihoihoi  <- simsim(data     = data,
+                     simOpt   = "HoiHoiHoi",
+                     GT       = c("Zicke","Zacke","Huehner", "Kacke"),
+                     runs     = 100,
+                     truepos  = 2,
+                     seeding  = TRUE,
+                     path     = NULL)
 ```
 
 ### Simulation result 
@@ -128,6 +153,7 @@ hoihoihoi %>%
 **tp:**      the absolute tp counts in the simulation  
 **total:**   the number of simulation runs  
 **against:** the items that simOpt was tested against  
+**seeding:** the simulation uses constant seeding if TRUE  
 
 Note that the simulations did a decent job in finding pos=2 for the "HoiHoiHoi"
 item - given the fact, that it was only tested with 1 other item and 3 subjects.

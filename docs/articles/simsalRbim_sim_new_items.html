@@ -102,7 +102,7 @@
                         <h4 class="author">Ralf Brockhausen</h4>
                         <h4 class="author">Lars Lewejohann</h4>
             
-            <h4 class="date">2022-05-24</h4>
+            <h4 class="date">2022-05-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mytalbot/simsalRbim/blob/master/vignettes/simsalRbim_sim_new_items.Rmd"><code>vignettes/simsalRbim_sim_new_items.Rmd</code></a></small>
       <div class="hidden name"><code>simsalRbim_sim_new_items.Rmd</code></div>
@@ -122,8 +122,27 @@
 <div id="a-problem-with-the-unknown" class="section level2">
 <h2 class="hasAnchor">
 <a href="#a-problem-with-the-unknown" class="anchor"></a>A problem with the “unknown”</h2>
-<p>The simulation of an item of which one has limited knowledge is a good starting point for estimating its putative position on the worth scale. However, this means, e.g., that only limited item combination tests have been experimentally tested, and others not. This leaves us with “open” positions on the item combinations for which no worth value can be calculated. The simsalRbim package takes advantage of how the prefmod package works and fills open positions randomly with the discrete results of the underlying model. These values can assume the numbers -1 (B &gt; A), 0 (tie, A=B), and 1 (A &lt; B) for each open item combination. By repeating the simulations <em>i</em>-times with the items from the Ground Truth, the model eventually runs into saturation due to the limited degrees of freedom that the item combinations provide.</p>
+<p>The simulation of an item of which one has limited knowledge is a good starting point for estimating its putative position on the worth scale. However, this means, e.g., that only limited item combination tests have been experimentally tested, and others not. This leaves us with “open” positions on the item combinations for which no worth value can be calculated. The simsalRbim package takes advantage of how the prefmod package works and fills open positions randomly with the discrete results of the underlying model. These values can assume the numbers -1 (A &gt; B), 0 (tie, A=B), and 1 (A &lt; B) for each open item combination. By repeating the simulations <em>i</em>-times with the items from the Ground Truth, the model eventually runs into saturation due to the limited degrees of freedom that the item combinations provide.</p>
 <p>To provide the user with a measure to evaluate the outcome of these simulations, we suggest two criteria: a) the Consensus Error (CE) and b) the intransitivity Ratio (Iratio), which will help identify “good” simulation results. In the case of “sufficiently” long simulation runs and more tested item combinations, the Iratio eventually gets smaller (e.g., Iratio=0 means zero intransitivity). Unfortunately, the number of required simulation runs is a heuristic (highly data-dependent). However, together with the CE, the Iratio provides a decision criterion for accepting the simulated position of a new item. For more information, see the <a href="https://talbotsr.com/simsalRbim/articles/simsalRbim_quality_measures.html">explanation of the two measures</a>.</p>
+</div>
+<div id="ways-to-simulate" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ways-to-simulate" class="anchor"></a>Ways to simulate</h1>
+<p>For the simulation, some experimental data are needed (at least tested vs. one existing item from the Ground Truth). Please note that the less information is provided, the higher the uncertainty.</p>
+<div id="a-confirm-a-calculated-position" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-confirm-a-calculated-position" class="anchor"></a>a) confirm a calculated position</h3>
+<p>Experimental data yields a ranking on the worth scale. However, this scale might include uncertainties. The user can exclude an item and reintroduce it in combinations with the remaining GT items. This can be done by specifying the calculated position of the item on the worth scale (<code>truepos</code>). The simulation yields the best-achieved estimate using the Iratio and the CE on the simulated item’s rank.</p>
+</div>
+<div id="b-best-guess-with-a-priori-information" class="section level3">
+<h3 class="hasAnchor">
+<a href="#b-best-guess-with-a-priori-information" class="anchor"></a>b) best guess (with <em>a priori</em> information)</h3>
+<p>If the item was not tested against all other items, but the user has a good idea about its position, the position can be simulated using the <code>truepos</code> argument as the most likely outcome. The simulation yields the best position estimate based on the <code>Iratio</code> and <code>CE</code>, along with the number of absolute counts that matched the predictions indicated in the <code>truepos</code> argument.</p>
+</div>
+<div id="c-no-idea-without-any-prior-position-information" class="section level3">
+<h3 class="hasAnchor">
+<a href="#c-no-idea-without-any-prior-position-information" class="anchor"></a>c) no idea (without any prior position information)</h3>
+<p>When there is no information (or guesstimate) on an item’s position, the simulation can be run without specifying the <code>truepos</code> argument. The resulting table will be without the absolute counts and frequency information on the <code>truepos</code> outcomes in such a case. Nevertheless, the position will still be estimated based using the <code>Iratio</code> and <code>CE</code> as in a) and b).</p>
 </div>
 <div id="example-simulation-hoihoihoi" class="section level2">
 <h2 class="hasAnchor">
@@ -134,13 +153,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Does the simulation of HoiHoiHoi at the given Ground Truth (GT)</span>
 <span class="va">data</span>       <span class="op">&lt;-</span> <span class="va">ZickeZacke</span>
-<span class="va">hoihoihoi</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simsim.html">simsim</a></span><span class="op">(</span>data      <span class="op">=</span> <span class="va">data</span>,
-                      simOpt   <span class="op">=</span> <span class="st">"HoiHoiHoi"</span>,
-                      GT       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Zicke"</span>,<span class="st">"Zacke"</span>,<span class="st">"Huehner"</span>, <span class="st">"Kacke"</span><span class="op">)</span>,
-                      runs     <span class="op">=</span> <span class="fl">100</span>,
-                      truepos  <span class="op">=</span> <span class="fl">2</span>,
-                      seeding  <span class="op">=</span> <span class="cn">TRUE</span>,
-                      path     <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="va">hoihoihoi</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simsim.html">simsim</a></span><span class="op">(</span>data     <span class="op">=</span> <span class="va">data</span>,
+                     simOpt   <span class="op">=</span> <span class="st">"HoiHoiHoi"</span>,
+                     GT       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Zicke"</span>,<span class="st">"Zacke"</span>,<span class="st">"Huehner"</span>, <span class="st">"Kacke"</span><span class="op">)</span>,
+                     runs     <span class="op">=</span> <span class="fl">100</span>,
+                     truepos  <span class="op">=</span> <span class="fl">2</span>,
+                     seeding  <span class="op">=</span> <span class="cn">TRUE</span>,
+                     path     <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <div id="simulation-result" class="section level3">
 <h3 class="hasAnchor">
 <a href="#simulation-result" class="anchor"></a>Simulation result</h3>
@@ -612,7 +631,7 @@ Zicke,Zacke,Huehner,Kacke
 </tr>
 </tbody>
 </table>
-<p><strong>pos:</strong> the simulated item position (based on Iratio and CE)<br><strong>worth:</strong> the average worth value obtained from the simulation<br><strong>Irato:</strong> the Iratio (the lower, the better)<br><strong>CE:</strong> the Consensus Error (the lower, the better)<br><strong>tp_frq:</strong> the frequency of true positive results (gets lower with more items)<br><strong>tp:</strong> the absolute tp counts in the simulation<br><strong>total:</strong> the number of simulation runs<br><strong>against:</strong> the items that simOpt was tested against</p>
+<p><strong>pos:</strong> the simulated item position (based on Iratio and CE)<br><strong>worth:</strong> the average worth value obtained from the simulation<br><strong>Irato:</strong> the Iratio (the lower, the better)<br><strong>CE:</strong> the Consensus Error (the lower, the better)<br><strong>tp_frq:</strong> the frequency of true positive results (gets lower with more items)<br><strong>tp:</strong> the absolute tp counts in the simulation<br><strong>total:</strong> the number of simulation runs<br><strong>against:</strong> the items that simOpt was tested against<br><strong>seeding:</strong> the simulation uses constant seeding if TRUE</p>
 <p>Note that the simulations did a decent job in finding pos=2 for the “HoiHoiHoi” item - given the fact, that it was only tested with 1 other item and 3 subjects. The CE error remains relatively large and the Iratio is low from the beginning. The fraction of true positives should improve when more actual data/tests are provided.</p>
 </div>
 </div>
@@ -622,6 +641,7 @@ Zicke,Zacke,Huehner,Kacke
 <div id="refs" class="references">
 <div id="ref-prefmodcit">
 <p>1. Hatzinger R, Dittrich R: <strong>prefmod: An R Package for Modeling Preferences Based on Paired Comparisons, Rankings, or Ratings</strong>. <span class="csl-baseline"><em>Journal of Statistical Software</em></span> 2012, <strong>48</strong>:1–31.</p>
+</div>
 </div>
 </div>
 </div>
