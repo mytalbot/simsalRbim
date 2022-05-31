@@ -75,6 +75,8 @@ The source/binary files are also available
 This example uses the internal data (ZickeZacke) to perform a simple
 randomization on the positioning of the incomplete ‘HoiHoiHoi’ item.
 
+*Note:* The GT data must contain all possible pairwise item comparisons.
+
 ``` r
 library(simsalRbim)
 
