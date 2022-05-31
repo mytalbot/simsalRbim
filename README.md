@@ -89,6 +89,7 @@ predat     <- bimpre(dat=dat, GT=GT, simOpt=simOpt)
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,
                        simOpt   = simOpt,
+                       randOP   = FALSE, # TRUE enables a randomized run
                        showPlot = "worth")
 ```
 
