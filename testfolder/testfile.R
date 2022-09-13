@@ -8,6 +8,9 @@ library(ggplot2)
 # tabelle mit allen items simulieren ALLE Combis!
 # ROC Analyse
 
+# human, mouse usw. mit 65% durchlaufen lassen
+
+
 
 #  Perfect use case with no randomized items ------------------------------
 dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZackelinear.txt")
@@ -15,7 +18,7 @@ dat        <- bimload("C:/MHH Bleich/Aktuelles/PrePrefPackage 2020/data/ZickeZac
 simOpt     <- "Zacke"
 GT         <- c("Zicke", "Kacke", "Huehner")
 
-predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt )
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation  = 0 )
 
 
 worth      <- bimworth(ydata    = predat,
@@ -23,7 +26,7 @@ worth      <- bimworth(ydata    = predat,
                        simOpt   = simOpt,
                        randOP   = FALSE,
                        showPlot = "worth",
-                       ylim     = c(0,0.8))
+                       ylim     = c(0,1))
 
 
 w_errors   <- bimeval(ydata     = predat,
@@ -38,11 +41,8 @@ w_errors   <- bimeval(ydata     = predat,
 w_errors
 
 
-
-
 ### Wishlist umsetzen
 p <- w_errors$p
-
 
 p <- p + theme(plot.title        = element_text(hjust = 0.5))
 p <- p +  theme(legend.position  = "bottom", legend.justification = c("left"))
@@ -153,7 +153,8 @@ bimbalance(dat)
 simOpt     <- "Lake"
 GT         <- c("Frustrated","Crow","War","Cat","Doctor", "Fire" )
 
-predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt)
+predat     <- bimpre (dat=dat, GT=GT, simOpt=simOpt, deviation=0) # dev funzt nicht mit deviation!
+predat
 
 worth      <- bimworth(ydata    = predat,
                        GT       = GT,

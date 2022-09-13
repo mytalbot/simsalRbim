@@ -77,7 +77,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
                                  paste( optionList[1:(length(optionList)-1) ] ,
                                         collapse="+")) )
 
-  h1Y        <- gnm(formula, data = modelY, family = poisson  )
+  h1Y        <- gnm(formula, data = modelY, family = poisson )
   #NOTE: last entry of optionList is the intercept
 
   # Show the model estimates with 95% CIs in a separate plot
@@ -91,7 +91,7 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
     rownames(CI)[1] <- simOpt
 
 
-    #hworY           <- llbt.worth(h1Y, outmat ="est")
+    # hworY           <- llbt.worth(h1Y, outmat ="est")
     hworY           <- as.matrix(coef(h1Y))
     colnames(hworY) <- "estimate"
     row.names(hworY)[1] <- simOpt
@@ -190,16 +190,16 @@ bimworth <- function(ydata=NULL, GT=NULL, simOpt=NULL,
 
 
     if(intrans==TRUE){
-      return(list(worth=hworY, I=I, p=p))
+      return(list(modData=modData, llbtdm=modelY, worth=hworY, I=I, p=p))
     }else{
-      return(list(worth=hworY, p=p))
+      return(list(modData=modData, llbtdm=modelY, worth=hworY, p=p))
     }
 
   }else{
     if(intrans==TRUE){
-      return(list(worth=hworY, I=I))
+      return(list(modData=modData,llbtdm=modelY,worth=hworY, I=I))
     }else{
-      return(worth=hworY)
+      return(list(modData=modData, llbtdm=modelY, worth=hworY))
     }
   }
 
